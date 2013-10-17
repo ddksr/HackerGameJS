@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8" />
+		<title>HackerGameJS</title>
+		<meta name="author" content="Žiga Stopinšek - ziga&#64;stopinsek.eu"/>
+		<meta name="Description" content="HackerGameJS"/>
+
+		<!-- EXTERNAL CSS -->
+		<link href="../ext/bootstrap-3.0.0/bootstrap.min.css" rel="stylesheet"/>
+
+		<!-- INTERNAL CSS -->
+		<link href="jquery.terminal.css" rel="stylesheet"/>
+		<link href="hgjs.css" rel="stylesheet"/>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">HackerGameJS</a>
+			</div>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Getting started</a></li>
+					<li class="active"><a href="#">Game</a></li>
+					<li><a href="#">Help</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div id="container" class="row">
+			<div class="col-md-8">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#">Terminal</a></li>
+					<li><a href="#">Editor</a></li>
+				</ul>
+				<div class="top-breathe"></div>
+				<div id="terminal"></div>
+			</div>
+			<div class="col-md-4">
+				<ul class="nav nav-tabs">
+					<li><a href="#">Assignment</a></li>
+					<li class="active"><a href="#">Tasks</a></li>
+					<li><a href="#">Try it out!</a></li>
+				</ul>
+				<div class="top-breathe"></div>
+				<div class="panel panel-default">
+					<div class="panel-body overflow-y">
+						Basic panel example
+Basic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasic panel example
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="stats">
+			<div class="well well-sm">
+				<ul class="">
+					<li class="col-md-2">Tasks completed: <span>3</span></li>
+					<li class="col-md-2">Time left: <span class="timer">13:55</span></li>
+					<li class="col-md-2">Assignments completed: <span>3</span></li>
+					<li class="col-md-2"></li>
+					<li class="col-md-2"></li>
+					<li class="col-md-2"></li>
+				</ul>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+
+		<!-- EXTERNAL SCRIPTS -->
+		<script src="../ext/jquery-1.10.2.min.js"></script>
+		<script src="../ext/bootstrap-3.0.0/bootstrap.min.js"></script>
+		<script src="../ext/jquery.mousewheel-min.js"></script>
+		<script src="../ext/jquery.terminal-0.7.7.min.js"></script>
+
+		<!-- INTERNAL SCRIPTS -->
+		<!-- TEMP -->
+		<script type="text/javascript">
+			$("#terminal").terminal(function(command, term) {
+				if (command !== '') {
+					try {
+            			var result = window.eval(command);
+            			if (result !== undefined) {
+            				term.echo(new String(result));
+            			}
+					} catch(e) {
+						term.error(new String(e));
+            		}
+				}
+			}, {
+				greetings: 'Welcome!',
+				name: 'hacker-terminal',
+				height: 400,
+				prompt: '$ '
+			});
+		</script>
+	</body>
+</html>

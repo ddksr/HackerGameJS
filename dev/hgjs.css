@@ -1,0 +1,39 @@
+body {
+	margin: 15px 10px 0 10px;
+}
+#container {
+	font-family: "Lucida Console", Monaco, monospace;
+}
+#terminal {
+	border: 1px solid #aaa;
+	margin: 0 5px 5px 5px;
+}
+#stats {
+	margin: 5px 0 0 0;
+}
+#stats ul {
+	list-style-type: none;
+}
+#stats li {
+	padding: 2px;
+}
+#stats span {
+	display: inline-block;
+	width: 50px;
+	font-weight: bold;
+}
+
+.top-breathe {
+	margin-top: 15px
+}
+
+.overflow-y {
+	height: 400px;
+	overflow-y: auto;
+}
+
+/*
+#container {
+	background-image: url('img/bg.png');
+	background-repeat: repeat;
+}*/
