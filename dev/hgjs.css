@@ -1,9 +1,8 @@
 body {
 	margin: 15px 10px 0 10px;
-}
-#container {
 	font-family: "Lucida Console", Monaco, monospace;
 }
+
 #terminal {
 	border: 1px solid #aaa;
 	margin: 0 5px 5px 5px;
@@ -17,7 +16,7 @@ body {
 #stats li {
 	padding: 2px;
 }
-#stats span {
+#stats span.stat {
 	display: inline-block;
 	width: 50px;
 	font-weight: bold;

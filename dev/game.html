@@ -17,35 +17,36 @@
 		<nav class="navbar navbar-inverse" role="navigation">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span>
+					<span class="sr-only i18n" data-lang="Toggle navigation"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">HackerGameJS</a>
+				<a class="navbar-brand i18n" href="#" data-lang="HackerGameJS"></a>
 			</div>
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="#">Getting started</a></li>
-					<li class="active"><a href="#">Game</a></li>
-					<li><a href="#">Help</a></li>
+					<li><a href="#" class="i18n" data-lang="Getting started"></a></li>
+					<li class="active"><a href="#" class="i18n" data-lang="Game"></a></li>
+					<li><a href="#" class="i18n" data-lang="Help"></a></li>
+					<li><a href="#" class="i18n" data-lang="Disclaimer"></a></li>
 				</ul>
 			</div>
 		</nav>
 		<div id="container" class="row">
 			<div class="col-md-8">
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#">Terminal</a></li>
-					<li><a href="#">Editor</a></li>
+					<li class="active"><a href="#" class="i18n" data-lang="Terminal"></a></li>
+					<li><a href="#" class="i18n" data-lang="Editor"></a></li>
 				</ul>
 				<div class="top-breathe"></div>
 				<div id="terminal"></div>
 			</div>
 			<div class="col-md-4">
 				<ul class="nav nav-tabs">
-					<li><a href="#">Assignment</a></li>
-					<li class="active"><a href="#">Tasks</a></li>
-					<li><a href="#">Try it out!</a></li>
+					<li><a href="#" class="i18n" data-lang="Assignment"></a></li>
+					<li class="active"><a href="#" class="i18n" data-lang="Tasks"></a></li>
+					<li><a href="#" class="i18n" data-lang="Try it out!"></a></li>
 				</ul>
 				<div class="top-breathe"></div>
 				<div class="panel panel-default">
@@ -59,12 +60,27 @@ Basic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasi
 		<div id="stats">
 			<div class="well well-sm">
 				<ul class="">
-					<li class="col-md-2">Tasks completed: <span>3</span></li>
-					<li class="col-md-2">Time left: <span class="timer">13:55</span></li>
-					<li class="col-md-2">Assignments completed: <span>3</span></li>
-					<li class="col-md-2"></li>
-					<li class="col-md-2"></li>
-					<li class="col-md-2"></li>
+					<li class="col-md-2">
+						<span class="i18n" data-lang="Tasks completed">:</span>:  
+						<span class="stat">3</span>
+					</li>
+					<li class="col-md-2">
+						<span class="i18n" data-lang="Time left"></span>: 
+						<span class="stat" id="timer">10:15</span>
+					</li>
+					<li class="col-md-2">
+						<span class="i18n" data-lang="Assignments completed"></span>: 
+						<span class="stat">3</span>
+					</li>
+					<li class="col-md-2">
+					
+					</li>
+					<li class="col-md-2">
+					
+					</li>
+					<li class="col-md-2">
+					
+					</li>
 				</ul>
 				<div class="clear"></div>
 			</div>
@@ -80,25 +96,13 @@ Basic panel exampleBasic panel exampleBasic panel exampleBasic panel exampleBasi
 		<script src="../ext/jquery.terminal-0.7.7.min.js"></script>
 
 		<!-- INTERNAL SCRIPTS -->
+		<script src="hgjs.core.js"></script>
+		<script src="lang/hgjs.lang.sl.js"></script>
+
 		<!-- TEMP -->
 		<script type="text/javascript">
-			$("#terminal").terminal(function(command, term) {
-				if (command !== '') {
-					try {
-            			var result = window.eval(command);
-            			if (result !== undefined) {
-            				term.echo(new String(result));
-            			}
-					} catch(e) {
-						term.error(new String(e));
-            		}
-				}
-			}, {
-				greetings: 'Welcome!',
-				name: 'hacker-terminal',
-				height: 400,
-				prompt: '$ '
-			});
+			$("#timer").hackerGameTimer(100);
+			$("#terminal").hackerGame();
 		</script>
 	</body>
 </html>
