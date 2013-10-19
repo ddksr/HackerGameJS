@@ -18,38 +18,85 @@ HackerGame
 		},
 		commands = {
 			ping: {
-				exec: function (loc, num, timeInSeconds) {
-					var term = this, step, isAvailable = hg.network.ping(loc);
+				exec: function (loc, num, ttl) {
+					var term = this, step, dataString, status, time, 
+						responseTime, responseTimeLong, responseTimeShort,
+						i = 0,
+						timeInSeconds = 1,
+						isAvailable = hg.network.ping(loc),
+						numOfSuccess = 0,
+						timeSuma = 0; 
 					if (! num) { num = 5; }
-					if (! timeInSeconds) {
-						timeInSeconds = 1;
-					}
+					if (! ttl) { ttl = 60; }
+					responseTimeLong = hg.util.randResponseTime(3, ttl*1000);
+					responseTimeShort = hg.util.randResponseTime(3, ttl*10);
+					responseTime = function () { 
+						return Math.random() > 0.2 ? 
+							responseTimeShort() : responseTimeLong();
+					};
+					time = responseTime();
+					term.pause();
 					step = function () {
-						term.echo("Pinging " + loc + " ... OK");
-						num -= 1;
-						if (num > 0) { 
-							setTimeout(step, timeInSeconds*1000); 
+						timeSuma += time;
+						var proc, stats, continueStep;
+						status = isAvailable && Math.random() > 0.05;
+						if (status) { numOfSuccess += 1; }
+						
+						continueStep = function () {
+							dataString = "icmp_seq=" + (i + 1) 
+								+ " ttl="+ttl+" time=" 
+								+ (status ? (time/1000) : ttl) + " ms";
+							term.echo("Pinging " + loc + " ... " + dataString + " " + (status ? "OK" : "LOST"));
+							i += 1;
+							if (i < num) {
+								time = responseTime();
+								setTimeout(step, timeInSeconds*1000 + time/1000); 
+							}
+							else {
+								proc = ((num-numOfSuccess)/num*100);
+								proc = Math.round(proc * 1000)/1000;
+								stats = num + " packets transmited, " + numOfSuccess 
+									+ " recieved, " 
+									+ proc + "% pacet loss, time " + timeSuma;
+								term.echo("\n--- " + loc + " ping statistics ---");
+								term.echo(stats);
+								term.resume();
+							}
+						};
+						if (!status) {
+							time += ttl*1000 - time/1000;
+							setTimeout(continueStep, ttl*1000 - time/1000);
+						}
+						else {
+							continueStep();
 						}
 					};
-					step();
+					setTimeout(step, time/1000);
 				},
 				help: ["ping - send a ping package to remote computer", 
-					   "Usage: ping IP|DOMAIN [NUMBER_OF_PINGS [TIME]]",
-					   "TIME is in seconds."]
+					   "Usage: ping IP|DOMAIN [NUMBER_OF_PINGS=5 [TIME_TO_LIVE=60]]",
+					   "TIME_TO_LIVE is in seconds.",
+					   "Linux: ping"]
 			},
 			eval: {
 				help: ["eval - execute a JavaScript command", 
 					   "Usage: eval COMMAND"]
 			},
 			export: {
-				help: ["export - store a variable"]
+				help: ["export - store a variable",
+					   "Usage: export VARIABLE=VALUE",
+					   "Linux: export VARIABLE=VALUE"]
 			},
 			help: {
 				exec: function(command) {
-					var term = this;
+					var term = this,
+						blackList = hg.state.computer.properties.commandBlackList;
 					if (!command) {
 						this.echo("Available commands: ");
 						$.each(commands, function (cmnd, props) {
+							if ($.inArray(cmnd, blackList) > -1) {
+								return;
+							}
 							term.echo(props.help[0]);
 						});
 						this.echo("\nFor more information type: help COMMAND");
@@ -62,16 +109,31 @@ HackerGame
 					}
 				},
 				help: ["help - display help information", 
-					   "Usage: help COMMAND"]
+					   "Usage: help COMMAND",
+					   "Linux: man or COMMAND -h or COMMAND --help"]
 			}
 		};
+	hg.commandCompletion = function (term, string, fn) {
+		var candidates = [];
+		$.each(commands, function (cmnd, _) {
+			if (cmnd.substr(0, string.length) == string) {
+				candidates.push(cmnd);
+			}
+		});
+		fn(candidates);
+	};
 	hg.exec = function(input, term) {
 		var segments = input.split(" "),
 			fn = segments[0],
 			result,
 			noError = true,
 			attributes = segments.length > 1 ? segments.slice(1) : null;
-		if (commands[fn] && commands[fn].exec) {
+		
+		if ($.inArray(fn, hg.state.computer.properties.commandBlackList) > -1) {
+			noError = false;
+			term.error("Command is not defined!");
+		}
+		else if (commands[fn] && commands[fn].exec) {
 			commands[fn].exec.apply(term, attributes);
 		}
 		else if(fn === "eval" || fn === "export") {
@@ -88,7 +150,6 @@ HackerGame
 		}
 		else {
 			noError = false;
-			term.error("Command is not defined!");
 		}
 		if (noError && hg.callback) {
 			// Callback is the main task checker.
@@ -103,6 +164,7 @@ HackerGame
 				}
 			}
 		}
+		
 	};
 })(jQuery, HackerGame);
 

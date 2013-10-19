@@ -5,7 +5,7 @@ HackerGame
 **/
 (function ($, hg) {
 	hg.cons.State = function State(computer, config) {
-		this.computer = computer || new hg.cons.Computer("localhost");
+		this.computer = computer || new hg.cons.Computer(hg.config.defaultComputer);
 		this.innerState = undefined;
 		if (config && typeof config === "object") {
 			$.each(config, function (property, value) {

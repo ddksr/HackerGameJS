@@ -6,15 +6,34 @@ HackerGame default javascript file
 HackerGame = {};
 (function ($, hg) {
 	var temp1,
+		login = function(user, password, fn) {
+			// TODO: do something
+			fn(true);
+		},
 		init = function(settings) {
-			var jObj = this.terminal(hg.exec, hg.config.terminal);
+			var jObj = this;
 			if (settings) {
 				$.each(settings, function (property, value) {
 					hg.config[property] = value;
 				});
 			}
+			if (hg.config.loginRequired) {
+				hg.config.terminal.login = login;
+			}
+			hg.config.terminal.completion = hg.commandCompletion;
+			hg.config.terminal.prompt = function (fn) {
+				var comp = hg.state.computer,
+					props = comp.properties,
+					user = props.user,
+					dir = comp.pwd,
+					hostname = props.hostname;
+				fn("[" + user + "@" + hostname + " " + dir + "]$ ");
+			};
 			hg.refreshTranslations();
 			hg.state = new hg.cons.State();
+
+
+			hg.term = jObj.terminal(hg.exec, hg.config.terminal);		
 			return jObj;
 		};
 
@@ -33,7 +52,8 @@ HackerGame = {};
 	// Init internal objects
 	hg.cons = {}; // constructors
 	hg.network = {}; // network methods
-	hg.util = {};
+	hg.util = {}; // utility methods
+	
 
 	// Loader object
 	hg.load = {
@@ -44,6 +64,12 @@ HackerGame = {};
 		language: function (lang) {
 			hg.lang = lang;
 		}
+	};
+	// Includer object
+	hg.include = {
+		assignment: function () {},
+		computer: function () {},
+		command: function() {}
 	};
 
 	// jQuery plugin

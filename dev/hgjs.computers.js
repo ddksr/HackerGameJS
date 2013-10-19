@@ -4,24 +4,30 @@ HackerGame
 
 **/
 (function ($, hg) {
-	var addresses = {}, dnsTable = { localhost: "localhost" }, computers = {
-		// Define computers here in format location: { ... properties ... }
-		"localhost": {
-			hostname: "my-machine",
-			localIP: "192.168.1.2",
-			externalIP: null,
-			visibleFrom: null,
-			domain: null,
-			filesystem: {
-				"/": ["bin", "usr", "home"],
-				"/dev/": ["random"],
-				"/home/" : ["user"]
-			},
-			files: {
-				"/dev/random": (function () { return Math.random() })()
+	var addresses = { 
+			"127.0.0.1": function () { return hg.state.computer.name; }
+		}, 
+		dnsTable = { localhost: "127.0.0.1" }, 
+		computers = {
+			// Define computers here in format location: { ... properties ... }
+			"proxy": {
+				hostname: "my-machine",
+				localIP: "192.168.1.2",
+				user: "me",
+				externalIP: null,
+				visibleFrom: null,
+				domain: null,
+				commandBlackList: {},
+				filesystem: {
+					"/": ["bin", "usr", "home"],
+					"/dev/": ["random"],
+					"/home/" : ["user"]
+				},
+				files: {
+					"/dev/random": (function () { return Math.random() })()
+				}
 			}
-		}
-	};
+		};
 	// initialize IP map and DNS table
 	$.each(computers, function (name, props) {
 		var randomIP;
@@ -44,7 +50,8 @@ HackerGame
 		if (! name) { name = "localhost"; }
 		if (! computers[name]) { return null; }
 		this.name = name;
-		this.location = addresses[name];
+		this.location = typeof addresses[name] == "function" ? 
+			addresses[name]() : addresses[name];
 		this.pwd = "/";
 		$.each(computers[name], function (property, value) {
 			props[property] = value;
@@ -52,9 +59,9 @@ HackerGame
 		this.properties = props;
 	};
 	hg.network.ping = function (location) {
-		var isInWeb = addresses[location] !== undefined,
+		var isInWeb = addresses[location] || addresses[dnsTable[location]],
 			localLocation = hg.state.computer.location + ">" + location,
-			isLocal = addresses[localLocation] !== undefined;
+			isLocal = addresses[localLocation];
 		return isInWeb || isLocal;
 	};
 
