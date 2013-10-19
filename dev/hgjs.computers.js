@@ -4,7 +4,7 @@ HackerGame
 
 **/
 (function ($, hg) {
-	var addresses = {}, dnsTable = {}, computers = {
+	var addresses = {}, dnsTable = { localhost: "localhost" }, computers = {
 		// Define computers here in format location: { ... properties ... }
 		"localhost": {
 			hostname: "my-machine",

@@ -56,7 +56,10 @@ HackerGame = {};
 				seconds = hg.timer.counter - minutes*60;
 				minutes = (minutes < 10 ? "0" : "") + minutes;
 				seconds = (seconds < 10 ? "0" : "") + seconds;
-				$(hg.timer.obj).text(minutes + ":" + seconds);
+				if (hg.timer.counter <= 60 && !$(jObj).is(".red-alert")) {
+					$(jObj).addClass("red-alert");
+				}
+				$(jObj).text(minutes + ":" + seconds);
 			},
 			step = function () {
 				var minutes, seconds;
@@ -70,6 +73,9 @@ HackerGame = {};
 			obj: jObj,
 			status: undefined, 
 			start: function (setCounter, callback) {
+				if ($(jObj).is(".red-alert")) {
+					$(jObj).removeClass("red-alert");
+				}
 				this.counter = setCounter;
 				callbackFn = callback || function() {};
 				display();
@@ -78,7 +84,7 @@ HackerGame = {};
 			stop: function () {
 				counter = 0;
 				if (this.status) { clearTimeout(this.status); }
-				this.timer.callback();
+				callbackFn();
 			}
 		};
 		return this;

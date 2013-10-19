@@ -10,7 +10,7 @@ HackerGame
 		};
 	hg.util.randIP = function () {
 		var generator = randIntGenerator(1,255), first = generator();
-		while ($.inArray(first, notValidIP)) { first = generator(); }
+		while ($.inArray(first, notValidIP) > -1) { first = generator(); }
 		return [first, generator(), generator(), generator()].join(".");
 	}
 })(jQuery, HackerGame);

@@ -31,6 +31,10 @@ body {
 	overflow-y: auto;
 }
 
+.red-alert {
+	color: red;
+}
+
 /*
 #container {
 	background-image: url('img/bg.png');
