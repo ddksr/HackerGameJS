@@ -3,42 +3,46 @@
 HackerGame default javascript file
 
 **/
-if (!window.HackerGame) { HackerGame = {}; }
+HackerGame = {};
 (function ($, hg) {
 	var temp1,
 		init = function(settings) {
-			var jObj = this.terminal(function(command, term) {
-				if (command !== '') {
-					try {
-						var result = window.eval(command);
-						if (result !== undefined) {
-							term.echo(new String(result));
-						}
-					} catch(e) {
-						term.error(new String(result));
-            		}
-				}
-			}, {
-				greetings: 'Welcome!',
-				name: 'hacker-terminal',
-				height: 400,
-				prompt: '$ '
-			});
+			var jObj = this.terminal(hg.exec, hg.config.terminal);
+			if (settings) {
+				$.each(settings, function (property, value) {
+					hg.config[property] = value;
+				});
+			}
 			hg.refreshTranslations();
-			if (hg.timer) { hg.timer.start(10); }
+			hg.state = new hg.cons.State();
 			return jObj;
 		};
+
 	// Public methods
-	hg.loadLanguage = function(lang) {
-		hg.lang = lang;
-	};
-	hg.refreshTranslations = function () {
-		$(".i18n").each(function () {
+	hg.refreshTranslations = function (selector) {
+		selector = selector ? (selector + " ") : "";
+		$(selector + ".i18n").each(function () {
 			var defaultString = $(this).attr("data-lang");
 			$(this).text((hg.lang && hg.lang[defaultString]) || defaultString);
 		});
 	};
-	
+
+	// Init internal objects
+	hg.cons = {}; // constructors
+	hg.network = {}; // network methods
+	hg.util = {};
+
+	// Loader object
+	hg.load = {
+		assignment: function (assignment) {
+			hg.assignment = new hg.cons.Assignment(assignment);
+			hg.refreshTranslations(hg.config.assignmentScopeSelector);
+		},
+		language: function (lang) {
+			hg.lang = lang;
+		}
+	};
+
 	// jQuery plugin
 	$.fn.hackerGame = function (settings) {
 		init.call(this);
@@ -53,7 +57,6 @@ if (!window.HackerGame) { HackerGame = {}; }
 				minutes = (minutes < 10 ? "0" : "") + minutes;
 				seconds = (seconds < 10 ? "0" : "") + seconds;
 				$(hg.timer.obj).text(minutes + ":" + seconds);
-				
 			},
 			step = function () {
 				var minutes, seconds;
@@ -63,16 +66,16 @@ if (!window.HackerGame) { HackerGame = {}; }
 				hg.timer.status = setTimeout(step, ms);
 			};
 		hg.timer = {
-			"counter": 0,
-			"obj": jObj,
-			"status": undefined, 
-			"start": function (setCounter, callback) {
+			counter: 0,
+			obj: jObj,
+			status: undefined, 
+			start: function (setCounter, callback) {
 				this.counter = setCounter;
 				callbackFn = callback || function() {};
 				display();
 				hg.timer.status = setTimeout(step, ms);
 			},
-			"stop": function () {
+			stop: function () {
 				counter = 0;
 				if (this.status) { clearTimeout(this.status); }
 				this.timer.callback();
@@ -80,4 +83,4 @@ if (!window.HackerGame) { HackerGame = {}; }
 		};
 		return this;
 	};
-})(jQuery, HackerGame); 
+})(jQuery, HackerGame);
