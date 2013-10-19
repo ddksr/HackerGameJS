@@ -33,22 +33,36 @@ HackerGame
 					};
 					step();
 				},
-				help: [
-					"PING command for pinging remote computers", 
-					"Usage: ping IP|DOMAIN [NUMBER_OF_PINGS [TIME]]",
-					"TIME is in seconds."
-				]
+				help: ["ping - send a ping package to remote computer", 
+					   "Usage: ping IP|DOMAIN [NUMBER_OF_PINGS [TIME]]",
+					   "TIME is in seconds."]
+			},
+			eval: {
+				help: ["eval - execute a JavaScript command", 
+					   "Usage: eval COMMAND"]
+			},
+			export: {
+				help: ["export - store a variable"]
 			},
 			help: {
 				exec: function(command) {
+					var term = this;
 					if (!command) {
-						this.echo(toText(commands.help.help));
+						this.echo("Available commands: ");
+						$.each(commands, function (cmnd, props) {
+							term.echo(props.help[0]);
+						});
+						this.echo("\nFor more information type: help COMMAND");
 					}
-					else {
+					else if (commands[command]){
 						this.echo(toText(commands[command].help));
 					}
+					else {
+						this.error("No information on command " + command);
+					}
 				},
-				help: "Usage: help COMMAND"
+				help: ["help - display help information", 
+					   "Usage: help COMMAND"]
 			}
 		};
 	hg.exec = function(input, term) {
@@ -57,10 +71,10 @@ HackerGame
 			result,
 			noError = true,
 			attributes = segments.length > 1 ? segments.slice(1) : null;
-		if (commands[fn]) {
+		if (commands[fn] && commands[fn].exec) {
 			commands[fn].exec.apply(term, attributes);
 		}
-		else if(fn === "eval") {
+		else if(fn === "eval" || fn === "export") {
 			if (attributes) {
 				try {
 					result = window.eval(attributes.join(" "));

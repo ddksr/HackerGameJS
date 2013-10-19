@@ -19,11 +19,14 @@ HackerGame = {};
 		};
 
 	// Public methods
+	hg.t = function (string) {
+		return (hg.lang && hg.lang[string]) || string;
+	};
 	hg.refreshTranslations = function (selector) {
 		selector = selector ? (selector + " ") : "";
 		$(selector + ".i18n").each(function () {
 			var defaultString = $(this).attr("data-lang");
-			$(this).text((hg.lang && hg.lang[defaultString]) || defaultString);
+			$(this).text(hg.t(defaultString));
 		});
 	};
 
