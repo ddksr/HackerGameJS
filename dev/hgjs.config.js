@@ -9,6 +9,14 @@
 			height: 400,
 			tabcompletion: true,
 			prompt: '$ '
+		},
+		basePath: "",
+		assignmentsPath: "ass/",
+		assignments: {
+			"intro": {
+				name: "Introduction",
+				level: 1
+			}
 		}
 	};
 })(jQuery, HackerGame);

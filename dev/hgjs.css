@@ -3,9 +3,14 @@ body {
 	font-family: "Lucida Console", Monaco, monospace;
 }
 
-#terminal {
+#input-terminal, #input-editor {
 	border: 1px solid #aaa;
 	margin: 0 5px 5px 5px;
+}
+#input-editor {
+	height: 400px;
+	background-color: black;
+	color: white;
 }
 #stats {
 	margin: 5px 0 0 0;
@@ -33,4 +38,10 @@ body {
 
 .red-alert {
 	color: red;
+}
+#tab-links li a, #page-links li a, #input-links li a {
+	outline: none; /* no ugly focus when clicking tabs */
+}
+#stash {
+	visibility: hidden;
 }

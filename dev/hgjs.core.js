@@ -35,6 +35,20 @@ HackerGame = {};
 
 			hg.term = jObj.terminal(hg.exec, hg.config.terminal);		
 			return jObj;
+		},
+		hashChange = function (evt) {
+			var hash = window.location.hash,
+				segments = hash ? hash.split("/") : [],
+				command, args;
+			if (segments.length > 1) {
+				command = segments[1];
+				if (command && hg.action[command]) {
+					args = segments.slice(2);
+					args = args || [];
+					hg.action[command].apply(this, args);
+				}
+			}
+			evt.preventDefault();
 		};
 
 	// Public methods
@@ -53,13 +67,16 @@ HackerGame = {};
 	hg.cons = {}; // constructors
 	hg.network = {}; // network methods
 	hg.util = {}; // utility methods
-	
+	hg.action = {}; // action methods
 
 	// Loader object
 	hg.load = {
 		assignment: function (assignment) {
-			hg.assignment = new hg.cons.Assignment(assignment);
-			hg.refreshTranslations(hg.config.assignmentScopeSelector);
+			if (!hg.config.assignments[assignment]) { return false; }
+			hg.assignment = new hg.cons.Assignment(assignment, function () {
+				hg.refreshTranslations(hg.config.assignmentScopeSelector);
+			});
+			return true;
 		},
 		language: function (lang) {
 			hg.lang = lang;
@@ -117,5 +134,23 @@ HackerGame = {};
 			}
 		};
 		return this;
+	};
+
+	$(window).on('hashchange', hashChange);
+
+	// Initialize HTML actions
+	$.each(["tab", "input", "page"], function(i, segment) {
+		var offset = 6 + segment.length;
+		$("#" + segment + "-links").find("li").each(function () {
+			var isSelected = $(this).is(".active"),
+				id = $(this).attr("id").substr(offset);
+			if (! isSelected) {
+				$("#" + segment + "-" + id).hide();
+			}
+		});
+	});
+
+	hg.startGame = function () {
+		$("#stash").empty();
 	};
 })(jQuery, HackerGame);
