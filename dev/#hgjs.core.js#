@@ -17,7 +17,7 @@ HackerGame = {};
 			hg.action.tab("assignment");
 		},
 		startGame = function () {
-			
+			hg.assignment.isRunning = true;
 			// TODO: start timer etc
 		},
 		init = function(settings) {

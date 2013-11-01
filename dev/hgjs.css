@@ -45,3 +45,11 @@ body {
 #stash {
 	visibility: hidden;
 }
+
+.disabled {
+	text-decoration: line-through;
+}
+
+nav .glyphicon {
+	font-size: medium;
+}

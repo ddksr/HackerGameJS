@@ -8,10 +8,14 @@ HackerGame
 		loadAssignment = function (assId, callback) {
 			var htmlUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".html",
 				jsUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".js";
-			$("#stash").load(htmlUrl + " #body", {}, function (respText, textStatus, xhr) {
-				$.loadScript(jsUrl, function () {
-					callback.apply(null);
-				});
+			$.ajax({
+				url: htmlUrl,
+				method: 'get',
+				dataType: 'html',
+				success: function (html) {
+					$("#stash").html(html);
+					$.getScript(jsUrl, callback);
+				}
 			});
 		};
 	hg.cons.State = function State(computer, config) {
@@ -23,12 +27,11 @@ HackerGame
 			});
 		}
 	};
-	hg.cons.Task = function Task(taskName) {
-		this.name = taskName; 
-		this.html = undefined;
-		this.isFinished = function () {};
-		this.set = function () {};
-		this.unset = function () {};
+	hg.cons.Task = function Task(taskObj) {
+		this.id = taskObj.id || null; 
+		this.isFinished = taskObj.isFinished || function () { return true; };
+		this.set = taskObj.set || function () {};
+		this.unset = taskObj.unset || function () {};
 	};
 	hg.cons.Task.prototype.switchTask = function (previousTask) {
 		if (previousTask) { previousTask.unset(); }
@@ -39,6 +42,7 @@ HackerGame
 		this.currentTask = -1;
 		this.numOfTasks = 0; // set with array length
 		this.tasks = []; // array of task objects // TODO: load
+		this.isRunning = false;
 		loadAssignment(assignment, loadCallback);
 	};
 	hg.cons.Assignment.prototype.startTimer = function () {
@@ -55,10 +59,10 @@ HackerGame
 		}
 		return false;
 	};
-	hg.cons.Assignment.prototype.failAssignment = function () {
+	hg.cons.Assignment.prototype.fail = function () {
 		hg.timer.stop();
 	};
-	hg.cons.Assignment.prototype.completeAssignment = function () {
+	hg.cons.Assignment.prototype.complete = function () {
 		hg.timer.stop();
 	};
 	hg.stats = {
@@ -70,10 +74,12 @@ HackerGame
 	// Actions (which user can do)
 	hg.action.page = function (pageId) {
 		var prevPageId = $("#page-links .active").attr("id").substr(10),
+			pageDisabled = $("#link-page-" + pageId).is(".disabled"),
 			showPage = function () {
 				$("#link-page-" + pageId).addClass("active"); 
 				$("#page-" + pageId).show("slow");
 			};
+		if (pageDisabled) { return; }
 		if (prevPageId) { 
 			$("#link-page-" + prevPageId).removeClass("active"); 
 			$("#page-" + prevPageId).hide("slow", showPage);
@@ -109,6 +115,15 @@ HackerGame
 		else {
 			showTab();
 		}
+	};
+	hg.action.assignment = function (assId) {
+		var status = hg.load.assignment(assId);
+		if (status) {
+			$("#link-tab-game").removeClass("disabled");
+		}
+	};
+	hg.action.mail = function (cmnd) {
+		if (cmnd == "open") { hg.mail.open(); }
 	};
 })(jQuery, HackerGame);
 

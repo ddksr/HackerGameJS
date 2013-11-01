@@ -29,7 +29,10 @@
 					<li id="link-page-getting-started">
 						<a href="#/page/getting-started" class="i18n" data-lang="Getting started"></a>
 					</li>
-					<li id="link-page-game" class="active">
+					<li id="link-page-assignments" class="active">
+						<a href="#/page/assignments" class="i18n" data-lang="Assignments"></a>
+					</li>
+					<li id="link-page-game" class="disabled">
 						<a href="#/page/game" class="i18n" data-lang="Game"></a>
 					</li>
 					<li id="link-page-help">
@@ -37,6 +40,18 @@
 					</li>
 					<li id="link-page-disclaimer">
 						<a href="#/page/disclaimer" class="i18n" data-lang="Disclaimer"></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="#/mail/open">
+							<span id="mail" class="glyphicon glyphicon-envelope"></span>
+						</a>
+					</li>
+					<li>
+						<a href="#/user/settings">
+							<span class="glyphicon glyphicon-wrench"></span>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -50,6 +65,11 @@
 			</div>
 			<div id="page-disclaimer" class="page">
 				Page disclaimer
+			</div>
+			<div id="page-assignments" class="page">
+				<!-- Dynamically build -->
+				<ul class="assignment-list">
+				</ul>
 			</div>
 			<div id="page-game" class="page">
 				<div class="row">
@@ -84,7 +104,10 @@
 						<div class="top-breathe"></div>
 						<div class="panel panel-default">
 							<div id="tab-assignment" class="panel-body overflow-y">
-								ass
+								<div class="instructions"></div>
+								<div>
+									<button type="button" class="btn btn-default" id="startGame">Start</button>
+								</div>
 							</div>
 							<div id="tab-task" class="panel-body overflow-y">
 								task
@@ -154,7 +177,28 @@
 			$("#timer").hackerGameTimer();
 			$("#input-terminal").hackerGame();
 		</script>
-		<div id="#stash"></id>
-	</body>
+		<div id="stash"></div>
+		<div class="modal fade" id="mailMessage" tabindex="-1" role="dialog" aria-labelledby="mailMessageTitle" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="mailMessageTitle"></h4>
+					</div>
+					<div class="modal-body row">
+						<div class="col-md-4">
+							<img id="mailIcon" />
+						</div>
+						<div class="col-md-8 body"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button id="mailButton" type="button" class="btn btn-primary"></button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+	</div>
+</body>
 </html>
 

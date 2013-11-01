@@ -12,11 +12,12 @@
 		},
 		basePath: "",
 		assignmentsPath: "ass/",
-		assignments: {
-			"intro": {
-				name: "Introduction",
-				level: 1
+		imagesPath: "img/",
+		assignments: [
+			{ 
+				id: "intro",
+				name: "Introduction to the terminal"
 			}
-		}
+		]
 	};
 })(jQuery, HackerGame);

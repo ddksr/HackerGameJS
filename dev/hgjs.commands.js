@@ -9,7 +9,7 @@ HackerGame
 			if (typeof input == "object") {
 				$.each(input, function (_, x) {
 					output += x + "\n";
-				});
+n				});
 			}
 			else {
 				output = input;
@@ -128,7 +128,6 @@ HackerGame
 			result,
 			noError = true,
 			attributes = segments.length > 1 ? segments.slice(1) : null;
-		
 		if ($.inArray(fn, hg.state.computer.properties.commandBlackList) > -1) {
 			noError = false;
 			term.error("Command is not defined!");
@@ -160,7 +159,7 @@ HackerGame
 			if (callbackResult) {
 				status = hg.state.assignment.nextTask();
 				if (! status) {
-					hg.state.assignment.completeAssignment();
+					hg.state.assignment.complete();
 				}
 			}
 		}
