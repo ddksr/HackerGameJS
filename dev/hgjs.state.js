@@ -27,22 +27,31 @@ HackerGame
 			});
 		}
 	};
-	hg.cons.Task = function Task(taskObj) {
-		this.id = taskObj.id || null; 
+	hg.cons.Task = function Task(taskObj, taskHtml) {
+		this.id = taskObj.id || null;
 		this.isFinished = taskObj.isFinished || function () { return true; };
 		this.set = taskObj.set || function () {};
 		this.unset = taskObj.unset || function () {};
+		this.points = taskObj.points;
+		this.html = taskHtml || "";
 	};
 	hg.cons.Task.prototype.switchTask = function (previousTask) {
-		if (previousTask) { previousTask.unset(); }
+		var li = $(document.createElement("li")).attr("id", "task-" + this.id);
+		if (previousTask) { 
+			previousTask.unset(); 
+			$("#task-" + previousTask.id).css("text-decoration", "line-trough");
+		}
 		this.set();
+		$(li).html(this.html);
+		$("#tab-task ul").append(li);
 		hg.callback = this.isFinished;
 	};
 	hg.cons.Assignment = function Assignment(assignment, loadCallback) {
 		this.currentTask = -1;
 		this.numOfTasks = 0; // set with array length
-		this.tasks = []; // array of task objects // TODO: load
+		this.tasks = []; // array of task objects 
 		this.isRunning = false;
+		this.startTime = 0;
 		loadAssignment(assignment, loadCallback);
 	};
 	hg.cons.Assignment.prototype.startTimer = function () {
@@ -52,7 +61,7 @@ HackerGame
 		var nextTask,
 			prevTask = this.currentTask > 0 ? this.tasks[currentTask] : undefined;
 		if (this.currentTask < this.numOfTasks) {
-			prevTask = this.tasks[this.currentTask + 1];
+			nextTask = this.tasks[this.currentTask + 1];
 			nextTask.switchTask(prevTask);
 			this.currentTask += 1;
 			return true;

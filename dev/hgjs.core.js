@@ -17,8 +17,10 @@ HackerGame = {};
 			hg.action.tab("assignment");
 		},
 		startGame = function () {
-			
-			// TODO: start timer etc
+			hg.assignment.isRunning = true;
+			hg.assignment.nextTask();
+			hg.assignment.startTimer();
+			hg.action.tab("task");
 		},
 		init = function(settings) {
 			var jObj = this;
@@ -115,18 +117,8 @@ HackerGame = {};
 	
 	// Includer object
 	hg.include = {
-		assignment: function () {},
 		computer: function () {},
 		command: function() {}
-	};
-
-	// Getter object
-	hg.get = {
-		assignmentData: function () {
-			var assData = $("#stash").clone();
-			$("#stash").empty();
-			return assData;
-		}
 	};
 
 	// jQuery plugin
@@ -226,15 +218,36 @@ HackerGame = {};
 	};
 
 	hg.prepareGame = function (tasks, other) {
+		var title = $("#stash").find("#ass-title").text(),
+			body = $("#stash").find("#ass-greeting").text(),
+			instructions = $("#stash").find("#ass-instructions").clone(),
+			tasksHtml = $("#stash").find("#ass-tasks").clone(),
+			learnMore = $("#stash").find("#ass-learn-more").clone(),
+			tryItOut = $("#stash").find("#ass-try-it-out").clone();
+
+		hg.assignment.numOfTasks = tasks.length;
+		hg.assignment.startTime = other.starTime;
+		$.each(tasks, function (i, task) {
+			var html = $(tasksHtml).find("." + task.id).html();
+			hg.assignment.tasks[i] = new hg.cons.Task(task, html);
+		});
+		
+		// Parse HTML
+		$("#tab-assignment .instructions").html(instructions);
+		$("#tab-task").html($(document.createElement("ul")).addClass("tasks-list"));
+		$("#tab-learn-more").html(learnMore);
+		$("#tab-try-it-out").html(tryItOut);
+
 		hg.mail.recieve({
-			subject: $("#stash").find("#ass-title").text(),
+			subject: title,
 			isSensei: true,
-			body: $("#stash").find("#ass-greeting").text(),
+			body: body,
 			button: {
 				name: "Start",
 				action: startAssignment
 			}
 		});
+		$("#stash").empty();
 	};
 	
 	$(window).on('hashchange', hashChange);
@@ -257,9 +270,9 @@ HackerGame = {};
 		trigger: "manual",
 		placement: "bottom"
 	});
-	$("#startGameButton").click(function () {
-		startGame();
+	$("#button-start-game").click(function () {
 		$(this).hide();
+		startGame();
 	});
 	
 })(jQuery, HackerGame);
