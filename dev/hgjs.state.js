@@ -87,6 +87,10 @@ HackerGame
 			$("#stats-best-score").text(hg.stats.bestScore);
 			$("#stats-overall-score").text(hg.stats.overallScore);
 		},
+		increment: function(stat, val, hold) {
+			if (hg.stats[stat]) { hg.stats[stat] += val; }
+			if (! hold) { hg.stats.refresh(); }
+		},
 		completedAssignments: 0,
 		completedTasks: 0,
 		bestScore: 0,
