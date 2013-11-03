@@ -19,6 +19,7 @@ HackerGame = {};
 		startGame = function () {
 			hg.assignment.isRunning = true;
 			hg.assignment.nextTask();
+			hg.stats.refresh();
 			hg.assignment.startTimer();
 			hg.action.tab("task");
 		},
@@ -226,7 +227,7 @@ HackerGame = {};
 			tryItOut = $("#stash").find("#ass-try-it-out").clone();
 
 		hg.assignment.numOfTasks = tasks.length;
-		hg.assignment.startTime = other.starTime;
+		hg.assignment.startTime = other.startTime;
 		$.each(tasks, function (i, task) {
 			var html = $(tasksHtml).find("." + task.id).html();
 			hg.assignment.tasks[i] = new hg.cons.Task(task, html);

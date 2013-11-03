@@ -53,3 +53,6 @@ body {
 nav .glyphicon {
 	font-size: medium;
 }
+.overall-stats {
+	font-style: italic;
+}

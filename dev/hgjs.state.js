@@ -59,14 +59,16 @@ HackerGame
 	};
 	hg.cons.Assignment.prototype.nextTask = function () {
 		var nextTask,
+			status=false,
 			prevTask = this.currentTask > 0 ? this.tasks[currentTask] : undefined;
 		if (this.currentTask < this.numOfTasks) {
 			nextTask = this.tasks[this.currentTask + 1];
 			nextTask.switchTask(prevTask);
 			this.currentTask += 1;
-			return true;
+			status = true;
 		}
-		return false;
+		hg.stats.refresh();
+		return status;
 	};
 	hg.cons.Assignment.prototype.fail = function () {
 		hg.timer.stop();
@@ -75,9 +77,21 @@ HackerGame
 		hg.timer.stop();
 	};
 	hg.stats = {
+		refresh: function() {
+			var overallAssignments = hg.config.assignments.length,
+				tasksInAssignment = hg.assignment.tasks.length;
+
+			$("#stats-completed-tasks").text(hg.stats.completedTasks + "/" + tasksInAssignment);
+			$("#stats-completed-assignments").text(hg.stats.completedTasks + "/" + overallAssignments);
+			$("#stats-current-score").text(hg.stats.currentScore);
+			$("#stats-best-score").text(hg.stats.bestScore);
+			$("#stats-overall-score").text(hg.stats.overallScore);
+		},
 		completedAssignments: 0,
 		completedTasks: 0,
-		completedTasksOverall: 0
+		bestScore: 0,
+		currentScore: 0,
+		overallScore: 0
 	};
 
 	// Actions (which user can do)
