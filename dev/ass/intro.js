@@ -12,7 +12,7 @@ task for getting to know the terminal and the game.
 			points: 10
 		}
 	], {
-		startTime: 1000
+		startTime: 10
 	});
 
 	$("#mail").popover("show");

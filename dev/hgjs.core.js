@@ -5,7 +5,7 @@ HackerGame default javascript file
 **/
 HackerGame = {};
 (function ($, hg) {
-	var temp1,
+	var i18n, // language object
 		login = function(user, password, fn) {
 			// TODO: do something
 			fn(true);
@@ -31,7 +31,7 @@ HackerGame = {};
 			$.each(hg.config.assignments, function (i, ass) {
 				var li = $(document.createElement("li")),
 				a = $(document.createElement("a"));
-				$(a).attr("href", "#/assignment/" + ass.id).text(ass.name);
+				$(a).attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
 				li.append(a);
 				$("ul.assignment-list").append(li);
 			});
@@ -82,7 +82,7 @@ HackerGame = {};
 
 	// Public methods
 	hg.t = function (string) {
-		return (hg.lang && hg.lang[string]) || string;
+		return (i18n && i18n[string]) || string;
 	};
 	hg.refreshTranslations = function (selector) {
 		selector = selector ? (selector + " ") : "";
@@ -111,8 +111,9 @@ HackerGame = {};
 			});
 			return true;
 		},
-		language: function (lang) {
-			hg.lang = lang;
+		language: function (langId, langObj) {
+			i18n = langObj;
+			hg.lang = langId;
 		}
 	};
 	

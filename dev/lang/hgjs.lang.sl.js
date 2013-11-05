@@ -1,4 +1,5 @@
-HackerGame.load.language({
+HackerGame.load.language("sl", {
+	// Interface
 	"Toggle navigation": "Skrij/prikaži navigacijo",
 	"HackerGameJS": "HackerGameJS",
 	"Getting started": "Kako začeti?",
@@ -13,5 +14,8 @@ HackerGame.load.language({
 	"Time left": "Preostali čas",
 	"Assignments completed": "Opravljene misije",
 	"Disclaimer": "Omejitev odgovornosti",
-	"Learn more": "Osvoji še več"
+	"Learn more": "Osvoji še več",
+	
+	// Assignments
+	"Introduction to the terminal": "Uvod v konzolo"
 });

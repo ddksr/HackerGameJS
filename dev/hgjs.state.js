@@ -7,14 +7,25 @@ HackerGame
 	var temp, 
 		loadAssignment = function (assId, callback) {
 			var htmlUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".html",
-				jsUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".js";
-			$.ajax({
-				url: htmlUrl,
-				method: 'get',
-				dataType: 'html',
-				success: function (html) {
+				htmlLangUrl = hg.config.basePath + hg.config.assignmentsPath + assId + "-" + hg.lang + ".html",
+				loadJS = function (html) {
 					$("#stash").html(html);
 					$.getScript(jsUrl, callback);
+				},
+				jsUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".js";
+			$.ajax({
+				url: htmlLangUrl,
+				method: 'get',
+				dataType: 'html',
+				success: loadJS,
+				error: function() {
+					// If no language markup file exists, load the default (english) file
+					$.ajax({
+						url: htmlUrl,
+						method: 'get',
+						dataType: 'html',
+						success: loadJS
+					});
 				}
 			});
 		};
