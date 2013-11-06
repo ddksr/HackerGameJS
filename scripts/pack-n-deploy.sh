@@ -21,16 +21,31 @@ if [[ -n $1 ]]; then
 fi
 
 # if version is set, make it pretty
+version_string=""
 if [[ -n $version ]]; then
-	version="-${version}"
+	version_string="-${version}"
 fi
 
 js_out="hgjs.js"
 js_out_min="hgjs.min.js"
-zip_out="hgjs${version}.zip"
+zip_out="hgjs${version_string}.zip"
 folder_name="HackerGameJS"
 
-# paths
+# check if zip_out for this version already exists
+do_exit=""
+if [[ -a "../releases/${zip_out}" ]]; then
+	do_exit="exit"
+	echo -n "Version ${version} is already deployed. Do you wish to overwrite [y/N]? "
+	read do_overwrite
+	if [[ $do_overwrite = "y" ]]; then
+		do_exit=""
+	fi
+fi
+if [[ $do_exit = "exit" ]]; then
+	exit 0
+fi
+
+# pathsand includes
 files_path="../dev/"
 js_files="core util computers commands state"
 include_files="hgjs.css jquery.terminal.css hgjs.config.js ass/ lang/ img/"
@@ -85,9 +100,11 @@ zip -r $zip_out $folder_name
 # move to release folder
 mv $zip_out "../releases/"
 
-# copy to latest (latest is always a fresh copy of the latest script)
+# copy to latest (latest is always a fresh copy of the latest zip)
 # force if exists
 cp -f "../releases/${zip_out}" "../hgjs-latest.zip"
 
 # clean up
 rm -r $folder_name
+
+exit 0
