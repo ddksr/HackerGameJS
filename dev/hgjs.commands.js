@@ -9,7 +9,7 @@ HackerGame
 			if (typeof input == "object") {
 				$.each(input, function (_, x) {
 					output += x + "\n";
-n				});
+				});
 			}
 			else {
 				output = input;
@@ -17,7 +17,7 @@ n				});
 			return output;
 		},
 		commands = {
-			ping: {
+			"ping": {
 				exec: function (loc, num, ttl) {
 					var term = this, step, dataString, status, time, 
 						responseTime, responseTimeLong, responseTimeShort,
@@ -78,16 +78,16 @@ n				});
 					   "TIME_TO_LIVE is in seconds.",
 					   "Linux: ping"]
 			},
-			eval: {
+			"eval": {
 				help: ["eval - execute a JavaScript command", 
 					   "Usage: eval COMMAND"]
 			},
-			export: {
+			"export": {
 				help: ["export - store a variable",
 					   "Usage: export VARIABLE=VALUE",
 					   "Linux: export VARIABLE=VALUE"]
 			},
-			help: {
+			"help": {
 				exec: function(command) {
 					var term = this,
 						blackList = hg.state.computer.properties.commandBlackList;
