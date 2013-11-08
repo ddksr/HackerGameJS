@@ -19,6 +19,8 @@
 		<!-- INTERNAL CSS -->
 		<link href="hgjs.css" rel="stylesheet"/>
 		<link href="jquery.terminal.css" rel="stylesheet"/>
+
+		<!-- HGJS-SCRIPT:block after_head -->
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse" role="navigation">
@@ -196,11 +198,13 @@
 		--><!-- HGJS-SCRIPT:remove_line -->
 		
 		<script src="lang/hgjs.lang.sl.js"></script>
-		
+		<!-- HGJS-SCRIPT:block after_script_load -->
 
 		<script type="text/javascript">
+			<!-- HGJS-SCRIPT:block before_js_init -->
 			$("#timer").hackerGameTimer();
 			$("#input-terminal").hackerGame();
+			<!-- HGJS-SCRIPT:block after_js_init -->
 		</script>
 		<div id="stash"></div>
 		<div class="modal fade" id="mailMessage" tabindex="-1" role="dialog" aria-labelledby="mailMessageTitle" aria-hidden="true">
@@ -224,6 +228,7 @@
 			</div><!-- /.modal-dialog -->
 		</div>
 	</div>
+	<!-- HGJS-SCRIPT:block after_body -->
 </body>
 </html>
 
