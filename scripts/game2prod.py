@@ -1,10 +1,14 @@
 import re
-import sys
+import argparse
 
 blocks={}
 
-def parse_args():
-	pass
+parser = argparse.ArgumentParser(description='Process game.html.')
+
+parser.add_argument('files', metavar='file', type=str, nargs=2,
+					help='Input and output file')
+parser.add_argument('-b', '--block',
+					help='Replace blocks with strings: block_name1|block_string1|block_name2|block_string2... Note: There must always be a block string after a block name!')
 
 def compile(lines):
 	out=[]
@@ -39,11 +43,17 @@ def compile(lines):
 			out.append(new_line)
 	return "".join(out)
 
-if __name__ == "__main__" and len(sys.argv) >= 2:
-	parse_args()
+if __name__ == "__main__":
+	args = parser.parse_args()
 
-	file_in = open(sys.argv[1], "r")
-	file_out = open(sys.argv[2], "w")
+	if args.block != None:
+		blocks_array = args.block.split("|")
+		blocks = {blocks_array[i]:blocks_array[i+1] for i in range(len(blocks_array)/2)}
+	
+	if not args.files:
+		print "Missing files"
+		exit(1)
+	file_in, file_out = open(args.files[0], "r"), open(args.files[1], "w")
 
 	out = compile(file_in.readlines())
 	file_out.write(out)
