@@ -47,8 +47,8 @@ fi
 
 # pathsand includes
 files_path="../dev/"
-js_files="core util computers commands state"
-include_files="hgjs.css jquery.terminal.css hgjs.config.js ass/ lang/ img/"
+js_files="core util computers commands state config"
+include_files="hgjs.css jquery.terminal.css ass/ lang/ img/"
 include_other_files="ext/"
 
 # prepare

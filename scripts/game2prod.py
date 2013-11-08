@@ -1,10 +1,16 @@
 import re
 import sys
 
+blocks={}
+
+def parse_args():
+	pass
+
 def compile(lines):
 	out=[]
 	begin_remove=False
 	for line in lines:
+		new_line=False
 		if "HGJS-SCRIPT" in line:
 			found = re.search('HGJS-SCRIPT:(\w+) (\w*)', line, re.IGNORECASE)
 			if not found:
@@ -21,13 +27,21 @@ def compile(lines):
 				continue
 			elif command=="remove_line":
 				continue
-					
+			elif command=="block":
+				if arg in blocks:
+					new_line = blocks[arg]
+
 		if begin_remove:
 			continue
-		out.append(line)
+		if not new_line:
+			out.append(line)
+		else:
+			out.append(new_line)
 	return "".join(out)
 
 if __name__ == "__main__" and len(sys.argv) >= 2:
+	parse_args()
+
 	file_in = open(sys.argv[1], "r")
 	file_out = open(sys.argv[2], "w")
 
@@ -36,3 +50,4 @@ if __name__ == "__main__" and len(sys.argv) >= 2:
 	
 	file_in.close()
 	file_out.close()
+

@@ -125,7 +125,21 @@ HackerGame = {};
 
 	// jQuery plugin
 	$.fn.hackerGame = function (settings) {
-		init.call(this);
+		var jObj = this;
+		if (hg.config.server) {
+			// Define init script wrapper
+			hg.initServer = function(fn) {
+				init.call(jObj, settings);
+				if (fn && typeof(fn) == "function") {
+					fn.call(jObj); 
+				}
+			};
+			// The server script needs to call hg.initServer();
+			$.getScript(hg.config.server);
+		}
+		else {
+			init.call(jObj, settings);
+		}
 	};
 	$.fn.hackerGameTimer = function() {
 		var jObj = this,
@@ -278,3 +292,7 @@ HackerGame = {};
 	});
 	
 })(jQuery, HackerGame);
+
+
+
+
