@@ -192,7 +192,7 @@ HackerGame = {};
 		open: function () {
 			var img, button, title;
 			if (hg.mail.message) {
-				img = hg.mail.message.isSensei ? "anon" : "any";
+				img = hg.mail.message.isSensei ? "anon-small" : "any";
 				img = hg.config.basePath + hg.config.imagesPath + img + ".png";
 				title = "Message from <strong>" + hg.mail.message.sender + "</strong>";
 				$("#mailIcon").attr("src", img).css({
