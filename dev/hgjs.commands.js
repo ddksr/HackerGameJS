@@ -6,14 +6,12 @@ HackerGame
 (function ($, hg) {
 	var toText = function (input) {
 			var output = "";
-			if (typeof input == "object") {
+			if ($.isObject(input)) {
 				$.each(input, function (_, x) {
 					output += x + "\n";
 				});
 			}
-			else {
-				output = input;
-			}
+			else { output = input; }
 			return output;
 		},
 		commands = {
@@ -150,11 +148,11 @@ HackerGame
 		else {
 			noError = false;
 		}
-		if (noError && hg.callback) {
+		if (noError && hg.assignment.evaluate) {
 			// Callback is the main task checker.
 			// If the input passes the callback
 			// You can move to the next task
-			var callbackResult = hg.callback.call(term, input),
+			var callbackResult = hg.assignment.evaluate.call(term, input),
 				status;
 			if (callbackResult) {
 				status = hg.state.assignment.nextTask();

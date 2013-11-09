@@ -40,7 +40,7 @@ HackerGame
 	};
 	hg.cons.Task = function Task(taskObj, taskHtml) {
 		this.id = taskObj.id || null;
-		this.isFinished = taskObj.isFinished || function () { return true; };
+		this.evaluate = taskObj.evaluate || function () { return true; };
 		this.set = taskObj.set || function () {};
 		this.unset = taskObj.unset || function () {};
 		this.points = taskObj.points;
@@ -55,7 +55,7 @@ HackerGame
 		this.set();
 		$(li).html(this.html);
 		$("#tab-task ul").append(li);
-		hg.callback = this.isFinished;
+		hg.assignment.evaluate = this.evaluate;
 	};
 	hg.cons.Assignment = function Assignment(assignment, loadCallback) {
 		this.currentTask = -1;
@@ -63,6 +63,7 @@ HackerGame
 		this.tasks = []; // array of task objects 
 		this.isRunning = false;
 		this.startTime = 0;
+		this.evaluate = function () { return true; };
 		loadAssignment(assignment, loadCallback);
 	};
 	hg.cons.Assignment.prototype.startTimer = function () {
@@ -155,10 +156,18 @@ HackerGame
 		}
 	};
 	hg.action.assignment = function (assId) {
-		var status = hg.load.assignment(assId);
-		if (status) {
-			$("#link-tab-game").removeClass("disabled");
-		}
+		var status = false;
+		$.each(hg.config.assignments, function (i, obj) {
+			if (obj.id == assId) { status = true; }
+		});
+
+		if (! status) { return; }
+
+		hg.assignment = new hg.cons.Assignment(assId, function () {
+			hg.refreshTranslations(hg.config.assignmentScopeSelector);
+		});
+
+		$("#link-tab-game").removeClass("disabled");
 	};
 	hg.action.mail = function (cmnd) {
 		if (cmnd == "open") { hg.mail.open(); }
