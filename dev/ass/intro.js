@@ -6,7 +6,7 @@ task for getting to know the terminal and the game.
 	hg.load.assignment([
 		{
 			id: "try",
-			evaluate: function () {},
+			evaluate: function () { return false; },
 			set: function () {},
 			unset: function () {},
 			points: 10

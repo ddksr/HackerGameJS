@@ -18,7 +18,7 @@ HackerGame
 				visibleFrom: null,
 				domain: null,
 				commandBlackList: {},
-				filesystem: {
+				fs: {
 					"home": {},
 				},
 				files: {
@@ -51,8 +51,11 @@ HackerGame
 		this.location = typeof addresses[name] == "function" ? 
 			addresses[name]() : addresses[name];
 		this.pwd = "/";
+		this.fs = computers[name].fs;
 		$.each(computers[name], function (property, value) {
-			props[property] = value;
+			if ($.inArray(property, ["fs"]) == -1) { 
+				props[property] = value; 
+			}
 		});
 		this.properties = props;
 	};

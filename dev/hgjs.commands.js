@@ -80,8 +80,15 @@ HackerGame
 			// FILE SYSTEM
 			"ls": {
 				exec: function (folder) {
-					var path = hg.util.path(folder);
-					
+					var dirs = ". ..";
+					hg.util.pathIterator(folder, function (contents) {
+						if ($.isPlainObject(contents)) {
+							$.each(contents, function (k, _) {
+								dirs += " " + k;
+							});
+						}
+					});
+					this.echo(dirs);
 				},
 				help: ["ls - list directory",
 					   "Usage: ls [directory]",
@@ -89,11 +96,54 @@ HackerGame
 			},
 			"mkdir": {
 				exec: function (folder) {
-					
+					var er = false;
+					hg.util.pathIterator(null, function (cont) {
+						if (cont[folder]) {
+							er = "Directory already exists!";
+						}
+						else if (/[\/\\ ]+/.test(folder)) { er = "Not a valid name"; }
+						else if (/^\./.test(folder)) { er = "First char cannot be dor (.)"; }
+						else {
+							cont[folder] = {};
+						}
+					});
+					if (er) { this.error(er); } 
 				},
 				help: ["mkdir - create a directory",
 					   "Usage: mkdir directory",
 					   "Linux: mkdir dir1, [dir2, [dir3, ...]]"]
+			},
+			"pwd": {
+				exec: function () { this.echo(hg.state.computer.pwd); },
+				help: ["pwd - path to current directory",
+					   "Usage: pwd",
+					   "Linux: pwd"]
+			},
+			"cd": {
+				exec: function (fold) {
+					var foldName = fold;
+					if (fold.charAt(fold.length -1) != "/") {
+						fold += "/";
+					}
+					if (fold.charAt(0) != "/") {
+						fold = hg.state.computer.pwd + fold;
+					}
+					if (hg.util.isDir(fold)) {
+						hg.state.computer.pwd = hg.util.cleanPath(fold);
+					}
+					else { this.echo(foldName + " is not a directory"); }
+				},
+				help: ["cd - change directory",
+					   "Usage: cd path",
+					   "Linux: cd path"]
+			},
+			"rm": {
+				exec: function (path) {
+					term.error("TODO");
+				},
+				help: ["rm - remove file or directory",
+					   "Usage: rm path",
+					   "Linux: rm path_to_file OR rmdir path_to_empty_directory"]
 			},
 			// INTERNAL
 			"eval": {
@@ -175,7 +225,7 @@ HackerGame
 			var callbackResult = hg.assignment.evaluate.call(term, input),
 				status;
 			if (callbackResult) {
-				status = hg.state.assignment.nextTask();
+				status = hg.assignment.nextTask();
 				if (! status) {
 					hg.state.assignment.complete();
 				}

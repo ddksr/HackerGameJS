@@ -19,33 +19,67 @@ HackerGame
 		return randIntGenerator(from, to);
 	};
 	hg.util.path = function (pathString) {
-		var path = (pathString && pathString.split("/"))
-			|| (hg.state.computer.pwd && hg.state.pwd.split("/"))
-			|| null;
-
-		return (path && path.slice(1)) || null;
+		var ret = null,
+			pwdPath = hg.state.computer.pwd.split("/").slice(1),
+			path = (pathString && pathString.split("/"))
+			|| (hg.state.computer.pwd && pwdPath) || null;
+		if (! path[path.length -1]) { path.pop(); }
+		if (pathString == "/") {
+			ret = [];
+		}
+		else if (path) {
+			// chechk if pathString is absolute path
+			ret = !path[0] ? path.slice(1) : pwdPath.concat(path);
+		}
+		return ret;
 	};
 	hg.util.fileExists = function () {
-		return hg.util.pathIterator(dir, function (obj) {
-			return obj;
-		});		
+		var ret = false;
+		hg.util.pathIterator(dir, function (obj) {
+			ret = obj;
+		});
+		return ret;
 	};
 	hg.util.isDir = function (dir) {
-		return hg.util.pathIterator(dir, function (obj) {
-			return obj && $.isPlainObject(obj);
+		var ret = false;
+		hg.util.pathIterator(dir, function (obj) {
+			ret = $.isPlainObject(obj); // TODO: ne dela, popravi
 		});
+		return ret;
+	};
+	hg.util.cleanPath = function (path) {
+		var returnPath = [];
+		$.each(path.split("/"), function (_, elt) {
+			if (elt == ".") { return; }
+			if (elt == "..") {
+				returnPath.pop();
+			}
+			else { returnPath.push(elt); }
+		});
+		return returnPath.length == 0 ? "/" : returnPath.join("/");
 	};
 	hg.util.pathIterator = function (dir, fn) {
 		var path = hg.util.path(dir),
 			res = null,
-			place = hg.state.computer.fileSystem,
+			prevPlace = hg.state.computer.fs,
+			place = hg.state.computer.fs,
 			iterator = function (i) {
-				place = place[path[i]];
-				if (i < path.length) { iterator(i+1); }
-				else { res = fn(place); }
+				if (i < path.length) {
+					if (i == -1 || path[i] == ".") { 
+						iterator(i+1); 
+					}
+					else {
+						if (path[i] == "..") {
+							place = prevPlace;
+						}
+						else { place = place[path[i]]; }
+						iterator(i+1);
+					}
+				}
+				else { fn(place); }
 			};
-		if (path) { iterator(0); }
-		else { res = fn(dir); }
-		return res;
+		
+		if (path && path.length == 0) { fn(place); }
+		else if (path) { iterator(-1); }
 	};
 })(jQuery, HackerGame);
