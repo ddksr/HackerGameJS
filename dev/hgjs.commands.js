@@ -6,7 +6,7 @@ HackerGame
 (function ($, hg) {
 	var toText = function (input) {
 			var output = "";
-			if ($.isObject(input)) {
+			if (typeof(input) === "object") {
 				$.each(input, function (_, x) {
 					output += x + "\n";
 				});

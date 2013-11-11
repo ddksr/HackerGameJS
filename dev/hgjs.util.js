@@ -24,10 +24,28 @@ HackerGame
 			|| null;
 
 		return (path && path.slice(1)) || null;
-	}
-	hg.util.pathIterator = function (dir, val) {
+	};
+	hg.util.fileExists = function () {
+		return hg.util.pathIterator(dir, function (obj) {
+			return obj;
+		});		
+	};
+	hg.util.isDir = function (dir) {
+		return hg.util.pathIterator(dir, function (obj) {
+			return obj && $.isPlainObject(obj);
+		});
+	};
+	hg.util.pathIterator = function (dir, fn) {
 		var path = hg.util.path(dir),
-			place = 0;
-
-	} 
+			res = null,
+			place = hg.state.computer.fileSystem,
+			iterator = function (i) {
+				place = place[path[i]];
+				if (i < path.length) { iterator(i+1); }
+				else { res = fn(place); }
+			};
+		if (path) { iterator(0); }
+		else { res = fn(dir); }
+		return res;
+	};
 })(jQuery, HackerGame);

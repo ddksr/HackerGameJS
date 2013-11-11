@@ -47,14 +47,14 @@ HackerGame
 		this.html = taskHtml || "";
 	};
 	hg.cons.Task.prototype.switchTask = function (previousTask) {
-		var li = $(document.createElement("li")).attr("id", "task-" + this.id);
+		var $li = $(document.createElement("li")).attr("id", "task-" + this.id);
 		if (previousTask) { 
 			previousTask.unset(); 
 			$("#task-" + previousTask.id).css("text-decoration", "line-trough");
 		}
 		this.set();
-		$(li).html(this.html);
-		$("#tab-task ul").append(li);
+		$li.html(this.html);
+		$("#tab-task ul").append($li);
 		hg.assignment.evaluate = this.evaluate;
 	};
 	hg.cons.Assignment = function Assignment(assignment, loadCallback) {
