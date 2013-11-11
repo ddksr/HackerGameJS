@@ -15,6 +15,7 @@ HackerGame
 			return output;
 		},
 		commands = {
+			// NETWORK
 			"ping": {
 				exec: function (loc, num, ttl) {
 					var term = this, step, dataString, status, time, 
@@ -76,6 +77,25 @@ HackerGame
 					   "TIME_TO_LIVE is in seconds.",
 					   "Linux: ping"]
 			},
+			// FILE SYSTEM
+			"ls": {
+				exec: function (folder) {
+					var path = hg.util.path(folder);
+					
+				},
+				help: ["ls - list directory",
+					   "Usage: ls [directory]",
+					   "Linux: ls [directory]"]
+			},
+			"mkdir": {
+				exec: function (folder) {
+					
+				},
+				help: ["mkdir - create a directory",
+					   "Usage: mkdir directory",
+					   "Linux: mkdir dir1, [dir2, [dir3, ...]]"]
+			},
+			// INTERNAL
 			"eval": {
 				help: ["eval - execute a JavaScript command", 
 					   "Usage: eval COMMAND"]

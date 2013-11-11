@@ -18,4 +18,16 @@ HackerGame
 	hg.util.randResponseTime = function(from, to) {
 		return randIntGenerator(from, to);
 	};
+	hg.util.path = function (pathString) {
+		var path = (pathString && pathString.split("/"))
+			|| (hg.state.computer.pwd && hg.state.pwd.split("/"))
+			|| null;
+
+		return (path && path.slice(1)) || null;
+	}
+	hg.util.pathIterator = function (dir, val) {
+		var path = hg.util.path(dir),
+			place = 0;
+
+	} 
 })(jQuery, HackerGame);

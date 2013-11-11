@@ -19,9 +19,7 @@ HackerGame
 				domain: null,
 				commandBlackList: {},
 				filesystem: {
-					"/": ["bin", "usr", "home"],
-					"/dev/": ["random"],
-					"/home/" : ["user"]
+					"home": {},
 				},
 				files: {
 					"/dev/random": (function () { return Math.random() })()

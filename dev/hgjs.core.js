@@ -5,18 +5,21 @@ HackerGame default javascript file
 **/
 HackerGame = {};
 (function ($, hg) {
+	// ===========================================
+	// Internal objects and methods initialization
+	// ===========================================
 	var i18n, // language object
-		login = function(user, password, fn) {
+		login = function(user, password, fn) { // login function
 			// TODO: do something
 			fn(true);
 		},
-		prepareAssignment = function () {
+		initAssignment = function () { // Prepare assignment
 			hg.mail.close();
 			$("#link-page-game").removeClass("disabled");
 			hg.action.page("game");
 			hg.action.tab("assignment");
 		},
-		startAssignment = function () {
+		startAssignment = function () { // Start workign on assignment
 			hg.assignment.isRunning = true;
 			hg.assignment.nextTask();
 			hg.stats.refresh();
@@ -24,8 +27,7 @@ HackerGame = {};
 			hg.action.tab("task");
 		},
 		init = function(settings) {
-			var jObj = this;
-
+			var $obj = this;
 
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
@@ -56,13 +58,12 @@ HackerGame = {};
 			hg.refreshTranslations();
 			hg.state = new hg.cons.State();
 
-
-			hg.term = jObj.terminal(hg.exec, hg.config.terminal);
+			hg.term = $obj.terminal(hg.exec, hg.config.terminal);
 			hashChange(null);
 
-			return jObj;
+			return $obj;
 		},
-		hashChange = function (evt) {
+		hashChange = function (evt) { // event listener for hash changing
 			var hash = window.location.hash,
 				segments = hash ? hash.split("/") : [],
 				command, args;
@@ -76,19 +77,27 @@ HackerGame = {};
 			}
 			if (evt) { evt.preventDefault(); }
 		};
-	// Init internal objects
+
+
+	// =========================
+	// Containers initialization
+	// =========================
+
 	hg.cons = {}; // constructors
 	hg.network = {}; // network methods
 	hg.util = {}; // utility methods
 	hg.action = {}; // action methods
 	hg.include = {}; // includer object, called from assignments
 
+	// ==============
 	// Public methods
 	// ==============
 
+	// Translation methods
 	hg.t = function (string) {
 		return (i18n && i18n[string]) || string;
 	};
+
 	hg.refreshTranslations = function (selector) {
 		selector = selector ? (selector + " ") : "";
 		$(selector + ".i18n").each(function () {
@@ -97,28 +106,28 @@ HackerGame = {};
 		});
 	};
 
-	// Load assignments and languages
+	// Loader (assignments and languages)
 	hg.load = {
 		assignment: function (tasks, other) {
 			var title = $("#stash").find("#ass-title").text(),
 				body = $("#stash").find("#ass-greeting").text(),
-				instructions = $("#stash").find("#ass-instructions").clone(),
-				tasksHtml = $("#stash").find("#ass-tasks").clone(),
-				learnMore = $("#stash").find("#ass-learn-more").clone(),
-				tryItOut = $("#stash").find("#ass-try-it-out").clone();
+				$instructions = $("#stash").find("#ass-instructions").clone(),
+				$tasksHtml = $("#stash").find("#ass-tasks").clone(),
+				$learnMore = $("#stash").find("#ass-learn-more").clone(),
+				$tryItOut = $("#stash").find("#ass-try-it-out").clone();
 
 			hg.assignment.numOfTasks = tasks.length;
 			hg.assignment.startTime = other.startTime;
 			$.each(tasks, function (i, task) {
-				var html = $(tasksHtml).find("." + task.id).html();
+				var html = $tasksHtml.find("." + task.id).html();
 				hg.assignment.tasks[i] = new hg.cons.Task(task, html);
 			});
 			
 			// Parse HTML
-			$("#tab-assignment .instructions").html(instructions);
+			$("#tab-assignment .instructions").html($instructions);
 			$("#tab-task").html($(document.createElement("ul")).addClass("tasks-list"));
-			$("#tab-learn-more").html(learnMore);
-			$("#tab-try-it-out").html(tryItOut);
+			$("#tab-learn-more").html($learnMore);
+			$("#tab-try-it-out").html($tryItOut);
 
 			hg.mail.recieve({
 				subject: title,
@@ -126,7 +135,7 @@ HackerGame = {};
 				body: body,
 				button: {
 					name: "Start",
-					action: prepareAssignment
+					action: initAssignment
 				}
 			});
 			$("#stash").empty();
@@ -137,6 +146,7 @@ HackerGame = {};
 		}
 	};
 
+	// Mail system
 	hg.mail = {
 		message: undefined,
 		setNew: function() {
@@ -186,30 +196,28 @@ HackerGame = {};
 		}
 	};
 	
-	
-	hg.prepareGame = 
-	
-	// jQuery plugin
-	// =============
+	// ==============
+	// jQuery plugins
+	// ==============
 	$.fn.hackerGame = function (settings) {
-		var jObj = this;
+		var $obj = this;
 		if (hg.config.server) {
 			// Define init script wrapper
 			hg.initServer = function(fn) {
-				init.call(jObj, settings);
-				if ($.isFunction(jObj)) {
-					fn.call(jObj); 
+				init.call($obj, settings);
+				if ($.isFunction($obj)) {
+					fn.call($obj); 
 				}
 			};
 			// The server script needs to call hg.initServer();
 			$.getScript(hg.config.server);
 		}
 		else {
-			init.call(jObj, settings);
+			init.call($obj, settings);
 		}
 	};
 	$.fn.hackerGameTimer = function() {
-		var jObj = this,
+		var $obj = this,
 			ms = 1000, // number of ms to trigger
 			callbackFn,
 			display = function() {
@@ -217,10 +225,10 @@ HackerGame = {};
 				seconds = hg.timer.counter - minutes*60;
 				minutes = (minutes < 10 ? "0" : "") + minutes;
 				seconds = (seconds < 10 ? "0" : "") + seconds;
-				if (hg.timer.counter <= 60 && !$(jObj).is(".red-alert")) {
-					$(jObj).addClass("red-alert");
+				if (hg.timer.counter <= 60 && !$obj.is(".red-alert")) {
+					$obj.addClass("red-alert");
 				}
-				$(jObj).text(minutes + ":" + seconds);
+				$obj.text(minutes + ":" + seconds);
 			},
 			step = function () {
 				var minutes, seconds;
@@ -231,11 +239,10 @@ HackerGame = {};
 			};
 		hg.timer = {
 			counter: 0,
-			obj: jObj,
 			status: undefined, 
 			start: function (setCounter, callback) {
-				if ($(jObj).is(".red-alert")) {
-					$(jObj).removeClass("red-alert");
+				if ($obj.is(".red-alert")) {
+					$obj.removeClass("red-alert");
 				}
 				this.counter = setCounter;
 				callbackFn = callback || function() {};
@@ -251,9 +258,14 @@ HackerGame = {};
 		return this;
 	};
 
+	// ==============
+	// Event listenrs
+	// ==============
 	$(window).on('hashchange', hashChange);
 
-	// Initialize HTML actions
+	// ===================
+	// HTML initialization
+	// ===================
 	$.each(["tab", "input", "page"], function(i, segment) {
 		var offset = 6 + segment.length;
 		$("#" + segment + "-links").find("li").each(function () {
