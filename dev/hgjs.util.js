@@ -18,24 +18,44 @@ HackerGame
 	hg.util.randResponseTime = function(from, to) {
 		return randIntGenerator(from, to);
 	};
-	hg.util.path = function (pathString) {
+	hg.util.path = function (rawPathString) {
 		var ret = null,
+			pathString = (rawPathString && 
+						  (rawPathString.charAt(rawPathString.length-1) == "/" ? 
+						   rawPathString.substr(0, rawPathString.length-1) : rawPathString)) 
+				|| null,
 			pwdPath = hg.state.computer.pwd.split("/").slice(1),
-			path = (pathString && pathString.split("/"))
-			|| (hg.state.computer.pwd && pwdPath) || null;
-		if (! path[path.length -1]) { path.pop(); }
-		if (pathString == "/") {
+			path = (pathString && pathString.split("/")) || [];
+		if (hg.state.computer.pwd == "/") { pwdPath = []; }
+		if (pathString == "/" || (!pathString && hg.state.computer.pwd == "/")) {
 			ret = [];
 		}
 		else if (path) {
-			// chechk if pathString is absolute path
-			ret = !path[0] ? path.slice(1) : pwdPath.concat(path);
+			if (pathString && pathString.charAt(0) == "/") {
+				// absolute path
+				ret = path.slice(1);
+			}
+			else if (!pathString) {
+				// no rawPathString, just add pwdPath
+				ret = pwdPath;
+			}
+			else {
+				// combine current path (pwd) with path string
+				ret = pwdPath.concat(path);
+			}
 		}
 		return ret;
 	};
-	hg.util.fileExists = function () {
+	hg.util.checkFilePermission = function (path) {
+		return $.inArray(path, [
+			"/",
+			"/bin",
+			"/home"
+		]) == -1;
+	};
+	hg.util.fileExists = function (loc) {
 		var ret = false;
-		hg.util.pathIterator(dir, function (obj) {
+		hg.util.pathIterator(loc, function (obj) {
 			ret = obj;
 		});
 		return ret;
@@ -43,26 +63,27 @@ HackerGame
 	hg.util.isDir = function (dir) {
 		var ret = false;
 		hg.util.pathIterator(dir, function (obj) {
-			ret = $.isPlainObject(obj); // TODO: ne dela, popravi
+			ret = typeof(obj) == typeof({});
 		});
 		return ret;
 	};
+	hg.util.absPath = function (path) {
+		return hg.state.computer.pwd + (hg.state.computer.pwd == "/" ? "" : "/") + path;
+	};
 	hg.util.cleanPath = function (path) {
 		var returnPath = [];
-		$.each(path.split("/"), function (_, elt) {
+		$.each(path.split("/"), function (i, elt) {
 			if (elt == ".") { return; }
-			if (elt == "..") {
-				returnPath.pop();
-			}
-			else { returnPath.push(elt); }
+			if (elt == "..") { returnPath.pop(); }
+			else if(elt || i == 0) { returnPath.push(elt); }
 		});
+
 		return returnPath.length == 0 ? "/" : returnPath.join("/");
 	};
 	hg.util.pathIterator = function (dir, fn) {
 		var path = hg.util.path(dir),
 			res = null,
-			prevPlace = hg.state.computer.fs,
-			place = hg.state.computer.fs,
+			place = [hg.state.computer.fs],
 			iterator = function (i) {
 				if (i < path.length) {
 					if (i == -1 || path[i] == ".") { 
@@ -70,16 +91,20 @@ HackerGame
 					}
 					else {
 						if (path[i] == "..") {
-							place = prevPlace;
+							place.pop();
+							if (place.length == 0) {
+								place = [hg.state.computer.fs];
+							}
 						}
-						else { place = place[path[i]]; }
+						else { 
+							place.push(place[place.length-1][path[i]]);
+						}
 						iterator(i+1);
 					}
 				}
-				else { fn(place); }
+				else { fn(place[place.length-1]); }
 			};
-		
-		if (path && path.length == 0) { fn(place); }
+		if (path.length == 0) { fn(place[place.length-1]); }
 		else if (path) { iterator(-1); }
 	};
 })(jQuery, HackerGame);

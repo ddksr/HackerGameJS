@@ -109,7 +109,7 @@ HackerGame
 					});
 					if (er) { this.error(er); } 
 				},
-				help: ["mkdir - create a directory",
+				help: ["mkdir - create a directory in the current directory",
 					   "Usage: mkdir directory",
 					   "Linux: mkdir dir1, [dir2, [dir3, ...]]"]
 			},
@@ -122,14 +122,14 @@ HackerGame
 			"cd": {
 				exec: function (fold) {
 					var foldName = fold;
-					if (fold.charAt(fold.length -1) != "/") {
-						fold += "/";
-					}
 					if (fold.charAt(0) != "/") {
-						fold = hg.state.computer.pwd + fold;
+						fold = hg.util.absPath(fold);
 					}
 					if (hg.util.isDir(fold)) {
 						hg.state.computer.pwd = hg.util.cleanPath(fold);
+						if (hg.state.computer.pwd.length == 0) {
+							hg.state.computer.pwd = "/";
+						}
 					}
 					else { this.echo(foldName + " is not a directory"); }
 				},
@@ -139,7 +139,34 @@ HackerGame
 			},
 			"rm": {
 				exec: function (path) {
-					term.error("TODO");
+					var fullPath = null, last=null;
+					path = hg.util.path(path);
+					if (! path) {
+						term.error("File or directory doesn't exist!");
+					}
+					else if (path.length == 0) {
+						term.error("Cannot remove root directory.");
+					}
+					else {
+						fullPath = hg.util.cleanPath(path.join("/"));
+						if (!hg.util.checkFilePermission(fullPath)) {
+							term.error("You do not have permission");
+						}
+						else {
+							last = path[path.length -1];
+							$.each(path, function (i, obj) {
+								if (i == path.length -2) {
+									if (obj[last]) { delete obj[last]; }
+									else {
+										term.error("File or directory doesn't exist.");
+									}
+								}
+							});
+							if (!hg.util.fileExists(hg.state.computer.pwd)) {
+								hg.state.computer.pwd = "/";
+							}
+						}
+					}
 				},
 				help: ["rm - remove file or directory",
 					   "Usage: rm path",
