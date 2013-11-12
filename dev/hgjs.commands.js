@@ -139,7 +139,10 @@ HackerGame
 			},
 			"rm": {
 				exec: function (path) {
-					var fullPath = null, last=null;
+					var fullPath = null, 
+						last=null, 
+						term=this, 
+						place=hg.state.computer.fs;
 					path = hg.util.path(path);
 					if (! path) {
 						term.error("File or directory doesn't exist!");
@@ -148,20 +151,29 @@ HackerGame
 						term.error("Cannot remove root directory.");
 					}
 					else {
-						fullPath = hg.util.cleanPath(path.join("/"));
+						fullPath = hg.util.cleanPath("/" + path.join("/"));
 						if (!hg.util.checkFilePermission(fullPath)) {
 							term.error("You do not have permission");
 						}
 						else {
+							path = hg.util.path(fullPath);
 							last = path[path.length -1];
-							$.each(path, function (i, obj) {
-								if (i == path.length -2) {
-									if (obj[last]) { delete obj[last]; }
-									else {
-										term.error("File or directory doesn't exist.");
+							if (path.length == 1) {
+								delete place[last];
+							}
+							else {
+								$.each(path, function (i, obj) {
+									place = place[obj];
+									if (i == path.length - 2) {
+										if (typeof(place) == "object" && place[last] !== undefined) { 
+											delete place[last]; 
+										}
+										else {
+											term.error("File or directory doesn't exist.");
+										}
 									}
-								}
-							});
+								});
+							}
 							if (!hg.util.fileExists(hg.state.computer.pwd)) {
 								hg.state.computer.pwd = "/";
 							}
