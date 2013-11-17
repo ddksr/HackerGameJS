@@ -37,9 +37,23 @@ task for getting to know the terminal and the game.
 				return stash.sensei && rgxFin.test(input);
 			},
 			points: 15
+		},
+		{
+			id: "report-time",
+			evaluate: function (input) {
+				return parseInt(input.split(" ")[1], 10) == Math.floor(hg.timer.counter/60);
+			},
+			points: 5
+		},
+		{
+			id: "report-score",
+			evaluate: function (input) {
+				return parseInt(input.split(" ")[1], 10) == hg.stats.currentScore;
+			},
+			points: 5
 		}
 	], {
-		startTime: 300,
+		startTime: 900,
 		successCallback: lastTaskCompleted
 	});
 

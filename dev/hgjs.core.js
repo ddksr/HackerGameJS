@@ -179,7 +179,6 @@ HackerGame = {};
 		},
 		setEmpty: function () {
 			$("#mail").removeClass("red-alert");
-			hg.mail.message = undefined;
 		},
 		recieve: function (message, clickOpen) {
 			hg.mail.message = {
@@ -189,11 +188,6 @@ HackerGame = {};
 				button: message.button || null
 			};
 			hg.mail.setNew();
-			if (clickOpen) {
-				$("#mail").click(function () {
-					hg.mail.open();
-				});
-			}
 		},
 		open: function () {
 			var img, button, title;
@@ -312,6 +306,9 @@ HackerGame = {};
 		content: "You have mail! Click to continue",
 		trigger: "manual",
 		placement: "bottom"
+	});
+	$("#mail").click(function () {
+		hg.mail.open();
 	});
 	$("#button-start-game").click(function () {
 		$(this).hide();
