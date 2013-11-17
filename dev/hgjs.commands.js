@@ -194,6 +194,13 @@ HackerGame
 					   "Usage: export VARIABLE=VALUE",
 					   "Linux: export VARIABLE=VALUE"]
 			},
+			"echo": {
+				exec: function (input) { this.echo(input); },
+				fullArgs: true,
+				help: ["echo - print text in terminal", 
+					   "Usage: echo TEXT",
+					   "Linux: echo TEXT"]
+			},
 			"help": {
 				exec: function(command) {
 					var term = this,
@@ -240,7 +247,8 @@ HackerGame
 			term.error("Command is not defined!");
 		}
 		else if (commands[fn] && commands[fn].exec) {
-			commands[fn].exec.apply(term, attributes);
+			if (commands[fn].fullArgs) { commands[fn].exec.call(term, attributes.join(" ")); }
+			else { commands[fn].exec.apply(term, attributes); }
 		}
 		else if(fn === "eval" || fn === "export") {
 			if (attributes) {
@@ -265,10 +273,7 @@ HackerGame
 			var callbackResult = hg.assignment.evaluate.call(term, input, noError),
 				status;
 			if (callbackResult) {
-				status = hg.assignment.nextTask();
-				if (! status) {
-					hg.state.assignment.complete();
-				}
+				hg.assignment.nextTask();
 			}
 		}
 		

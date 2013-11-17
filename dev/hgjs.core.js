@@ -22,7 +22,6 @@ HackerGame = {};
 		startAssignment = function () { // Start workign on assignment
 			hg.assignment.isRunning = true;
 			hg.assignment.nextTask();
-			hg.stats.refresh();
 			hg.assignment.startTimer();
 			hg.action.tab("task");
 		},
@@ -31,11 +30,11 @@ HackerGame = {};
 
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
-				var li = $(document.createElement("li")),
-				a = $(document.createElement("a"));
-				$(a).attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
-				li.append(a);
-				$("ul.assignment-list").append(li);
+				var $li = $(document.createElement("li")),
+					$a = $(document.createElement("a"));
+				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name)).addClass("ass-"+ass.id);
+				$li.append($a);
+				$("ul.assignment-list").append($li);
 			});
 
 			hg.config = $.extend(hg.config, settings);
@@ -128,11 +127,15 @@ HackerGame = {};
 
 			hg.assignment.numOfTasks = tasks.length;
 			hg.assignment.startTime = other.startTime;
+			hg.timer.set(other.startTime);
 			$.each(tasks, function (i, task) {
 				var html = $tasksHtml.find("." + task.id).html();
 				hg.assignment.tasks[i] = new hg.cons.Task(task, html);
 			});
 			
+			hg.assignment.successCallback = other.successCallback || function () {};
+			hg.assignment.failCallback = other.failCallback || function () {};
+
 			// Parse HTML
 			$("#tab-assignment .instructions").html($instructions);
 			$("#tab-task").html($(document.createElement("ol")).addClass("tasks-list"));
@@ -151,8 +154,9 @@ HackerGame = {};
 			$("#stash").empty();
 		},
 		language: function (langId, langObj) {
-			i18n = langObj;
-			hg.lang = langId;
+			if (typeof(langId) == "object") { langObj = landId; }
+			else if (langObj) { hg.lang = langId; }
+			i18n = $.extend(i18n, langObj);
 		}
 	};
 
@@ -249,14 +253,16 @@ HackerGame = {};
 			};
 		hg.timer = {
 			counter: 0,
-			status: undefined, 
-			start: function (setCounter, callback) {
+			status: undefined,
+			set: function (setCounter, callback) {
 				if ($obj.is(".red-alert")) {
 					$obj.removeClass("red-alert");
 				}
 				this.counter = setCounter;
-				callbackFn = callback || function() {};
+				callbackFn = callback || function () {};
 				display();
+			},
+			start: function () {
 				hg.timer.status = setTimeout(step, ms);
 			},
 			stop: function () {
