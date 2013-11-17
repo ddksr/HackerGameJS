@@ -3,11 +3,12 @@ This is the introductionary assignment. It has simple
 task for getting to know the terminal and the game.
 */
 (function ($, hg) {
-	var lastTaskCompleted = function () {
+	var body = $("#stash #ass-misc #ass-intro-mail-completed").html(),
+		lastTaskCompleted = function () {
 			hg.mail.recieve({
 				isSensei: true,
-				body: $("#stash #ass-misc #mail-completed").html()
-			}); 
+				body: body
+			}, true); 
 		},	
 		stash = {};
 	

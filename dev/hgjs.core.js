@@ -181,7 +181,7 @@ HackerGame = {};
 			$("#mail").removeClass("red-alert");
 			hg.mail.message = undefined;
 		},
-		recieve: function (message) {
+		recieve: function (message, clickOpen) {
 			hg.mail.message = {
 				sender: message.isSensei ? "sensei" : (message.sender || "anon"),
 				isSensei: message.isSensei,
@@ -189,6 +189,11 @@ HackerGame = {};
 				button: message.button || null
 			};
 			hg.mail.setNew();
+			if (clickOpen) {
+				$("#mail").click(function () {
+					hg.mail.open();
+				});
+			}
 		},
 		open: function () {
 			var img, button, title;
