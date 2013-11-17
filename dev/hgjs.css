@@ -64,3 +64,6 @@ nav .glyphicon {
 .completed-task * {
 	text-decoration: none !important;
 }
+.completed-assignment {
+	text-decoration: line-through !important;
+}

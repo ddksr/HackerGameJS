@@ -150,7 +150,7 @@ HackerGame
 			overallScore: hg.stats.currentScore
 		});
 		hg.stats.refresh();
-		$("#assignment-list .ass-"+hg.assignment.id).addClass("completed-assignment");
+		$(".assignment-list .ass-"+hg.assignment.id).addClass("completed-assignment").attr("href", "#");
 		hg.assignment.successCallback();
 	};
 	hg.stats = {
