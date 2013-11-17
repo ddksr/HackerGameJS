@@ -56,3 +56,11 @@ nav .glyphicon {
 .overall-stats {
 	font-style: italic;
 }
+
+
+.completed-task {
+	text-decoration: line-through;
+}
+.completed-task * {
+	text-decoration: none !important;
+}

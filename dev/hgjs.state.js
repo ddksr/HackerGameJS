@@ -5,6 +5,29 @@ HackerGame
 **/
 (function ($, hg) {
 	var temp, 
+		initTaskHTML = function ($task) {
+			var $help, $hint, 
+				$btn = $(document.createElement("button")).addClass("btn").addClass("btn-primary");
+			$("#tab-task .tasks-list").append($task.append(document.createElement("br")));
+
+			$help = $task.find(".help").clone();
+			$hint = $task.find(".hint").clone();
+			
+			if ($help.length > 0) {
+				$task.find(".help").replaceWith($btn.addClass("help").text("Help").clone().popover({
+					content: $help.html(),
+					title: "Help",
+					placement: "top"
+				}));
+			}
+			if ($hint.length > 0) {
+				$task.find(".hint").replaceWith($btn.addClass("hint").text("Hint").clone().popover({
+					content: $help.html(),
+					title: "Hint",
+					placement: "bottom"
+				}));
+			}
+		},
 		loadAssignment = function (assId, callback) {
 			var htmlUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".html",
 				htmlLangUrl = hg.config.basePath + hg.config.assignmentsPath + assId + "-" + hg.lang + ".html",
@@ -50,11 +73,12 @@ HackerGame
 		var $li = $(document.createElement("li")).attr("id", "task-" + this.id);
 		if (previousTask) { 
 			previousTask.unset(); 
-			$("#task-" + previousTask.id).css("text-decoration", "line-trough");
+			$("#tab-task .tasks-list li:last").addClass("completed-task");
+			$("#tab-task .tasks-list li:last").find(".hint, .button").popover('destroy').empty().remove();
 		}
 		this.set();
 		$li.html(this.html);
-		$("#tab-task ul").append($li);
+		initTaskHTML($li);
 		hg.assignment.evaluate = this.evaluate;
 	};
 	hg.cons.Assignment = function Assignment(assignment, loadCallback) {
@@ -72,7 +96,7 @@ HackerGame
 	hg.cons.Assignment.prototype.nextTask = function () {
 		var nextTask,
 			status=false,
-			prevTask = this.currentTask > 0 ? this.tasks[currentTask] : undefined;
+			prevTask = this.currentTask >= 0 ? this.tasks[this.currentTask] : undefined;
 		if (this.currentTask < this.numOfTasks) {
 			nextTask = this.tasks[this.currentTask + 1];
 			nextTask.switchTask(prevTask);

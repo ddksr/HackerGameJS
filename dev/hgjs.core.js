@@ -48,8 +48,18 @@ HackerGame = {};
 				var comp = hg.state.computer,
 					props = comp.properties,
 					user = props.user,
-					dir = comp.pwd,
+					dir = (comp.pwd == "/" && "/") || null,
 					hostname = props.hostname;
+				if (!dir) {
+					dir = comp.pwd;
+					if (dir == ("/home/"+user)) {
+						dir = "~";
+					}
+					else {
+						dir = dir.split("/");
+						dir = dir[dir.length-1];
+					}
+				}
 				fn("[" + user + "@" + hostname + " " + dir + "]$ ");
 			};
 
@@ -125,7 +135,7 @@ HackerGame = {};
 			
 			// Parse HTML
 			$("#tab-assignment .instructions").html($instructions);
-			$("#tab-task").html($(document.createElement("ul")).addClass("tasks-list"));
+			$("#tab-task").html($(document.createElement("ol")).addClass("tasks-list"));
 			$("#tab-learn-more").html($learnMore);
 			$("#tab-try-it-out").html($tryItOut);
 

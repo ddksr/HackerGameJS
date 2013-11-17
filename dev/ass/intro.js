@@ -6,13 +6,18 @@ task for getting to know the terminal and the game.
 	hg.load.assignment([
 		{
 			id: "try",
-			evaluate: function () { return false; },
-			set: function () {},
-			unset: function () {},
+			evaluate: function () { return true; },
 			points: 10
+		},
+		{
+			id: "echo",
+			evaluate: function (input) {
+				var rgx = /echo hello.world/gi;
+				return rgx.test(input);
+			},
 		}
 	], {
-		startTime: 10
+		startTime: 300
 	});
 
 	$("#mail").popover("show");

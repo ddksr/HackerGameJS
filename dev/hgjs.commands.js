@@ -256,12 +256,13 @@ HackerGame
 		}
 		else {
 			noError = false;
+			term.error("Command is not defined!");
 		}
-		if (noError && hg.assignment.evaluate) {
+		if (hg.assignment.evaluate) {
 			// Callback is the main task checker.
 			// If the input passes the callback
 			// You can move to the next task
-			var callbackResult = hg.assignment.evaluate.call(term, input),
+			var callbackResult = hg.assignment.evaluate.call(term, input, noError),
 				status;
 			if (callbackResult) {
 				status = hg.assignment.nextTask();
