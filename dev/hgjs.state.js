@@ -36,7 +36,7 @@ HackerGame
 			var task = this,
 				actions = {
 				hint: function () {
-					hg.stats.increment("currentScore", - parseInt(0.75 * task.points));
+					hg.stats.increment("currentScore", - parseInt(0.75 * task.points, 10));
 				}
 			};
 			if (hg.assignment.queue.length > 0) {
@@ -144,13 +144,21 @@ HackerGame
 		hg.assignment.failCallback();
 	};
 	hg.cons.Assignment.prototype.complete = function () {
+		var $tr = $(".assignment-list .ass-"+hg.assignment.id),
+			bestScore = $tr.find(".ass-best-score").text();
 		hg.timer.stop();
 		hg.stats.increment({
 			completedAssignments: 1,
 			overallScore: hg.stats.currentScore
 		});
 		hg.stats.refresh();
-		$(".assignment-list .ass-"+hg.assignment.id).addClass("completed-assignment").attr("href", "#");
+		$tr.find(".ass-name a").addClass("completed-assignment").attr("href", "#");
+		
+		if (bestScore == "-" || (parseInt(bestScore, 10) < hg.stats.currentScore)) {
+			bestScore = hg.stats.currentScore;
+		}
+		$tr.find("td.ass-best-score").text(bestScore);
+		$tr.find("td.ass-current-score").text(hg.stats.currentScore);
 		hg.assignment.successCallback();
 	};
 	hg.stats = {

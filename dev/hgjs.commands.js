@@ -194,6 +194,12 @@ HackerGame
 					   "Usage: export VARIABLE=VALUE",
 					   "Linux: export VARIABLE=VALUE"]
 			},
+			"sensei": {
+				exec: function (input) { this.echo("Message to sensei sent."); },
+				fullArgs: true,
+				help: ["sensei - send a message to sensei via secure connection",
+					   "Usage: sensei MESSAGE"]
+			},
 			"echo": {
 				exec: function (input) { this.echo(input); },
 				fullArgs: true,

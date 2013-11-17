@@ -4,11 +4,13 @@ task for getting to know the terminal and the game.
 */
 (function ($, hg) {
 	var lastTaskCompleted = function () {
-		hg.mail.recieve({
-			isSensei: true,
-			body: $("#stash #ass-misc #mail-completed")
-		});
-	};
+			hg.mail.recieve({
+				isSensei: true,
+				body: $("#stash #ass-misc #mail-completed").html()
+			}); 
+		},	
+		stash = {};
+	
 	hg.load.assignment([
 		{
 			id: "try",
@@ -22,6 +24,18 @@ task for getting to know the terminal and the game.
 				return rgx.test(input);
 			},
 			points: 10
+		},
+		{
+			id: "sensei",
+			evaluate: function (input) {
+				var rgxFin = /^sensei \w+/gi,
+					rgxHelp = /^help sensei/gi;
+				if (rgxHelp.test(input)) {
+					stash.sensei = true;
+				}
+				return stash.sensei && rgxFin.test(input);
+			},
+			points: 15
 		}
 	], {
 		startTime: 300,
