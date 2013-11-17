@@ -30,11 +30,20 @@ HackerGame = {};
 
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
-				var $li = $(document.createElement("li")),
+				var $tr = $(document.createElement("tr")),
+					$tdName = $(document.createElement("td")),
+					$tdCurrent = $(document.createElement("td")),
+					$tdBest = $(document.createElement("td")),
 					$a = $(document.createElement("a"));
 				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name)).addClass("ass-"+ass.id);
-				$li.append($a);
-				$("ul.assignment-list").append($li);
+				$tdName.append($a);
+
+				$tdCurrent.text("-");
+				$tdBest.text(ass.bestScore || "-");
+				
+				$tr.append($tdName).append($tdCurrent).append($tdBest);
+
+				$("table.assignment-list").append($tr);
 			});
 
 			hg.config = $.extend(hg.config, settings);
