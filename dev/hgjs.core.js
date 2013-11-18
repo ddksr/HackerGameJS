@@ -176,6 +176,7 @@ HackerGame = {};
 			if (!$("#mail").is(".red-alert")) {
 				$("#mail").addClass("red-alert");
 			}
+			$("#mail").hgBlink();
 		},
 		setEmpty: function () {
 			$("#mail").removeClass("red-alert");

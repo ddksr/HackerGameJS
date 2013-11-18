@@ -107,4 +107,25 @@ HackerGame
 		if (path.length == 0) { fn(place[place.length-1]); }
 		else if (path) { iterator(-1); }
 	};
+
+	// ===================
+	// jQuery util plugins
+	// ===================
+	$.fn.hgBlink = function (numOfBlinks, time) {
+		if (!numOfBlinks) { numOfBlinks = 3; }
+		if (!time) { time = 500; }
+		$(this).each(function (i, elt) {
+			var blink = function (n) {
+				if (n > 0) { 
+					$(elt).hide(0, function() {
+						$(elt).fadeIn(time, function () { 
+							blink.call(elt, n-1);
+						});
+					});
+				}
+			};
+			blink(numOfBlinks);
+		});
+		return this;
+	};
 })(jQuery, HackerGame);

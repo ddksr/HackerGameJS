@@ -31,6 +31,9 @@ HackerGame
 					hg.assignment.queue.push("hint");
 				}));
 			}
+			$task.hide().fadeIn("slow", function () {
+				$("#tab-task").scrollTop($("#tab-task").get(0).scrollHeight);
+			});
 		},
 		evalAssignmentQueue = function () {
 			var task = this,

@@ -78,6 +78,48 @@ HackerGame
 					   "Linux: ping"]
 			},
 			// FILE SYSTEM
+			"tree": {
+				exec: function (dir) {
+					var path = hg.util.path(dir),
+						term = this,
+						start = "/",
+						place = hg.state.computer.fs,
+						node = function (level) {
+							var out = "";
+							while (level-- > 0) {
+								out += "   ";
+							} 
+							return out + "`--";
+						},
+						iterator = function (currPlace, level) {
+							$.each(currPlace, function (name, file) {
+								term.echo(node(level) + name);
+								if (typeof(file) == "object") {
+									iterator(file, level+1);
+								}
+							});
+						};
+
+					if (path.length > 0) {
+						$.each(path, function (i, sub) {
+							start = sub;
+							place = place[sub] || {};
+						});
+						if (! place) {
+							term.error("Directory doesn't exist!");
+							return;
+						}
+					}
+					term.echo(start);
+					iterator(place, 0);
+					
+				},
+				help: ["tree - see the file hierarchy in the form of a tree",
+					   "If no directory is specified, the working directory hierarchy",
+					   "is displayed.",
+					   "Usage: tree [DIRECTORY]",
+					   "Linux: tree [DIRECTORY]"]
+			},
 			"ls": {
 				exec: function (folder) {
 					var dirs = ". ..";

@@ -9,6 +9,7 @@ task for getting to know the terminal and the game.
 				isSensei: true,
 				body: body
 			}, true); 
+			$("#mail").popover("show");
 		},	
 		stash = {};
 	
@@ -16,6 +17,9 @@ task for getting to know the terminal and the game.
 		{
 			id: "try",
 			evaluate: function () { return true; },
+			set: function () {
+				setTimeout(function () { $("#input-terminal").hgBlink(3); }, 1000);
+			},
 			points: 10
 		},
 		{
@@ -43,14 +47,40 @@ task for getting to know the terminal and the game.
 			evaluate: function (input) {
 				return parseInt(input.split(" ")[1], 10) == Math.floor(hg.timer.counter/60);
 			},
-			points: 5
+			points: 10
 		},
 		{
 			id: "report-score",
 			evaluate: function (input) {
 				return parseInt(input.split(" ")[1], 10) == hg.stats.currentScore;
 			},
+			points: 10
+		},
+		{
+			id: "pwd",
+			evaluate: function (input) {
+				var rgx = /^pwd$/;
+				return rgx.test(input);
+			},
 			points: 5
+		},
+		{
+			id: "tree",
+			evaluate: function (input) {
+				var rgx1 = /^tree$/, rgx2 = /^tree \/home\/?$/;
+				if (!stash.tree) { stash.tree = {}; }
+				if (rgx1.test(input)) { stash.tree.rgx1 = true; }
+				if (rgx2.test(input)) { stash.tree.rgx2 = true; }
+				return stash.tree.rgx1 && stash.tree.rgx2;
+			},
+			points: 25
+		},
+		{
+			id: "finish",
+			evaluate: function (input) {
+				return input == "sensei help";
+			},
+			points: 10
 		}
 	], {
 		startTime: 900,
