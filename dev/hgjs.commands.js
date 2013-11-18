@@ -284,6 +284,11 @@ HackerGame
 		});
 		fn(candidates);
 	};
+	hg.initComputerCommands = function (computer) {
+		$.each(commands, function (name, _) {
+			computer.fs.bin[name] = null;
+		});
+	};
 	hg.exec = function(input, term) {
 		var segments = input.split(" "),
 			fn = segments[0],

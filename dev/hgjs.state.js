@@ -79,8 +79,9 @@ HackerGame
 		};
 	hg.cons.State = function State(computer, config) {
 		this.computer = computer || new hg.cons.Computer(hg.config.defaultComputer);
+		
 		this.innerState = undefined;
-		if (config && typeof config === "object") {
+		if (config && typeof config === "object") { //TODO: use extend
 			$.each(config, function (property, value) {
 				this[property] = value;
 			});

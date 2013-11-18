@@ -19,7 +19,8 @@ HackerGame
 				domain: null,
 				commandBlackList: {},
 				fs: {
-					"home": {},
+					"bin": {},
+					"home": {}
 				},
 				files: {
 					"/dev/random": (function () { return Math.random() })()
@@ -58,6 +59,8 @@ HackerGame
 			}
 		});
 		this.properties = props;
+
+		hg.initComputerCommands(this);
 	};
 	hg.network.ping = function (location) {
 		var isInWeb = addresses[location] || addresses[dnsTable[location]],

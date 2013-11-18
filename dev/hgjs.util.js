@@ -56,14 +56,14 @@ HackerGame
 	hg.util.fileExists = function (loc) {
 		var ret = false;
 		hg.util.pathIterator(loc, function (obj) {
-			ret = obj;
+			ret = obj !== undefined;
 		});
 		return ret;
 	};
 	hg.util.isDir = function (dir) {
 		var ret = false;
 		hg.util.pathIterator(dir, function (obj) {
-			ret = typeof(obj) == typeof({});
+			ret = typeof(obj) == "object";
 		});
 		return ret;
 	};
