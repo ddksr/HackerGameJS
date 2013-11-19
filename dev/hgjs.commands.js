@@ -78,6 +78,25 @@ HackerGame
 					   "Linux: ping"]
 			},
 			// FILE SYSTEM
+			"cat": {
+				exec: function (file) {
+					var term = this;
+					hg.util.pathIterator(file, function (contents) {
+						if (contents === null) {
+							term.error("Cannot display binary files.");
+						}
+						else if (typeof(contents) == "object") {
+							term.error("Cannot display directory contents.");
+						}
+						else {
+							term.echo(contents);
+						}
+					});
+				},
+				help: ["cat - display file contents",
+					   "Usage: cat FILE",
+					   "Linux: cat FILE"]
+			},
 			"tree": {
 				exec: function (dir) {
 					var path = hg.util.path(dir),
