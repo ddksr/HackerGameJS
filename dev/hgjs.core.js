@@ -96,6 +96,8 @@ HackerGame = {};
 			hg.term = $obj.terminal(hg.exec, hg.config.terminal);
 			hashChange(null);
 
+			$("body").removeClass("loading");
+
 			return $obj;
 		},
 		hashChange = function (evt) { // event listener for hash changing
@@ -311,6 +313,10 @@ HackerGame = {};
 	// ===================
 	// HTML initialization
 	// ===================
+
+	$("body").addClass("loading");
+	$("body").append($(document.createElement("div")).addClass("loading-gif").html("&nbsp;"));
+
 	$.each(["tab", "input", "page"], function(i, segment) {
 		var offset = 6 + segment.length;
 		$("#" + segment + "-links").find("li").each(function () {

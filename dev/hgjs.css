@@ -68,3 +68,27 @@ nav .glyphicon {
 	text-decoration: line-through !important;
 }
 
+.loading-gif {
+	display: 	none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background-color: #060606;
+    background-image: url('img/loading.gif');
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, loading element will be visible */
+body.loading .loading-gif {
+    display: block;
+}
