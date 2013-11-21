@@ -92,3 +92,7 @@ body.loading {
 body.loading .loading-gif {
     display: block;
 }
+
+#menu-right a {
+	cursor: pointer;
+}

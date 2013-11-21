@@ -104,6 +104,7 @@ HackerGame = {};
 			var hash = window.location.hash,
 				segments = hash ? hash.split("/") : [],
 				command, args;
+			if (evt) { evt.preventDefault(); }
 			if (segments.length > 1) {
 				command = segments[1];
 				if (command && hg.action[command]) {
@@ -111,8 +112,9 @@ HackerGame = {};
 					args = args || [];
 					hg.action[command].apply(this, args);
 				}
+				window.location.hash = "";
 			}
-			if (evt) { evt.preventDefault(); }
+			
 		};
 
 
