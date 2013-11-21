@@ -18,6 +18,17 @@
 				id: "intro",
 				name: "Introduction to the terminal"
 			}
-		]
+		],
+		user: {
+			email: "",
+			name: "Anon"
+		},
+		state: {
+			completedAssignments: {
+				"example": {
+					best: 100
+				}
+			}
+		}
 	};
 })(jQuery, HackerGame);

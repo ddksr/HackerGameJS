@@ -25,6 +25,23 @@ HackerGame = {};
 			hg.assignment.startTimer();
 			hg.action.tab("task");
 		},
+		initDynamicFields = function (selector) {
+			$((selector || "body") + " .dyn").each(function () {
+				var field, attr = $(this).attr("data-field");
+				if (attr) {
+					attr = attr.split(".");
+					if (attr.length > 1) {
+						field = hg.config;
+						$.each(attr, function (_, elt) {
+							field = field[elt] || {};
+						});
+					}
+					if (field) {
+						$(this).text(field);
+					}
+				}
+			});
+		},
 		init = function(settings) {
 			var $obj = this;
 
@@ -127,12 +144,15 @@ HackerGame = {};
 	// Loader (assignments and languages)
 	hg.load = {
 		assignment: function (tasks, other) {
-			var title = $("#stash").find("#ass-title").text(),
-				body = $("#stash").find("#ass-greeting").text(),
-				$instructions = $("#stash").find("#ass-instructions").clone(),
-				$tasksHtml = $("#stash").find("#ass-tasks").clone(),
-				$learnMore = $("#stash").find("#ass-learn-more").clone(),
-				$tryItOut = $("#stash").find("#ass-try-it-out").clone();
+			var title, body, $instructions, $tasksHtml, $learnMore, $tryItOut;
+			initDynamicFields();
+
+			title = $("#stash").find("#ass-title").text();
+			body = $("#stash").find("#ass-greeting").html();
+			$instructions = $("#stash").find("#ass-instructions").clone();
+			$tasksHtml = $("#stash").find("#ass-tasks").clone();
+			$learnMore = $("#stash").find("#ass-learn-more").clone();
+			$tryItOut = $("#stash").find("#ass-try-it-out").clone();
 
 			hg.assignment.numOfTasks = tasks.length;
 			hg.assignment.startTime = other.startTime;
@@ -224,16 +244,16 @@ HackerGame = {};
 	// ==============
 	$.fn.hackerGame = function (settings) {
 		var $obj = this;
-		if (hg.config.server) {
+		if (settings && settings.server) {
 			// Define init script wrapper
-			hg.initServer = function(fn) {
+			hg.initServer = function(fnAfterInit) {
 				init.call($obj, settings);
-				if ($.isFunction($obj)) {
-					fn.call($obj); 
+				if ($.isFunction(fnAfterInit)) {
+					fnAfterInit.call($obj); 
 				}
 			};
 			// The server script needs to call hg.initServer();
-			$.getScript(hg.config.server);
+			$.getScript(settings.server);
 		}
 		else {
 			init.call($obj, settings);
