@@ -96,3 +96,8 @@ body.loading .loading-gif {
 #menu-right a {
 	cursor: pointer;
 }
+
+/*Some server-side css */
+.msg-validate-user {
+	display: none;
+}
