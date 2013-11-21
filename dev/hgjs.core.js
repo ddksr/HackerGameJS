@@ -191,6 +191,11 @@ HackerGame = {};
 		}
 	};
 
+	// Indicators
+	hg.ind = {
+		modal: false
+	}
+
 	// Mail system
 	hg.mail = {
 		message: undefined,
@@ -214,7 +219,7 @@ HackerGame = {};
 		},
 		open: function () {
 			var img, button, title;
-			if (hg.mail.message) {
+			if (hg.mail.message && ! hg.ind.modal) {
 				img = hg.mail.message.isSensei ? "anon-small" : "any";
 				img = hg.config.basePath + hg.config.imagesPath + img + ".png";
 				title = "Message from <strong>" + hg.mail.message.sender + "</strong>";
@@ -232,6 +237,7 @@ HackerGame = {};
 				else {
 					$("#mailButton").hide();
 				}
+				hg.ind.modal = true;
 			}
 			$("#mail").popover("hide");
 			hg.mail.setEmpty();
@@ -329,6 +335,10 @@ HackerGame = {};
 		});
 	});
 	$("#mailMessage").modal();
+	$("#mailMessage").on("hide.bs.modal", function () {
+		hg.ind.modal = false;
+	});
+	
 	$("#mail").popover({
 		content: "You have mail! Click to continue",
 		trigger: "manual",
