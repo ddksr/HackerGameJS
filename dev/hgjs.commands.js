@@ -4,7 +4,8 @@ HackerGame
 
 **/
 (function ($, hg) {
-	var toText = function (input) {
+	var tEcho, tError,
+		toText = function (input) {
 			var output = "";
 			if (typeof(input) === "object") {
 				$.each(input, function (_, x) {
@@ -265,13 +266,11 @@ HackerGame
 		});
 
 		// Folders and files
-//		hg.util.pathIterator(null, function (cont) {
-//			$.each(cont, function (name, _) { 
-//				if (name.substr(0, string.length) == string) {
-//					candidates.push(name);
-//				}
-//			});
-//		});
+		$.each(hg.state.place, function (file, _) {
+			if (file.substr(0, string.length) == string) {
+				candidates.push(file);
+			}
+		});
 		
 		fn(candidates);
 	};
