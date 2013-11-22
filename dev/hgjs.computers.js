@@ -8,9 +8,15 @@ HackerGame
 			"127.0.0.1": function () { return hg.state.computer.name; }
 		}, 
 		dnsTable = { localhost: "127.0.0.1" }, 
+		defaultFs = {
+			"bin": {},
+			"home": {},
+			"dev": {},
+			"tmp": {}
+		},
 		computers = {
 			// Define computers here in format location: { ... properties ... }
-			"proxy": {
+			"-": {
 				hostname: "my-machine",
 				localIP: "192.168.1.2",
 				user: "me",
@@ -18,16 +24,10 @@ HackerGame
 				visibleFrom: null,
 				domain: null,
 				commandBlackList: {},
-				fs: {
-					"bin": {},
-					"home": {}
-				},
-				files: {
-					"/dev/random": (function () { return Math.random() })()
-				}
+				fs: {}
 			}
 		};
-	// initialize IP map and DNS table
+	// initialize computers, IP map and DNS table
 	$.each(computers, function (name, props) {
 		var randomIP;
 		if (! props.visibleFrom) {
@@ -43,6 +43,9 @@ HackerGame
 		else {
 			addresses[visibleFrom + ">" + props.localIP] = name;
 		}
+
+		// Add special
+		computers[name].fs = hg.util.extend(defaultFs, computers[name].fs);
 	});
 	hg.cons.Computer = function Computer (name) {
 		var props = {};

@@ -1,7 +1,7 @@
 (function ($, hg) {
 	hg.config = {
 		assignmentScopeSelector: ".assignment-scope",
-		defaultComputer: "proxy",
+		defaultComputer: "-",
 		loginRequired: true,
 		terminal: {
 			greetings: 'Welcome!',

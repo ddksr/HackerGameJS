@@ -20,6 +20,21 @@ HackerGame
 			"d": "directory",
 			"t": "text"
 		};
+	hg.util.extend = function (objDef, objOver) {
+		var obj = {};
+		$.each(objDef, function (key, _) {
+			if (! objOver[key]) {
+				obj[key] = objOver[key] !== undefined ? objOver[key] : objDef[key];
+			}
+			else if (typeof(objDef[key]) == "object" && typeof(objOver[key]) == "object") {
+				obj[key] = hg.util.extend(objDef[key], objOver[key]);
+			}
+			else  {
+				obj[key] = objOver[key];
+			}
+		});
+		return obj;
+	};
 	hg.util.randIP = function () {
 		var generator = randIntGenerator(1,255), first = generator();
 		while ($.inArray(first, notValidIP) > -1) { first = generator(); }
