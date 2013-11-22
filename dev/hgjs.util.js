@@ -9,6 +9,16 @@ HackerGame
 			if (!from) { from = 0; }
 			if (!to) { to = 1; }
 			return function () { return Math.round(Math.random()*(to-from)+from); };
+		},
+		fileTypes = {
+			"null": "b", 
+			"object": "d",
+			"string": "t"
+		},
+		fileTypesLong = {
+			"b": "binary",
+			"d": "directory",
+			"t": "text"
 		};
 	hg.util.randIP = function () {
 		var generator = randIntGenerator(1,255), first = generator();
@@ -17,6 +27,10 @@ HackerGame
 	};
 	hg.util.randResponseTime = function(from, to) {
 		return randIntGenerator(from, to);
+	};
+	hg.util.fileType = function (file, longName) {
+		var type = (file === null && fileTypes["null"]) || fileTypes[typeof(file)];
+		return longName ? fileTypesLong[type] : type;
 	};
 	hg.util.path = function (rawPathString) {
 		var ret = null,
