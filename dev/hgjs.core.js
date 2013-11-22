@@ -9,10 +9,6 @@ HackerGame = {};
 	// Internal objects and methods initialization
 	// ===========================================
 	var i18n, // language object
-		login = function(user, password, fn) { // login function
-			// TODO: do something
-			fn(true);
-		},
 		initAssignment = function () { // Prepare assignment
 			hg.mail.close();
 			$("#link-page-game").removeClass("disabled");
@@ -74,9 +70,6 @@ HackerGame = {};
 
 			hg.stats.overallScore = overallScore;
 
-			if (hg.config.loginRequired) {
-				hg.config.terminal.login = login;
-			}
 			hg.config.terminal.completion = hg.commandCompletion;
 			hg.config.terminal.prompt = function (fn) {
 				var comp = hg.state.computer,

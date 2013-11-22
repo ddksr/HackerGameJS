@@ -2,7 +2,6 @@
 	hg.config = {
 		assignmentScopeSelector: ".assignment-scope",
 		defaultComputer: "-",
-		loginRequired: true,
 		terminal: {
 			greetings: 'Welcome!',
 			name: 'hacker-terminal',

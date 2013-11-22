@@ -143,12 +143,8 @@ HackerGame
 			"ls": {
 				exec: function (folder) {
 					var dirs = ". ..";
-					hg.util.pathIterator(folder, function (contents) {
-						if ($.isPlainObject(contents)) {
-							$.each(contents, function (k, _) {
-								dirs += " " + k;
-							});
-						}
+					$.each(hg.state.place, function (k, _) {
+						dirs += " " + k;
 					});
 					this.echo(dirs);
 				},
@@ -158,17 +154,7 @@ HackerGame
 			},
 			"mkdir": {
 				exec: function (folder) {
-					var er = false;
-					hg.util.pathIterator(null, function (cont) {
-						if (cont[folder]) {
-							er = "Directory already exists!";
-						}
-						else if (/[\/\\ ]+/.test(folder)) { er = "Not a valid name"; }
-						else if (/^\./.test(folder)) { er = "First char cannot be dor (.)"; }
-						else {
-							cont[folder] = {};
-						}
-					});
+					var er = hg.state.makeDir(folder);
 					if (er) { this.error(er); } 
 				},
 				help: ["mkdir - create a directory in the current directory",
@@ -183,17 +169,9 @@ HackerGame
 			},
 			"cd": {
 				exec: function (fold) {
-					var foldName = fold;
-					if (fold.charAt(0) != "/") {
-						fold = hg.util.absPath(fold);
+					if (! hg.state.changeDir(fold)) {
+						this.echo(fold + " is not a directory");
 					}
-					if (hg.util.isDir(fold)) {
-						hg.state.computer.pwd = hg.util.cleanPath(fold);
-						if (hg.state.computer.pwd.length == 0) {
-							hg.state.computer.pwd = "/";
-						}
-					}
-					else { this.echo(foldName + " is not a directory"); }
 				},
 				help: ["cd - change directory",
 					   "Usage: cd path",
@@ -218,26 +196,8 @@ HackerGame
 							term.error("You do not have permission");
 						}
 						else {
-							path = hg.util.path(fullPath);
-							last = path[path.length -1];
-							if (path.length == 1) {
-								delete place[last];
-							}
-							else {
-								$.each(path, function (i, obj) {
-									place = place[obj];
-									if (i == path.length - 2) {
-										if (typeof(place) == "object" && place[last] !== undefined) { 
-											delete place[last]; 
-										}
-										else {
-											term.error("File or directory doesn't exist.");
-										}
-									}
-								});
-							}
-							if (!hg.util.fileExists(hg.state.computer.pwd)) {
-								hg.state.computer.pwd = "/";
+							if (! hg.state.removeFile(fullPath)) {
+								term.error("File or directory doesn't exist.");
 							}
 						}
 					}
@@ -297,11 +257,22 @@ HackerGame
 		};
 	hg.commandCompletion = function (term, string, fn) {
 		var candidates = [];
+		// Commands
 		$.each(commands, function (cmnd, _) {
 			if (cmnd.substr(0, string.length) == string) {
 				candidates.push(cmnd);
 			}
 		});
+
+		// Folders and files
+//		hg.util.pathIterator(null, function (cont) {
+//			$.each(cont, function (name, _) { 
+//				if (name.substr(0, string.length) == string) {
+//					candidates.push(name);
+//				}
+//			});
+//		});
+		
 		fn(candidates);
 	};
 	hg.initComputerCommands = function (computer) {

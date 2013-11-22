@@ -86,6 +86,65 @@ HackerGame
 				this[property] = value;
 			});
 		}
+
+		this.place = this.computer.fs;
+	};
+	hg.cons.State.prototype.changeDir = function (fold) {
+		var res;
+		if (fold.charAt(0) != "/") {
+			fold = hg.util.absPath(fold);
+		}
+		if (hg.util.isDir(fold)) {
+			hg.util.pathIterator(fold, function (place) {
+				hg.state.place = place;
+			});
+			hg.state.computer.pwd = hg.util.cleanPath(fold);
+			if (hg.state.computer.pwd.length == 0) {
+				hg.state.computer.pwd = "/";
+			}
+			res = true;
+		}
+		else { res = false; }
+		return res;
+	};
+	hg.cons.State.prototype.makeDir = function (fold) {
+		var er = false;
+		hg.util.pathIterator(null, function (cont) {
+			if (cont[fold]) {
+				er = "Directory already exists!";
+			}
+			else if (/[\/\\ ]+/.test(fold)) { er = "Not a valid name"; }
+			else if (/^\./.test(fold)) { er = "First char cannot be dor (.)"; }
+			else {
+				cont[fold] = {};
+			}
+		});
+		return er;
+	};
+	hg.cons.State.prototype.removeFile = function (fullPath) {
+		var path = hg.util.path(fullPath),
+			place = hg.state.computer.fs,
+			last = path[path.length -1];
+		if (path.length == 1) {
+			delete place[last];
+		}
+		else {
+			$.each(path, function (i, obj) {
+				place = place[obj];
+				if (i == path.length - 2) {
+					if (typeof(place) == "object" && place[last] !== undefined) { 
+						delete place[last]; 
+					}
+					else {
+						return false;
+					}
+				}
+			});
+		}
+		if (! hg.util.isDir(hg.state.computer.pwd)) {
+			hg.state.changeDir("/");
+		}
+		return true;
 	};
 	hg.cons.Task = function Task(taskObj, taskHtml) {
 		this.id = taskObj.id || null;
