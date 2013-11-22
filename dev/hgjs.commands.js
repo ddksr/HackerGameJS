@@ -4,12 +4,11 @@ HackerGame
 
 **/
 (function ($, hg) {
-	var tEcho, tError,
-		toText = function (input) {
+	var toText = function (input) {
 			var output = "";
 			if (typeof(input) === "object") {
 				$.each(input, function (_, x) {
-					output += x + "\n";
+					output += hg.t(x) + "\n";
 				});
 			}
 			else { output = input; }
@@ -46,7 +45,7 @@ HackerGame
 							dataString = "icmp_seq=" + (i + 1) 
 								+ " ttl="+ttl+" time=" 
 								+ (status ? (time/1000) : ttl) + " ms";
-							term.echo("Pinging " + loc + " ... " + dataString + " " + (status ? "OK" : "LOST"));
+							hg.tEcho("Pinging " + loc + " ... " + dataString + " " + (status ? "OK" : "LOST"));
 							i += 1;
 							if (i < num) {
 								time = responseTime();
@@ -58,8 +57,8 @@ HackerGame
 								stats = num + " packets transmited, " + numOfSuccess 
 									+ " recieved, " 
 									+ proc + "% pacet loss, time " + timeSuma;
-								term.echo("\n--- " + loc + " ping statistics ---");
-								term.echo(stats);
+								hg.tEcho("\n--- " + loc + " ping statistics ---");
+								hg.tEcho(stats);
 								term.resume();
 							}
 						};
@@ -84,13 +83,13 @@ HackerGame
 					var term = this;
 					hg.util.pathIterator(file, function (contents) {
 						if (contents === null) {
-							term.error("Cannot display binary files.");
+							hg.tError("Cannot display binary files.");
 						}
 						else if (typeof(contents) == "object") {
-							term.error("Cannot display directory contents.");
+							hg.tError("Cannot display directory contents.");
 						}
 						else {
-							term.echo(contents);
+							hg.tEcho(contents);
 						}
 					});
 				},
@@ -114,7 +113,7 @@ HackerGame
 						iterator = function (currPlace, level) {
 							$.each(currPlace, function (name, file) {
 								type = hg.util.fileType(file);
-								term.echo(node(level) + name + " [" + type + "]");
+								hg.tEcho(node(level) + name + " [" + type + "]");
 								if (type == "d") {
 									iterator(file, level+1);
 								}
@@ -127,11 +126,11 @@ HackerGame
 							place = place[sub] || {};
 						});
 						if (! place) {
-							term.error("Directory doesn't exist!");
+							hg.tError("Directory doesn't exist!");
 							return;
 						}
 					}
-					term.echo(start);
+					hg.tEcho(start);
 					iterator(place, 0);
 					
 				},
@@ -147,7 +146,7 @@ HackerGame
 					$.each(hg.state.place, function (k, _) {
 						dirs += " " + k;
 					});
-					this.echo(dirs);
+					hg.tEcho(dirs);
 				},
 				help: ["ls - list directory",
 					   "Usage: ls [directory]",
@@ -156,14 +155,14 @@ HackerGame
 			"mkdir": {
 				exec: function (folder) {
 					var er = hg.state.makeDir(folder);
-					if (er) { this.error(er); } 
+					if (er) { hg.tError(er); } 
 				},
 				help: ["mkdir - create a directory in the current directory",
 					   "Usage: mkdir directory",
 					   "Linux: mkdir dir1, [dir2, [dir3, ...]]"]
 			},
 			"pwd": {
-				exec: function () { this.echo(hg.state.computer.pwd); },
+				exec: function () { hg.tEcho(hg.state.computer.pwd); },
 				help: ["pwd - path to current directory",
 					   "Usage: pwd",
 					   "Linux: pwd"]
@@ -171,7 +170,7 @@ HackerGame
 			"cd": {
 				exec: function (fold) {
 					if (! hg.state.changeDir(fold)) {
-						this.echo(fold + " is not a directory");
+						hg.tError(fold + " is not a directory");
 					}
 				},
 				help: ["cd - change directory",
@@ -186,19 +185,19 @@ HackerGame
 						place=hg.state.computer.fs;
 					path = hg.util.path(path);
 					if (! path) {
-						term.error("File or directory doesn't exist!");
+						hg.tError("File or directory doesn't exist!");
 					}
 					else if (path.length == 0) {
-						term.error("Cannot remove root directory.");
+						hg.tError("Cannot remove root directory.");
 					}
 					else {
 						fullPath = hg.util.cleanPath("/" + path.join("/"));
 						if (!hg.util.checkFilePermission(fullPath)) {
-							term.error("You do not have permission");
+							hg.tError("You do not have permission");
 						}
 						else {
 							if (! hg.state.removeFile(fullPath)) {
-								term.error("File or directory doesn't exist.");
+								hg.tError("File or directory doesn't exist.");
 							}
 						}
 					}
@@ -218,13 +217,13 @@ HackerGame
 					   "Linux: export VARIABLE=VALUE"]
 			},
 			"sensei": {
-				exec: function (input) { this.echo("Message to sensei sent."); },
+				exec: function (input) { hg.tEcho("Message to sensei sent."); },
 				fullArgs: true,
 				help: ["sensei - send a message to sensei via secure connection",
 					   "Usage: sensei MESSAGE"]
 			},
 			"echo": {
-				exec: function (input) { this.echo(input); },
+				exec: function (input) { hg.tEcho(input); },
 				fullArgs: true,
 				help: ["echo - print text in terminal", 
 					   "Usage: echo TEXT",
@@ -232,23 +231,22 @@ HackerGame
 			},
 			"help": {
 				exec: function(command) {
-					var term = this,
-						blackList = hg.state.computer.properties.commandBlackList;
+					var blackList = hg.state.computer.properties.commandBlackList;
 					if (!command) {
-						this.echo("Available commands: ");
+						hg.tEcho("Available commands: ");
 						$.each(commands, function (cmnd, props) {
 							if ($.inArray(cmnd, blackList) > -1) {
 								return;
 							}
-							term.echo(props.help[0]);
+							hg.tEcho(props.help[0]);
 						});
-						this.echo("\nFor more information type: help COMMAND");
+						hg.tEcho("\nFor more information type: help COMMAND");
 					}
 					else if (commands[command]){
-						this.echo(toText(commands[command].help));
+						hg.term.echo(toText(commands[command].help));
 					}
 					else {
-						this.error("No information on command " + command);
+						hg.tError("No information on command " + command);
 					}
 				},
 				help: ["help - display help information", 
@@ -287,7 +285,7 @@ HackerGame
 			attributes = segments.length > 1 ? segments.slice(1) : null;
 		if ($.inArray(fn, hg.state.computer.properties.commandBlackList) > -1) {
 			noError = false;
-			term.error("Command is not defined!");
+			hg.tError("Command is not defined!");
 		}
 		else if (commands[fn] && commands[fn].exec) {
 			if (commands[fn].fullArgs) { commands[fn].exec.call(term, attributes.join(" ")); }
@@ -298,16 +296,16 @@ HackerGame
 				try {
 					result = window.eval(attributes.join(" "));
 					if (result !== undefined) {
-						term.echo(new String(result));
+						hg.tEcho(new String(result));
 					}
 				} catch(e) {
-					term.error(new String(e));
+					hg.tError(new String(e));
             	}
 			}
 		}
 		else {
 			noError = false;
-			term.error("Command is not defined!");
+			hg.tError("Command is not defined!");
 		}
 		if (hg.assignment.evaluate) {
 			// Callback is the main task checker.

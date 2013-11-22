@@ -39,7 +39,17 @@ HackerGame = {};
 			});
 		},
 		init = function(settings) {
-			var $obj = this, overallScore = 0;
+			var $obj = this, overallScore = 0,
+				tOut = function (text) {
+					var out = "";
+					if (! $.isArray(text)) {
+						text = [text];
+					}
+					$.each(text, function (_, str) {
+						out += hg.t(text);
+					});
+					return out;
+				};
 			
 			hg.config = $.extend(hg.config, settings);
 
@@ -96,6 +106,13 @@ HackerGame = {};
 			hg.state = new hg.cons.State();
 
 			hg.term = $obj.terminal(hg.exec, hg.config.terminal);
+			
+			hg.tEcho = function (text) {
+				hg.term.echo(tOut(text));
+			};
+			hg.tError = function (text) {
+				hg.term.error(tOut(text));
+			};
 			hashChange(null);
 
 			$("body").removeClass("loading");
@@ -133,6 +150,11 @@ HackerGame = {};
 	// ==============
 	// Public methods
 	// ==============
+
+	// Terminal methods
+	hg.term = null;
+	hg.tEcho = function () {};
+	hg.tError = function () {};
 
 	// Translation methods
 	hg.t = function (string) {
