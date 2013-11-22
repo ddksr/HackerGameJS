@@ -156,7 +156,7 @@ HackerGame
 			overallScore: hg.stats.currentScore
 		});
 		hg.stats.refresh();
-		$tr.find(".ass-name a").addClass("completed-assignment").attr("href", "#");
+		$tr.find(".ass-name a").addClass("completed-assignment");
 		
 		if (bestScore == "-" || (parseInt(bestScore, 10) < hg.stats.currentScore)) {
 			bestScore = hg.stats.currentScore;
@@ -166,10 +166,11 @@ HackerGame
 		hg.assignment.successCallback();
 	};
 	hg.stats = {
-		refresh: function() {
+		refresh: function(exclude) {
 			var overallAssignments = hg.config.assignments.length,
 				tasksInAssignment = hg.assignment.tasks.length;
-
+			if (!exclude) { exclude = []; }
+			
 			$("#stats-completed-tasks").text(hg.stats.completedTasks + "/" + tasksInAssignment);
 			$("#stats-completed-assignments").text(hg.stats.completedAssignments + "/" + overallAssignments);
 			$("#stats-current-score").text(hg.stats.currentScore);

@@ -25,10 +25,12 @@
 		},
 		state: {
 			completedAssignments: {
-				"example": {
-					best: 100
+				"intro": {
+					best: 10,
+					trials: 1
 				}
-			}
+			},
+			overallScore: 10
 		}
 	};
 })(jQuery, HackerGame);

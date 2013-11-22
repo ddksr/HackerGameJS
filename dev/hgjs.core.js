@@ -43,7 +43,9 @@ HackerGame = {};
 			});
 		},
 		init = function(settings) {
-			var $obj = this;
+			var $obj = this, overallScore = 0;
+			
+			hg.config = $.extend(hg.config, settings);
 
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
@@ -51,19 +53,26 @@ HackerGame = {};
 					$tdName = $(document.createElement("td")).addClass("ass-name"),
 					$tdCurrent = $(document.createElement("td")).addClass("ass-current-score"),
 					$tdBest = $(document.createElement("td")).addClass("ass-best-score"),
-					$a = $(document.createElement("a"));
+					$tdTrials = $(document.createElement("td")).addClass("ass-trials"),
+					$a = $(document.createElement("a")),
+					state = hg.config.state.completedAssignments[ass.id];
 				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
 				$tdName.append($a);
 
 				$tdCurrent.text("-");
-				$tdBest.text(ass.bestScore || "-");
-				
-				$tr.append($tdName).append($tdCurrent).append($tdBest);
+				$tdBest.text((state && state.best) || "-");
+				$tdTrials.text((state && state.trials) || "0");
+
+				if (state && state.best) {
+					overallScore += state.best;
+				}
+
+				$tr.append($tdName).append($tdCurrent).append($tdBest).append($tdTrials);
 
 				$("table.assignment-list").append($tr);
 			});
 
-			hg.config = $.extend(hg.config, settings);
+			hg.stats.overallScore = overallScore;
 
 			if (hg.config.loginRequired) {
 				hg.config.terminal.login = login;
@@ -158,9 +167,14 @@ HackerGame = {};
 			$learnMore = $("#stash").find("#ass-learn-more").clone();
 			$tryItOut = $("#stash").find("#ass-try-it-out").clone();
 
+			// Init stats
 			hg.assignment.numOfTasks = tasks.length;
 			hg.assignment.startTime = other.startTime;
 			hg.timer.set(other.startTime);
+			hg.stats.bestScore = $(".assignment-list .ass-" + hg.assignment.id + " .ass-trials").text();
+			hg.stats.currentScore = 0;
+			hg.stats.refresh();
+
 			$.each(tasks, function (i, task) {
 				var html = $tasksHtml.find("." + task.id).html();
 				hg.assignment.tasks[i] = new hg.cons.Task(task, html);
