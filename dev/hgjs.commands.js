@@ -112,8 +112,9 @@ HackerGame
 						},
 						iterator = function (currPlace, level) {
 							$.each(currPlace, function (name, file) {
-								term.echo(node(level) + name);
-								if (typeof(file) == "object") {
+								type = hg.util.fileType(file);
+								term.echo(node(level) + name + " [" + type + "]");
+								if (type == "d") {
 									iterator(file, level+1);
 								}
 							});
