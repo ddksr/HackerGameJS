@@ -50,14 +50,16 @@ HackerGame
 			computers[name].fs.home[props.user] = {};
 		}
 	});
-	hg.cons.Computer = function Computer (name) {
+	hg.cons.Computer = function Computer (name, isDefault) {
 		var props = {};
-		if (! name) { name = "localhost"; }
+		if (! name) { name = "-"; }
 		if (! computers[name]) { return null; }
 		this.name = name;
+		this.isDefault = isDefault;
 		this.location = typeof addresses[name] == "function" ? 
 			addresses[name]() : addresses[name];
 		this.pwd = "/";
+		this.hasChanged = true;
 		this.fs = computers[name].fs;
 		$.each(computers[name], function (property, value) {
 			if ($.inArray(property, ["fs"]) == -1) { 
@@ -86,11 +88,26 @@ HackerGame
 				$ass.find(".ass-trials").text(stat.trials || "-");
 				$ass.find(".ass-best-score").text(stat.best || "-");
 				$ass.find(".ass-name a").addClass("completed-assignment");
-
+				
 			});
-		
+			
 			$('#stats-overall-score').text(obj.state.overallScore || "0");
 		}
+		if (obj.computer) {
+			
+		}
+	};
+	
+	hg.pack.computer = function () {
+		var fs = null, cmp = hg.state.getDefaultComputer();
+		cmp.hasChanged = false;
+		return [(cmp && cmp.hasChanged) ? {
+			fs: cmp.fs,
+			id: cmp.name,
+			user: cmp.properties.user
+		} : null, function () {
+			cmp.hasChanged = true;
+		}];
 	};
 
 })(jQuery, HackerGame); 

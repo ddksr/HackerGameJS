@@ -111,15 +111,13 @@ HackerGame = {};
 			};
 			hashChange(null);
 
-			$("body").removeClass("loading");
-
 			// Load saved state from CONFIG
 			if (hg.config.state) { 
 				hg.load.state({
 					state: hg.config.state,
 				}); 
 			}
-
+			$("body").removeClass("loading");
 			return $obj;
 		},
 		hashChange = function (evt) { // event listener for hash changing
@@ -149,6 +147,7 @@ HackerGame = {};
 	hg.util = {}; // utility methods
 	hg.action = {}; // action methods
 	hg.include = {}; // includer object, called from assignments
+	hg.pack = {}; // packer object
 
 	// ==============
 	// Public methods

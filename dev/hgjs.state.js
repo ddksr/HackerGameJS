@@ -4,7 +4,7 @@ HackerGame
 
 **/
 (function ($, hg) {
-	var temp, 
+	var stateCache = [], 
 		initTaskHTML = function ($task) {
 			var $help, $hint, 
 				$btn = $(document.createElement("button")).addClass("btn").addClass("btn-info").addClass("btn-sm");
@@ -77,10 +77,10 @@ HackerGame
 				}
 			});
 		};
-	hg.cons.State = function State(computer, config) {
-		this.computer = computer || new hg.cons.Computer(hg.config.defaultComputer);
+	hg.cons.State = function State(computer, config, innerState) {
+		this.computer = computer || new hg.cons.Computer(hg.config.defaultComputer, true);
 		
-		this.innerState = undefined;
+		this.innerState = innerState;
 		if (config && typeof config === "object") { //TODO: use extend
 			$.each(config, function (property, value) {
 				this[property] = value;
@@ -88,6 +88,11 @@ HackerGame
 		}
 
 		this.place = this.computer.fs;
+	};
+	hg.cons.State.prototype.getDefaultComputer = function () {
+		return this.computer.isDefault ? 
+			this.computer : (this.innerState ? 
+							 this.innerState.getDefaultComputer() : null);
 	};
 	hg.cons.State.prototype.changeDir = function (fold) {
 		var res;
@@ -109,6 +114,7 @@ HackerGame
 	};
 	hg.cons.State.prototype.makeDir = function (fold) {
 		var er = false;
+		cmp.hasChanged = true;
 		hg.util.pathIterator(null, function (cont) {
 			if (cont[fold]) {
 				er = "Directory already exists!";
@@ -125,6 +131,7 @@ HackerGame
 		var path = hg.util.path(fullPath),
 			place = hg.state.computer.fs,
 			last = path[path.length -1];
+		cmp.hasChanged = true;
 		if (path.length == 1) {
 			delete place[last];
 		}
@@ -208,7 +215,9 @@ HackerGame
 	};
 	hg.cons.Assignment.prototype.complete = function () {
 		var $tr = $(".assignment-list .ass-"+hg.assignment.id),
-			bestScore = $tr.find(".ass-best-score").text();
+			bestScore = $tr.find(".ass-best-score").text(),
+			trials = $tr.find(".ass-trials").text(),
+			assState = {};
 		hg.timer.stop();
 		hg.stats.increment({
 			completedAssignments: 1,
@@ -220,8 +229,21 @@ HackerGame
 		if (bestScore == "-" || (parseInt(bestScore, 10) < hg.stats.currentScore)) {
 			bestScore = hg.stats.currentScore;
 		}
+		trials = parseInt(trials, 10) || 0;
+
 		$tr.find("td.ass-best-score").text(bestScore);
 		$tr.find("td.ass-current-score").text(hg.stats.currentScore);
+		$tr.find("td.ass-trials").text(trials);
+
+		assState[this.id] = {
+			bestScore: bestCore,
+			trials: trials
+		};
+		stateCache.push({
+			"overalScore": hg.stats.overallScore,
+			"completedAssignments": assState
+		});
+
 		hg.assignment.successCallback();
 	};
 	hg.stats = {
@@ -317,6 +339,20 @@ HackerGame
 	};
 	hg.action.mail = function (cmnd) {
 		if (cmnd == "open") { hg.mail.open(); }
+	};
+
+
+	hg.pack.state = function () {
+		var tmpCache = stateCache;
+		stateCache = []; // clear cache
+		return [tmpCache.length > 0 ? tmpCache : null, function () {
+			// Note: If connection error
+			// The current assignments cache needs to be
+			// reverted back. Also, changes that were made
+			// before the packing need to be saved.
+			tmpCache.push.apply(tmpCache, stateCache);
+			stateCache = tmpCache;
+		}];
 	};
 })(jQuery, HackerGame);
 
