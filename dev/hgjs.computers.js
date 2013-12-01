@@ -94,7 +94,7 @@ HackerGame
 			$('#stats-overall-score').text(obj.state.overallScore || "0");
 		}
 		if (obj.computer) {
-			
+			// TODO: loading computer changes
 		}
 	};
 	
