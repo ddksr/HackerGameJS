@@ -41,8 +41,8 @@ HackerGame = {};
 				}
 			});
 		},
-		init = function(settings) {
-			var $obj = this, overallScore = 0,
+		baseInit = function(settings) {
+			var $obj = this
 				tOut = function (text) {
 					console.log("core:init:tOut", [text]);
 					var out = "";
@@ -57,29 +57,8 @@ HackerGame = {};
 			console.log("core:init", [settings]);
 			hg.config = $.extend(hg.config, settings);
 
-			// Initialize available task list
-			$.each(hg.config.assignments, function (i, ass) {
-				var $tr = $(document.createElement("tr")).addClass("ass-"+ass.id),
-					$tdName = $(document.createElement("td")).addClass("ass-name"),
-					$tdCurrent = $(document.createElement("td")).addClass("ass-current-score"),
-					$tdBest = $(document.createElement("td")).addClass("ass-best-score"),
-					$tdTrials = $(document.createElement("td")).addClass("ass-trials"),
-					$a = $(document.createElement("a"));
-				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
-				$tdName.append($a);
-
-				$tdCurrent.text("-");
-				$tdBest.text("-");
-				$tdTrials.text("0");
-
-
-				$tr.append($tdName).append($tdCurrent).append($tdBest).append($tdTrials);
-
-				$("table.assignment-list").append($tr);
-			});
-
-			hg.stats.overallScore = overallScore;
-
+			
+			hg.state = new hg.cons.State();
 			hg.config.terminal.completion = hg.commandCompletion;
 			hg.config.terminal.prompt = function (fn) {
 				var comp = hg.state.computer,
@@ -103,9 +82,7 @@ HackerGame = {};
 
 			$("#anon-sama").popover();
 
-			hg.refreshTranslations();
-			hg.state = new hg.cons.State();
-
+			
 			hg.term = $obj.terminal(hg.exec, hg.config.terminal);
 			
 			hg.tEcho = function (text) {
@@ -114,6 +91,37 @@ HackerGame = {};
 			hg.tError = function (text) {
 				hg.term.error(tOut(text));
 			};
+			
+			return $obj;
+		},
+		contentInit = function () {
+			var overallScore;
+
+			// Initialize available task list
+			$.each(hg.config.assignments, function (i, ass) {
+				var $tr = $(document.createElement("tr")).addClass("ass-"+ass.id),
+					$tdName = $(document.createElement("td")).addClass("ass-name"),
+					$tdCurrent = $(document.createElement("td")).addClass("ass-current-score"),
+					$tdBest = $(document.createElement("td")).addClass("ass-best-score"),
+					$tdTrials = $(document.createElement("td")).addClass("ass-trials"),
+					$a = $(document.createElement("a"));
+				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
+				$tdName.append($a);
+
+				$tdCurrent.text("-");
+				$tdBest.text("-");
+				$tdTrials.text("0");
+
+
+				$tr.append($tdName).append($tdCurrent).append($tdBest).append($tdTrials);
+
+				$("table.assignment-list").append($tr);
+			});
+
+			hg.stats.overallScore = overallScore;
+			hg.refreshTranslations();
+			hg.state = new hg.cons.State();
+
 			hashChange(null);
 
 			// Load saved state from CONFIG
@@ -123,7 +131,6 @@ HackerGame = {};
 				}); 
 			}
 			$("body").removeClass("loading");
-			return $obj;
 		},
 		hashChange = function (evt) { // event listener for hash changing
 			var hash = window.location.hash,
@@ -237,7 +244,7 @@ HackerGame = {};
 	// Indicators
 	hg.ind = {
 		modal: false
-	}
+	};
 
 	// Mail system
 	hg.mail = {
@@ -299,22 +306,19 @@ HackerGame = {};
 	// jQuery plugins
 	// ==============
 	$.fn.hackerGame = function (settings) {
-		var $obj = this;
+		var $termObj = this;
 		console.log("$.fn.hackerGame", [settings]);
+		baseInit.call($termObj, settings);
 		if (settings && settings.server) {
-			// Define init script wrapper
-			hg.initServer = function(fnAfterInit) {
-				init.call($obj, settings);
-				if ($.isFunction(fnAfterInit)) {
-					fnAfterInit.call($obj); 
-				}
+			hg.initServer = function () {
+				contentInit.call($termObj);
 			};
-			// The server script needs to call hg.initServer();
 			$.getScript(settings.server);
 		}
 		else {
-			init.call($obj, settings);
+			contentInit.call($termObj);
 		}
+		return $termObj;
 	};
 	$.fn.hackerGameTimer = function() {
 		var $obj = this,
