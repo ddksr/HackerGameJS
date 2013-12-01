@@ -10,18 +10,21 @@ HackerGame = {};
 	// ===========================================
 	var i18n, // language object
 		initAssignment = function () { // Prepare assignment
+			console.log("core:initAssignment", []);
 			hg.mail.close();
 			$("#link-page-game").removeClass("disabled");
 			hg.action.page("game");
 			hg.action.tab("assignment");
 		},
 		startAssignment = function () { // Start workign on assignment
+			console.log("core:startAssignment", []);
 			hg.assignment.isRunning = true;
 			hg.assignment.nextTask();
 			hg.assignment.startTimer();
 			hg.action.tab("task");
 		},
 		initDynamicFields = function (selector) {
+			console.log("core:initDynamicFields", [selector]);
 			$((selector || "body") + " .dyn").each(function () {
 				var field, attr = $(this).attr("data-field");
 				if (attr) {
@@ -41,6 +44,7 @@ HackerGame = {};
 		init = function(settings) {
 			var $obj = this, overallScore = 0,
 				tOut = function (text) {
+					console.log("core:init:tOut", [text]);
 					var out = "";
 					if (! $.isArray(text)) {
 						text = [text];
@@ -50,7 +54,7 @@ HackerGame = {};
 					});
 					return out;
 				};
-			
+			console.log("core:init", [settings]);
 			hg.config = $.extend(hg.config, settings);
 
 			// Initialize available task list
@@ -83,6 +87,7 @@ HackerGame = {};
 					user = props.user,
 					dir = (comp.pwd == "/" && "/") || null,
 					hostname = props.hostname;
+				console.log("terminal.prompt", []);
 				if (!dir) {
 					dir = comp.pwd;
 					if (dir == ("/home/"+user)) {
@@ -124,6 +129,7 @@ HackerGame = {};
 			var hash = window.location.hash,
 				segments = hash ? hash.split("/") : [],
 				command, args;
+			console.log("core:hashChange", [evt]);
 			if (evt) { evt.preventDefault(); }
 			if (segments.length > 1) {
 				command = segments[1];
@@ -160,10 +166,12 @@ HackerGame = {};
 
 	// Translation methods
 	hg.t = function (string) {
+		console.log("t", [string]);
 		return (i18n && i18n[string]) || string;
 	};
 
 	hg.refreshTranslations = function (selector) {
+		console.log("refreshTranslations", [selector]);
 		selector = selector ? (selector + " ") : "";
 		$(selector + ".i18n").each(function () {
 			var defaultString = $(this).attr("data-lang");
@@ -175,6 +183,7 @@ HackerGame = {};
 	hg.load = {
 		assignment: function (tasks, other) {
 			var title, body, $instructions, $tasksHtml, $learnMore, $tryItOut;
+			console.log("load.assignment", [tasks, other]);
 			initDynamicFields();
 
 			title = $("#stash").find("#ass-title").text();
@@ -218,6 +227,7 @@ HackerGame = {};
 			$("#stash").empty();
 		},
 		language: function (langId, langObj) {
+			console.log("load.language", [landId, langObj]);
 			if (typeof(langId) == "object") { langObj = landId; }
 			else if (langObj) { hg.lang = langId; }
 			i18n = $.extend(i18n, langObj);
@@ -233,15 +243,18 @@ HackerGame = {};
 	hg.mail = {
 		message: undefined,
 		setNew: function() {
+			console.log("mail.setNew", []);
 			if (!$("#mail").is(".red-alert")) {
 				$("#mail").addClass("red-alert");
 			}
 			$("#mail").hgBlink();
 		},
 		setEmpty: function () {
+			console.log("mail.setEmpty", []);
 			$("#mail").removeClass("red-alert");
 		},
 		recieve: function (message, clickOpen) {
+			console.log("mail.recieve", [message, clickOpen]);
 			hg.mail.message = {
 				sender: message.isSensei ? "sensei" : (message.sender || "anon"),
 				isSensei: message.isSensei,
@@ -252,6 +265,7 @@ HackerGame = {};
 		},
 		open: function () {
 			var img, button, title;
+			console.log("mail.open", []);
 			if (hg.mail.message && ! hg.ind.modal) {
 				img = hg.mail.message.isSensei ? "anon-small" : "any";
 				img = hg.config.basePath + hg.config.imagesPath + img + ".png";
@@ -276,6 +290,7 @@ HackerGame = {};
 			hg.mail.setEmpty();
 		},
 		close: function () {
+			console.log("mail.close", []);
 			$("#mailMessage").modal("hide");
 		}
 	};
@@ -285,6 +300,7 @@ HackerGame = {};
 	// ==============
 	$.fn.hackerGame = function (settings) {
 		var $obj = this;
+		console.log("$.fn.hackerGame", [settings]);
 		if (settings && settings.server) {
 			// Define init script wrapper
 			hg.initServer = function(fnAfterInit) {
@@ -321,10 +337,12 @@ HackerGame = {};
 				if (isNaN(hg.timer.counter) || hg.timer.counter <= 0) { return; }
 				hg.timer.status = setTimeout(step, ms);
 			};
+		console.log("$.fn.hackerGameTimer", []);
 		hg.timer = {
 			counter: 0,
 			status: undefined,
 			set: function (setCounter, callback) {
+				console.log("timer.set", [setCounter, callback]);
 				if ($obj.is(".red-alert")) {
 					$obj.removeClass("red-alert");
 				}
@@ -333,9 +351,11 @@ HackerGame = {};
 				display();
 			},
 			start: function () {
+				console.log("timer.start", []);
 				hg.timer.status = setTimeout(step, ms);
 			},
 			stop: function () {
+				console.log("timer.stop", []);
 				counter = 0;
 				if (this.status) { clearTimeout(this.status); }
 				callbackFn();

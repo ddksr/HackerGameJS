@@ -6,6 +6,7 @@ HackerGame
 (function ($, hg) {
 	var toText = function (input) {
 			var output = "";
+			console.log("toText", [input]);
 			if (typeof(input) === "object") {
 				$.each(input, function (_, x) {
 					output += hg.t(x) + "\n";
@@ -25,6 +26,7 @@ HackerGame
 						isAvailable = hg.network.ping(loc),
 						numOfSuccess = 0,
 						timeSuma = 0; 
+					console.log("command.ping", [loc, num, ttl]);
 					if (! num) { num = 5; }
 					if (! ttl) { ttl = 60; }
 					responseTimeLong = hg.util.randResponseTime(3, ttl*1000);
@@ -81,6 +83,7 @@ HackerGame
 			"cat": {
 				exec: function (file) {
 					var term = this;
+					console.log("command.cat", [file]);
 					hg.util.pathIterator(file, function (contents) {
 						if (contents === null) {
 							hg.tError("Cannot display binary files.");
@@ -119,7 +122,7 @@ HackerGame
 								}
 							});
 						};
-
+					console.log("command.tree", [dir]);
 					if (path.length > 0) {
 						$.each(path, function (i, sub) {
 							start = sub;
@@ -143,6 +146,7 @@ HackerGame
 			"ls": {
 				exec: function (folder) {
 					var dirs = ". ..";
+					console.log("command.ls", [folder]);
 					$.each(hg.state.place, function (k, _) {
 						dirs += " " + k;
 					});
@@ -155,6 +159,7 @@ HackerGame
 			"mkdir": {
 				exec: function (folder) {
 					var er = hg.state.makeDir(folder);
+					console.log("command.mkdir", [folder]);
 					if (er) { hg.tError(er); } 
 				},
 				help: ["mkdir - create a directory in the current directory",
@@ -162,13 +167,17 @@ HackerGame
 					   "Linux: mkdir dir1, [dir2, [dir3, ...]]"]
 			},
 			"pwd": {
-				exec: function () { hg.tEcho(hg.state.computer.pwd); },
+				exec: function () { 
+					console.log("command.pwd", []);
+					hg.tEcho(hg.state.computer.pwd); 
+				},
 				help: ["pwd - path to current directory",
 					   "Usage: pwd",
 					   "Linux: pwd"]
 			},
 			"cd": {
 				exec: function (fold) {
+					console.log("command.cd", [fold]);
 					if (! hg.state.changeDir(fold)) {
 						hg.tError(fold + " is not a directory");
 					}
@@ -183,6 +192,7 @@ HackerGame
 						last=null, 
 						term=this, 
 						place=hg.state.computer.fs;
+					console.log("command.rm", [path]);
 					path = hg.util.path(path);
 					if (! path) {
 						hg.tError("File or directory doesn't exist!");
@@ -217,13 +227,19 @@ HackerGame
 					   "Linux: export VARIABLE=VALUE"]
 			},
 			"sensei": {
-				exec: function (input) { hg.tEcho("Message to sensei sent."); },
+				exec: function (input) { 
+					console.log("command.sensei", [input]);
+					hg.tEcho("Message to sensei sent."); 
+				},
 				fullArgs: true,
 				help: ["sensei - send a message to sensei via secure connection",
 					   "Usage: sensei MESSAGE"]
 			},
 			"echo": {
-				exec: function (input) { hg.tEcho(input); },
+				exec: function (input) { 
+					console.log("command.echo", [input]);
+					hg.tEcho(input); 
+				},
 				fullArgs: true,
 				help: ["echo - print text in terminal", 
 					   "Usage: echo TEXT",
@@ -232,6 +248,7 @@ HackerGame
 			"help": {
 				exec: function(command) {
 					var blackList = hg.state.computer.properties.commandBlackList;
+					console.log("command.help", [command]);
 					if (!command) {
 						hg.tEcho("Available commands: ");
 						$.each(commands, function (cmnd, props) {
@@ -256,6 +273,7 @@ HackerGame
 		};
 	hg.commandCompletion = function (term, string, fn) {
 		var candidates = [];
+		console.log("commandCompletion", [term, string, fn]);
 		// Commands
 		$.each(commands, function (cmnd, _) {
 			if (cmnd.substr(0, string.length) == string) {
@@ -273,6 +291,7 @@ HackerGame
 		fn(candidates);
 	};
 	hg.initComputerCommands = function (computer) {
+		console.log("initComputerCommands", [computer]);
 		$.each(commands, function (name, _) {
 			computer.fs.bin[name] = null;
 		});
@@ -283,6 +302,7 @@ HackerGame
 			result,
 			noError = true,
 			attributes = segments.length > 1 ? segments.slice(1) : null;
+		console.log("exec", [input, term]);
 		if ($.inArray(fn, hg.state.computer.properties.commandBlackList) > -1) {
 			noError = false;
 			hg.tError("Command is not defined!");

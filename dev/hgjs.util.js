@@ -6,6 +6,7 @@ HackerGame
 (function ($, hg) {
 	var notValidIP = [10,127,254,255,1,2,169,172,192],
 		randIntGenerator = function (from, to) {
+			console.log("randIntGenerator", [from, to]);
 			if (!from) { from = 0; }
 			if (!to) { to = 1; }
 			return function () { return Math.round(Math.random()*(to-from)+from); };
@@ -22,6 +23,7 @@ HackerGame
 		};
 	hg.util.extend = function (objDef, objOver) {
 		var obj = {};
+		console.log("util.extend", [objDef, objOver]);
 		$.each(objDef, function (key, _) {
 			if (! objOver[key]) {
 				obj[key] = objOver[key] !== undefined ? objOver[key] : objDef[key];
@@ -37,14 +39,17 @@ HackerGame
 	};
 	hg.util.randIP = function () {
 		var generator = randIntGenerator(1,255), first = generator();
+		console.log("util.randIp", []);
 		while ($.inArray(first, notValidIP) > -1) { first = generator(); }
 		return [first, generator(), generator(), generator()].join(".");
 	};
 	hg.util.randResponseTime = function(from, to) {
+		console.log("util.randResponseTime", [from, to]);
 		return randIntGenerator(from, to);
 	};
 	hg.util.fileType = function (file, longName) {
 		var type = (file === null && fileTypes["null"]) || fileTypes[typeof(file)];
+		console.log("util.fileType", [file, longname]);
 		return longName ? fileTypesLong[type] : type;
 	};
 	hg.util.path = function (rawPathString) {
@@ -55,6 +60,7 @@ HackerGame
 				|| null,
 			pwdPath = hg.state.computer.pwd.split("/").slice(1),
 			path = (pathString && pathString.split("/")) || [];
+		console.log("util.path", [rawPathString]);
 		if (hg.state.computer.pwd == "/") { pwdPath = []; }
 		if (pathString == "/" || (!pathString && hg.state.computer.pwd == "/")) {
 			ret = [];
@@ -76,6 +82,7 @@ HackerGame
 		return ret;
 	};
 	hg.util.checkFilePermission = function (path) {
+		console.log("util.checkFilePermission", [path]);
 		return $.inArray(path, [
 			"/",
 			"/bin",
@@ -84,6 +91,7 @@ HackerGame
 	};
 	hg.util.fileExists = function (loc) {
 		var ret = false;
+		console.log("util.fileExists", [loc]);
 		hg.util.pathIterator(loc, function (obj) {
 			ret = obj !== undefined;
 		});
@@ -91,16 +99,19 @@ HackerGame
 	};
 	hg.util.isDir = function (dir) {
 		var ret = false;
+		console.log("util.isDir", [dir]);
 		hg.util.pathIterator(dir, function (obj) {
 			ret = typeof(obj) == "object";
 		});
 		return ret;
 	};
 	hg.util.absPath = function (path) {
+		console.log("util.absPath", [path]);
 		return hg.state.computer.pwd + (hg.state.computer.pwd == "/" ? "" : "/") + path;
 	};
 	hg.util.cleanPath = function (path) {
 		var returnPath = [];
+		console.log("util.cleanPath", [path]);
 		$.each(path.split("/"), function (i, elt) {
 			if (elt == ".") { return; }
 			if (elt == "..") { returnPath.pop(); }
@@ -114,6 +125,7 @@ HackerGame
 			res = null,
 			place = [hg.state.computer.fs],
 			iterator = function (i) {
+				console.log("util.fileExists:iterator", [i]);
 				if (i < path.length) {
 					if (i == -1 || path[i] == ".") { 
 						iterator(i+1); 
@@ -133,6 +145,7 @@ HackerGame
 				}
 				else { fn(place[place.length-1]); }
 			};
+		console.log("util.pathIterator", [fir, fn]);
 		if (path.length == 0) { fn(place[place.length-1]); }
 		else if (path) { iterator(-1); }
 	};
@@ -141,6 +154,7 @@ HackerGame
 	// jQuery util plugins
 	// ===================
 	$.fn.hgBlink = function (numOfBlinks, time) {
+		console.log("$.fn.hgBlink", [numOfBlinks, time]);
 		if (!numOfBlinks) { numOfBlinks = 3; }
 		if (!time) { time = 500; }
 		$(this).each(function (i, elt) {

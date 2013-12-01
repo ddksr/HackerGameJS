@@ -52,6 +52,7 @@ HackerGame
 	});
 	hg.cons.Computer = function Computer (name, isDefault) {
 		var props = {};
+		console.log("new Computer", [name, isDefault]);
 		if (! name) { name = "-"; }
 		if (! computers[name]) { return null; }
 		this.name = name;
@@ -74,10 +75,12 @@ HackerGame
 		var isInWeb = addresses[location] || addresses[dnsTable[location]],
 			localLocation = hg.state.computer.location + ">" + location,
 			isLocal = addresses[localLocation];
+		console.log("network.ping", [location]);
 		return isInWeb || isLocal;
 	};
 	
 	hg.load.state = function (obj) {
+		console.log("load.state", [obj]);
 		if (obj.state) {
 			$.each(obj.state.completedAssignments || {}, function (id, stat) {
 				var $ass = $(".assignment-list .ass-" + id);
@@ -99,6 +102,7 @@ HackerGame
 	};
 	
 	hg.pack.computer = function () {
+		console.log("pack.computer", []);
 		var fs = null, cmp = hg.state.getDefaultComputer();
 		cmp.hasChanged = false;
 		return [(cmp && cmp.hasChanged) ? {
