@@ -60,18 +60,14 @@ HackerGame = {};
 					$tdCurrent = $(document.createElement("td")).addClass("ass-current-score"),
 					$tdBest = $(document.createElement("td")).addClass("ass-best-score"),
 					$tdTrials = $(document.createElement("td")).addClass("ass-trials"),
-					$a = $(document.createElement("a")),
-					state = hg.config.state.completedAssignments[ass.id];
+					$a = $(document.createElement("a"));
 				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
 				$tdName.append($a);
 
 				$tdCurrent.text("-");
-				$tdBest.text((state && state.best) || "-");
-				$tdTrials.text((state && state.trials) || "0");
+				$tdBest.text("-");
+				$tdTrials.text("0");
 
-				if (state && state.best) {
-					overallScore += state.best;
-				}
 
 				$tr.append($tdName).append($tdCurrent).append($tdBest).append($tdTrials);
 
@@ -116,6 +112,13 @@ HackerGame = {};
 			hashChange(null);
 
 			$("body").removeClass("loading");
+
+			// Load saved state from CONFIG
+			if (hg.config.state) { 
+				hg.load.state({
+					state: hg.config.state,
+				}); 
+			}
 
 			return $obj;
 		},
@@ -342,11 +345,6 @@ HackerGame = {};
 		return this;
 	};
 
-	// ==============
-	// Event listenrs
-	// ==============
-	$(window).on('hashchange', hashChange);
-
 	// ===================
 	// HTML initialization
 	// ===================
@@ -382,6 +380,11 @@ HackerGame = {};
 		$(this).hide();
 		startAssignment();
 	});
+	
+	// ==============
+	// Event listenrs
+	// ==============
+	$(window).on('hashchange', hashChange);
 	
 })(jQuery, HackerGame);
 

@@ -23,12 +23,7 @@
 			name: "Anon"
 		},
 		state: {
-			completedAssignments: {
-				"intro": {
-					best: 10,
-					trials: 1
-				}
-			},
+			completedAssignments: {},
 			overallScore: 10
 		}
 	};

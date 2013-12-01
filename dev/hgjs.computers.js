@@ -46,6 +46,9 @@ HackerGame
 
 		// Add special
 		computers[name].fs = hg.util.extend(defaultFs, computers[name].fs);
+		if (!computers[name].fs.home[props.user]) { 
+			computers[name].fs.home[props.user] = {};
+		}
 	});
 	hg.cons.Computer = function Computer (name) {
 		var props = {};
@@ -70,6 +73,24 @@ HackerGame
 			localLocation = hg.state.computer.location + ">" + location,
 			isLocal = addresses[localLocation];
 		return isInWeb || isLocal;
+	};
+	
+	hg.load.state = function (obj) {
+		if (obj.state) {
+			$.each(obj.state.completedAssignments || {}, function (id, stat) {
+				var $ass = $(".assignment-list .ass-" + id);
+
+				if (! $ass.length) { return; }
+
+				$ass.find(".ass-current-score").text("-");
+				$ass.find(".ass-trials").text(stat.trials || "-");
+				$ass.find(".ass-best-score").text(stat.best || "-");
+				$ass.find(".ass-name a").addClass("completed-assignment");
+
+			});
+		
+			$('#stats-overall-score').text(obj.state.overallScore || "0");
+		}
 	};
 
 })(jQuery, HackerGame); 
