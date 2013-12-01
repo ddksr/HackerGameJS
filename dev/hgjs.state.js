@@ -301,7 +301,7 @@ HackerGame
 				$("#link-page-" + pageId).addClass("active"); 
 				$("#page-" + pageId).show("slow");
 			};
-		console.log("action.page", [pageid]);
+		console.log("action.page", [pageId]);
 		if (pageDisabled) { return; }
 		if (prevPageId) { 
 			$("#link-page-" + prevPageId).removeClass("active"); 
