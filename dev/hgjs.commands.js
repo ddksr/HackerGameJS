@@ -107,7 +107,7 @@ HackerGame
 						start = "/",
 						place = hg.state.computer.fs,
 						node = function (level) {
-							var out = "";
+							var out = '';
 							while (level-- > 0) {
 								out += "   ";
 							} 
@@ -323,11 +323,11 @@ HackerGame
             	}
 			}
 		}
-		else {
+		else if (input != '') {
 			noError = false;
 			hg.tError("Command is not defined!");
 		}
-		if (hg.assignment.currentTask >= 0 && hg.assignment.evaluate) {
+		if (input != '' && hg.assignment.currentTask >= 0 && hg.assignment.evaluate) {
 			// Callback is the main task checker.
 			// If the input passes the callback
 			// You can move to the next task
