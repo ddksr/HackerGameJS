@@ -97,7 +97,11 @@ HackerGame
 			$('#stats-overall-score').text(obj.state.overallScore || "0");
 		}
 		if (obj.computer) {
-			// TODO: loading computer changes
+			var cmp = hg.state.getDefaultComputer();
+			cmp.properties.user = obj.computer.user;
+			cmp.fs = obj.computer.fs;
+
+			hg.state.changeDir("/"); 
 		}
 	};
 	

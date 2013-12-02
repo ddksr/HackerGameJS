@@ -42,7 +42,7 @@ HackerGame = {};
 			});
 		},
 		baseInit = function(settings) {
-			var $obj = this,
+			var overallScore = 0, $obj = this,
 				tOut = function (text) {
 					console.log("core:init:tOut", [text]);
 					var out = "";
@@ -92,11 +92,6 @@ HackerGame = {};
 				hg.term.error(tOut(text));
 			};
 			
-			return $obj;
-		},
-		contentInit = function () {
-			var overallScore;
-
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
 				var $tr = $(document.createElement("tr")).addClass("ass-"+ass.id),
@@ -119,17 +114,16 @@ HackerGame = {};
 			});
 
 			hg.stats.overallScore = overallScore;
+
+			return $obj;
+		},
+		contentInit = function () {
+
 			hg.refreshTranslations();
 			hg.state = new hg.cons.State();
 
 			hashChange(null);
 
-			// Load saved state from CONFIG
-			if (hg.config.state) { 
-				hg.load.state({
-					state: hg.config.state,
-				}); 
-			}
 			$("body").removeClass("loading");
 		},
 		hashChange = function (evt) { // event listener for hash changing
@@ -319,6 +313,12 @@ HackerGame = {};
 			$.getScript(settings.server);
 		}
 		else {
+			// Load saved state from CONFIG
+			if (hg.config.state) { 
+				hg.load.state({
+					state: hg.config.state,
+				}); 
+			}
 			contentInit.call($termObj);
 		}
 		return $termObj;
