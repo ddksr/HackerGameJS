@@ -15,7 +15,9 @@ def compile(lines):
 	begin_remove=False
 	for line in lines:
 		new_line=False
-		if "HGJS-SCRIPT" in line:
+		if line.strip() == '':
+			continue
+		elif "HGJS-SCRIPT" in line:
 			found = re.search('HGJS-SCRIPT:(\w+) (\w*)', line, re.IGNORECASE)
 			if not found:
 				continue
@@ -34,6 +36,8 @@ def compile(lines):
 			elif command=="block":
 				if arg in blocks:
 					new_line = blocks[arg]
+				else:
+					continue
 
 		if begin_remove:
 			continue
