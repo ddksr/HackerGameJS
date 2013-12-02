@@ -122,7 +122,7 @@ HackerGame
 	hg.cons.State.prototype.makeDir = function (fold) {
 		var er = false;
 		console.log("State.makeDir", [fold]);
-		cmp.hasChanged = true;
+		this.computer.hasChanged = true;
 		hg.util.pathIterator(null, function (cont) {
 			if (cont[fold]) {
 				er = "Directory already exists!";
@@ -140,7 +140,7 @@ HackerGame
 			place = hg.state.computer.fs,
 			last = path[path.length -1];
 		console.log("State.removeFile", [fullPath]);
-		cmp.hasChanged = true;
+		this.computer.hasChanged = true;
 		if (path.length == 1) {
 			delete place[last];
 		}

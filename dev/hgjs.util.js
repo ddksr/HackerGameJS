@@ -145,7 +145,7 @@ HackerGame
 				}
 				else { fn(place[place.length-1]); }
 			};
-		console.log("util.pathIterator", [fir, fn]);
+		console.log("util.pathIterator", [dir, fn]);
 		if (path.length == 0) { fn(place[place.length-1]); }
 		else if (path) { iterator(-1); }
 	};

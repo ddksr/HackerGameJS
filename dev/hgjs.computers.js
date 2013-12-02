@@ -60,7 +60,7 @@ HackerGame
 		this.location = typeof addresses[name] == "function" ? 
 			addresses[name]() : addresses[name];
 		this.pwd = "/";
-		this.hasChanged = true;
+		this.hasChanged = false;
 		this.fs = computers[name].fs;
 		$.each(computers[name], function (property, value) {
 			if ($.inArray(property, ["fs"]) == -1) { 
@@ -104,7 +104,7 @@ HackerGame
 	hg.pack.computer = function () {
 		console.log("pack.computer", []);
 		var fs = null, cmp = hg.state.getDefaultComputer();
-		cmp.hasChanged = false;
+		if (cmp) {cmp.hasChanged = false; }
 		return [(cmp && cmp.hasChanged) ? {
 			fs: cmp.fs,
 			id: cmp.name,
