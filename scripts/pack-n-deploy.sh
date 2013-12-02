@@ -62,8 +62,8 @@ do
 	js_files_point="${js_files_point} ${files_path}hgjs.${js}.js"
 done
 
-# combine JS files
-cat $js_files_point > $js_out
+# combine JS files and remove console.logs 
+cat $js_files_point | sed '/console\.log/d' > $js_out
 
 
 # compress JS files (exclude config)
