@@ -49,7 +49,7 @@ HackerGame
 	};
 	hg.util.fileType = function (file, longName) {
 		var type = (file === null && fileTypes["null"]) || fileTypes[typeof(file)];
-		console.log("util.fileType", [file, longname]);
+		console.log("util.fileType", [file, longName]);
 		return longName ? fileTypesLong[type] : type;
 	};
 	hg.util.path = function (rawPathString) {
