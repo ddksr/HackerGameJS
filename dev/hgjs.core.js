@@ -283,7 +283,9 @@ HackerGame = {};
 				});
 				$("#mailMessage .body").html(hg.mail.message.body);
 				$("#mailMessage .modal-title").html(title);
-				$("#mailMessage").modal("show");
+				$("#mailMessage").modal("show").on("hide.bs.modal", function () {
+					hg.ind.modal = false;
+				});
 				if (hg.mail.message.button) {
 					$("#mailButton").text(hg.mail.message.button.name)
 						.click(hg.mail.message.button.action).show();
@@ -299,6 +301,7 @@ HackerGame = {};
 		close: function () {
 			console.log("mail.close", []);
 			$("#mailMessage").modal("hide");
+			hg.ind.modal = false;
 		}
 	};
 	
@@ -386,8 +389,7 @@ HackerGame = {};
 			}
 		});
 	});
-	$("#mailMessage").modal();
-	$("#mailMessage").on("hide.bs.modal", function () {
+	$("#mailMessage").modal().on("hide.bs.modal", function () {
 		hg.ind.modal = false;
 	});
 	
