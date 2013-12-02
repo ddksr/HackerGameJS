@@ -42,7 +42,7 @@ HackerGame = {};
 			});
 		},
 		baseInit = function(settings) {
-			var $obj = this
+			var $obj = this,
 				tOut = function (text) {
 					console.log("core:init:tOut", [text]);
 					var out = "";
