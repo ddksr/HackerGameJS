@@ -103,9 +103,12 @@ HackerGame
 	
 	hg.pack.computer = function () {
 		console.log("pack.computer", []);
-		var fs = null, cmp = hg.state.getDefaultComputer();
-		if (cmp) {cmp.hasChanged = false; }
-		return [(cmp && cmp.hasChanged) ? {
+		var fs = null, cmp = hg.state.getDefaultComputer(), status = false;
+		if (cmp) { 
+			status = cmp.hasChanged; 
+			cmp.hasChanged = false; 
+		}
+		return [(cmp && status) ? {
 			fs: cmp.fs,
 			id: cmp.name,
 			user: cmp.properties.user

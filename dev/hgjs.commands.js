@@ -327,7 +327,7 @@ HackerGame
 			noError = false;
 			hg.tError("Command is not defined!");
 		}
-		if (hg.assignment.evaluate) {
+		if (hg.assignment.currentTask >= 0 && hg.assignment.evaluate) {
 			// Callback is the main task checker.
 			// If the input passes the callback
 			// You can move to the next task

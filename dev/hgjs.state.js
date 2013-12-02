@@ -223,13 +223,18 @@ HackerGame
 	hg.cons.Assignment.prototype.fail = function () {
 		console.log("Assignment.fail", []);
 		hg.timer.stop();
+
+		stateCache.push({
+			"type": "assignment",
+			"key": this.id,
+			"value": -1
+		});
 		hg.assignment.failCallback();
 	};
 	hg.cons.Assignment.prototype.complete = function () {
 		var $tr = $(".assignment-list .ass-"+hg.assignment.id),
 			bestScore = $tr.find(".ass-best-score").text(),
-			trials = $tr.find(".ass-trials").text(),
-			assState = {};
+			trials = $tr.find(".ass-trials").text();
 		console.log("Assignment.complete", []);
 		hg.timer.stop();
 		hg.stats.increment({
@@ -248,13 +253,10 @@ HackerGame
 		$tr.find("td.ass-current-score").text(hg.stats.currentScore);
 		$tr.find("td.ass-trials").text(trials);
 
-		assState[this.id] = {
-			bestScore: bestCore,
-			trials: trials
-		};
 		stateCache.push({
-			"overalScore": hg.stats.overallScore,
-			"completedAssignments": assState
+			"type": "assignment",
+			"key": this.id,
+			"value": hg.stats.currentScore
 		});
 
 		hg.assignment.successCallback();
