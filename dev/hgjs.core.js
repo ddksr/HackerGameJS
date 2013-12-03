@@ -326,7 +326,7 @@ HackerGame = {};
 		return $termObj;
 	};
 	$.fn.hackerGameEditor = function (settings) {
-		var $edtObj = this;
+		var $edtObj = this, filePath = null;
 		console.log("$.fn.hackerGameEditor", [settings]);
 
 		hg.editor.enable = function () {
@@ -347,6 +347,20 @@ HackerGame = {};
 		hg.editor.blur = function () {
 			hg.action.input("terminal");
 		};
+		hg.editor.watch = function (path) {
+			filePath = path;
+			// TODO: open file
+			hg.editor.enable();
+		};
+		hg.editor.unWatch = function () {
+			filePath = null;
+			hg.editor.disable();
+		};
+		$(edtObj).find(".btn").click(function () {
+			if (filePath) {
+				// TODO: save file
+			}
+		});
 		return $editObj;
 	};
 	$.fn.hackerGameTimer = function() {
