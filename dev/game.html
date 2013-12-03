@@ -94,7 +94,13 @@
 						</ul>
 						<div class="top-breathe"></div>
 						<div id="input-terminal"></div>
-						<div id="input-editor" contentEditable="false"></div>
+						<div id="input-editor">
+							<div id="editor"></div>
+							<p class="text-right">
+								<button type="button" class="btn btn-default" id="button-save-editor" class="i18n" data-lang="Save">Save</button>
+							</p>
+						</div>
+						
 					</div>
 					<div class="col-md-4">
 						<ul id="tab-links" class="nav nav-tabs">
@@ -204,7 +210,7 @@
 			// HGJS-SCRIPT:block before_js_init
 			$("#timer").hackerGameTimer();
 			$("#input-terminal").hackerGame();
-			$("#input-editor").hackerGameEditor();
+			$("#editor").hackerGameEditor();
 			// HGJS-SCRIPT:block after_js_init
 		</script>
 		<div id="stash"></div>

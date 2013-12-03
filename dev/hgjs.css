@@ -3,12 +3,18 @@ body {
 	font-family: "Lucida Console", Monaco, monospace;
 }
 
-#input-terminal, #input-editor {
+#input-terminal, #editor {
 	border: 1px solid #aaa;
 	margin: 0 5px 5px 5px;
 }
 #input-editor {
 	height: 400px;
+}
+#input-editor p {
+	margin: 10px 5px 0 0;
+}
+#editor {
+	height: 355px;
 	background-color: black;
 	color: white;
 	padding: 5px;
@@ -106,4 +112,8 @@ body.loading .loading-gif {
 #ass-try-it-out img {
 	display: block;
 	margin: 5px auto 5px auto;
+}
+
+.text-right {
+	text-align: right;
 }
