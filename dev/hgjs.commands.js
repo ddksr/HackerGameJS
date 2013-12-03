@@ -238,7 +238,7 @@ HackerGame
 			"echo": {
 				exec: function (input) { 
 					console.log("command.echo", [input]);
-					hg.tEcho(input); 
+					if (input) { hg.tEcho(input); }
 				},
 				fullArgs: true,
 				help: ["echo - print text in terminal", 
@@ -308,7 +308,7 @@ HackerGame
 			hg.tError("Command is not defined!");
 		}
 		else if (commands[fn] && commands[fn].exec) {
-			if (commands[fn].fullArgs) { commands[fn].exec.call(term, attributes.join(" ")); }
+			if (commands[fn].fullArgs) { commands[fn].exec.call(term, attributes && attributes.join(" ")); }
 			else { commands[fn].exec.apply(term, attributes); }
 		}
 		else if(fn === "eval" || fn === "export") {

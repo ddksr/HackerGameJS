@@ -238,10 +238,9 @@ HackerGame
 		console.log("Assignment.complete", []);
 		hg.timer.stop();
 		hg.stats.increment({
-			completedAssignments: 1,
-			overallScore: hg.stats.currentScore
+			completedAssignments: 1
 		});
-		hg.stats.refresh();
+
 		$tr.find(".ass-name a").addClass("completed-assignment");
 		
 		if (bestScore == "-" || (parseInt(bestScore, 10) < hg.stats.currentScore)) {
@@ -253,6 +252,9 @@ HackerGame
 		$tr.find("td.ass-current-score").text(hg.stats.currentScore);
 		$tr.find("td.ass-trials").text(trials);
 
+		hg.stats.aggregate();
+
+
 		stateCache.push({
 			"type": "assignment",
 			"key": this.id,
@@ -262,19 +264,29 @@ HackerGame
 		hg.assignment.successCallback();
 	};
 	hg.stats = {
-		refresh: function(exclude) {
+		refresh: function (exclude) {
 			var overallAssignments = hg.config.assignments.length,
 				tasksInAssignment = hg.assignment.tasks.length;
 			console.log("stats.refresh", [exclude]);
 			if (!exclude) { exclude = []; }
-			
+			// TODO: can we do something with exclude or is it just in the way?
 			$("#stats-completed-tasks").text(hg.stats.completedTasks + "/" + tasksInAssignment);
 			$("#stats-completed-assignments").text(hg.stats.completedAssignments + "/" + overallAssignments);
 			$("#stats-current-score").text(hg.stats.currentScore);
 			$("#stats-best-score").text(hg.stats.bestScore);
 			$("#stats-overall-score").text(hg.stats.overallScore);
 		},
-		increment: function(stat, val, hold) {
+		aggregate: function (hold) {
+			$(".table.assignment-list tr").each(function (i, elt) {
+				var best = $(elt).find("ass-best-score").text();
+				if (best && best != "-") { best = parseInt(best, 10); }
+				else { best = 0; }
+				alert(best)
+				hg.stats.overallScore += best;
+			} );
+			if (! hold) { hg.stats.refresh(); }
+		},
+		increment: function (stat, val, hold) {
 			console.log("stats.increment", [stat, val, hold]);
 			if (typeof(stat) == "object") {
 				$.each(stat, function (key, inc) {

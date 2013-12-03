@@ -394,7 +394,7 @@ HackerGame = {};
 	});
 	
 	$("#mail").popover({
-		content: "You have mail! Click to continue",
+		content: hg.t("You have mail! Click to continue"),
 		trigger: "manual",
 		placement: "bottom"
 	});
