@@ -352,7 +352,7 @@ HackerGame = {};
 			// TODO: open file
 			hg.editor.enable();
 		};
-		hg.editor.unWatch = function () {
+		hg.editor.unwatch = function () {
 			filePath = null;
 			hg.editor.disable();
 		};
