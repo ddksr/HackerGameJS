@@ -11,6 +11,7 @@ body {
 	height: 400px;
 	background-color: black;
 	color: white;
+	padding: 5px;
 }
 #stats {
 	margin: 5px 0 0 0;
@@ -100,4 +101,9 @@ body.loading .loading-gif {
 /*Some server-side css */
 .msg-validate-user {
 	display: none;
+}
+
+#ass-try-it-out img {
+	display: block;
+	margin: 5px auto 5px auto;
 }

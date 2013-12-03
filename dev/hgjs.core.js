@@ -155,6 +155,7 @@ HackerGame = {};
 	hg.action = {}; // action methods
 	hg.include = {}; // includer object, called from assignments
 	hg.pack = {}; // packer object
+	hg.editor = {}; // editor methods
 
 	// ==============
 	// Public methods
@@ -179,6 +180,7 @@ HackerGame = {};
 			$(this).text(hg.t(defaultString));
 		});
 	};
+
 
 	// Loader (assignments and languages)
 	hg.load = {
@@ -322,6 +324,30 @@ HackerGame = {};
 			contentInit.call($termObj);
 		}
 		return $termObj;
+	};
+	$.fn.hackerGameEditor = function (settings) {
+		var $edtObj = this;
+		console.log("$.fn.hackerGameEditor", [settings]);
+
+		hg.editor.enable = function () {
+			$($edtObj).attr("contentEditable", "true");
+		};
+		hg.editor.disable = function () {
+			$($edtObj).attr("contentEditable", "false");
+		};
+		hg.editor.getContent = function () {
+			return $($edtObj).text();
+		};
+		hg.editor.setContent = function (content) {
+			$($edtObj).text(content);
+		};
+		hg.editor.focus = function () {
+			hg.action.input("editor");
+		};
+		hg.editor.blur = function () {
+			hg.action.input("terminal");
+		};
+		return $editObj;
 	};
 	$.fn.hackerGameTimer = function() {
 		var $obj = this,
