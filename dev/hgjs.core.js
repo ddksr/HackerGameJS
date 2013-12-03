@@ -336,10 +336,10 @@ HackerGame = {};
 			$($edtObj).attr("contentEditable", "false");
 		};
 		hg.editor.getContent = function () {
-			return $($edtObj).text();
+			return $($edtObj).html().replace(/<br>/g, "\n");
 		};
 		hg.editor.setContent = function (content) {
-			$($edtObj).text(content);
+			$($edtObj).html(content.replace(/\n/g, "<br>"));
 		};
 		hg.editor.focus = function () {
 			hg.action.input("editor");
