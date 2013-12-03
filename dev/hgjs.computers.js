@@ -100,7 +100,7 @@ HackerGame
 			var cmp = hg.state.getDefaultComputer();
 			cmp.properties.user = obj.computer.user;
 			cmp.fs = obj.computer.fs;
-
+			cmp.hostname = obj.computer.hostname;
 			hg.state.changeDir("/"); 
 		}
 	};
@@ -114,6 +114,7 @@ HackerGame
 		}
 		return [(cmp && status) ? {
 			fs: cmp.fs,
+			hostname: cmp.hostname,
 			id: cmp.name,
 			user: cmp.properties.user
 		} : null, function () {
