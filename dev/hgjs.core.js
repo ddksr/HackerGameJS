@@ -326,7 +326,7 @@ HackerGame = {};
 		return $termObj;
 	};
 	$.fn.hackerGameEditor = function (settings) {
-		var $edtObj = this, filePath = null;
+		var $edtObj = this, filePath = null, place = null, filename=null;
 		console.log("$.fn.hackerGameEditor", [settings]);
 
 		hg.editor.enable = function () {
@@ -348,18 +348,66 @@ HackerGame = {};
 			hg.action.input("terminal");
 		};
 		hg.editor.watch = function (path) {
-			filePath = path;
-			// TODO: open file
-			hg.editor.enable();
+			var tmpPlace = hg.state.computer.fs, aryPath;
+			if (! path) { return; }
+			filePath = path.charAt(0) == "/" ? path : hg.util.absPath(path);
+			if (filePath.charAt(filePath.length -1) == "/") {
+				filePath = filePath.substr(0, filePath.length - 2);
+			}
+			aryPath = filePath.split("/").slice(1);
+			$.each(aryPath, function (i, file) {
+				var tmpFile;
+				if (tmpPlace === null) {
+					// Do nothing, something went wrong 
+					place = null;
+					filename = null;
+					return;
+				}
+				
+				tmpFile = tmpPlace[file];
+
+				if (tmpFile === null) {
+					hg.tError("Cannot edit binary file!");
+				}
+				else if (tmpFile === undefined) {
+					if (i == aryPath.length - 1 ) {
+						filename = file;
+					}
+					else {
+						hg.tError("File doesn't exist!");
+						tmpPlace = null;
+					}
+				}
+				else if (typeof(tmpFile) == "object") {
+					tmpPlace = tmpFile;
+				}
+				else if (typeof(tmpFile) == "string") {
+					if (i == aryPath.length - 1 ) {
+						filename = file;
+					}
+					else {
+						hg.tError("File doesn't exist!");
+						tmpPlace = null;
+					}
+				}
+			});
+			if (tmpPlace && filename) {
+				hg.tEcho("File opened in Editor.");
+				place = tmpPlace;
+				hg.editor.enable();
+				hg.editor.setContent(place[filename] || "");
+			}
 		};
 		hg.editor.unwatch = function () {
 			filePath = null;
 			hg.editor.disable();
 		};
-		$(edtObj).find(".btn").click(function () {
-			if (filePath) {
-				// TODO: save file
-			}
+		hg.editor.save = function () {
+			place[filename] = hg.editor.getContent();
+			hg.state.computer.hasChanges = true;
+		};
+		$($edtObj).find(".btn").click(function () {
+			hg.editor.save();
 		});
 		return $editObj;
 	};
