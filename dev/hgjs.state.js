@@ -278,10 +278,9 @@ HackerGame
 		},
 		aggregate: function (hold) {
 			$(".table.assignment-list tr").each(function (i, elt) {
-				var best = $(elt).find("ass-best-score").text();
+				var best = $(elt).find(".ass-best-score").text();
 				if (best && best != "-") { best = parseInt(best, 10); }
 				else { best = 0; }
-				alert(best)
 				hg.stats.overallScore += best;
 			} );
 			if (! hold) { hg.stats.refresh(); }
