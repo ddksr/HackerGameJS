@@ -10,6 +10,7 @@
 		<!-- HGJS-SCRIPT:begin remove -->
 		<!-- EXTERNAL CSS -->
 		<link href="../ext/bootstrap-3.0.0/bootstrap.min.css" rel="stylesheet"/>
+		<link href="ext_dev/qunit-1.12.0.css" rel="stylesheet" />
 		<!-- HGJS-SCRIPT:end remove -->
 
 		<!-- HGJS-SCRIPT:remove_line --><!--
@@ -175,7 +176,10 @@
 			</div>
 		</div>
 		<div id="footer">
-			
+			<!-- HGJS-SCRIPT:begin remove -->
+			<div id="qunit"></div>
+			<div id="qunit-fixture"></div>
+			<!-- HGJS-SCRIPT:end remove -->
 		</div>
 
 		<!-- EXTERNAL SCRIPTS -->
@@ -184,6 +188,7 @@
 		<script src="../ext/bootstrap-3.0.0/bootstrap.min.js"></script>
 		<script src="../ext/jquery.mousewheel-min.js"></script>
 		<script src="../ext/jquery.terminal-0.7.7.min.js"></script>
+		<script src="ext_dev/qunit-1.12.0.js"></script>
 		<!-- HGJS-SCRIPT:end remove  -->
 
 		<!-- HGJS-SCRIPT:remove_line --><!--
@@ -201,6 +206,7 @@
 		<script src="hgjs.commands.js"></script>
 		<script src="hgjs.state.js"></script>
 		<script src="hgjs.config.js"></script>
+		<script src="hgjs.tests.js"></script>
 		<!-- HGJS-SCRIPT:end remove  -->
 		<!-- HGJS-SCRIPT:remove_line --><!--
 		<script src="hgjs.min.js"></script>

@@ -442,7 +442,7 @@ HackerGame = {};
 			hg.editor.blur();
 			console.log("Editor closed.");
 		});
-		return $editObj;
+		return $edtObj;
 	};
 	$.fn.hackerGameTimer = function() {
 		var $obj = this,
