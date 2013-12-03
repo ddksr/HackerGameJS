@@ -216,6 +216,29 @@ HackerGame
 					   "Usage: rm path",
 					   "Linux: rm path_to_file OR rmdir path_to_empty_directory"]
 			},
+			// EDITING
+			"edit": {
+				help: ["edit - edit file",
+					   "Usage: edit FILE",
+					   "Linux: there are many command line programs for editing files,", 
+					   "but they are not necessarily installed.",
+					   "- joe FILE",
+					   "- nano FILE",
+					   "- emacs FILE",
+					   "- vi FILE",
+					   "- vim FILE"],
+				exec: function (file) {
+					hg.editor.openCallback = function () {
+						hg.term.pause();
+						hg.editor.focus();
+					};
+					hg.editor.closeCallback = function () {
+						hg.term.resume();
+					};
+					hg.editor.watch(file);
+					hg.editor.focus();
+				}
+			},
 			// INTERNAL
 			"eval": {
 				help: ["eval - execute a JavaScript command", 

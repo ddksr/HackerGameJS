@@ -392,22 +392,55 @@ HackerGame = {};
 				}
 			});
 			if (tmpPlace && filename) {
-				hg.tEcho("File opened in Editor.");
 				place = tmpPlace;
 				hg.editor.enable();
 				hg.editor.setContent(place[filename] || "");
+				$("#button-save-editor, #button-close-editor").attr("disabled", false);
+				if ($.isFunction(hg.editor.openCallback)) {
+					hg.editor.openCallback();
+				}
+			}
+			else {
+				hg.editor.blur();
+				hg.editor.openCallback = null;
+				hg.editor.closeCallback = null;
 			}
 		};
 		hg.editor.unwatch = function () {
+			$("#button-save-editor, #button-close-editor").attr("disabled", true);
+			if ($.isFunction(hg.editor.closeCallback)) {
+				hg.editor.closeCallback();
+			}
 			filePath = null;
+			hg.editor.setContent("");
 			hg.editor.disable();
+			
+			hg.editor.openCallback = null;
+			hg.editor.closeCallback = null;
 		};
 		hg.editor.save = function () {
+			var message = hg.t("File") + " " + filePath + " " + hg.t("saved") + ".";
+			console.log("Saving file ... ");
 			place[filename] = hg.editor.getContent();
-			hg.state.computer.hasChanges = true;
+			hg.state.computer.hasChanged = true;
+			$("#editor-message").hide().text(message).fadeIn("slow", function () {
+				setTimeout(function () {
+					$("#editor-message").fadeOut("slow").text("");
+				}, 2000);
+			});
+			console.log("File saved");
 		};
-		$($edtObj).find(".btn").click(function () {
+		$("#button-save-editor").click(function () {
 			hg.editor.save();
+			$(this).blur();
+		});
+		$("#button-close-editor").click(function () {
+			console.log("Closing file ... ");
+			$(this).blur();
+			hg.editor.unwatch();
+			
+			hg.editor.blur();
+			console.log("Editor closed.");
 		});
 		return $editObj;
 	};
