@@ -376,7 +376,7 @@ HackerGame
 	};
 
 
-	hg.pack.state = function () {
+	hg.dump.state = function () {
 		var tmpCache = stateCache;
 		console.log("pack.state", []);
 		stateCache = []; // clear cache

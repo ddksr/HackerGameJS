@@ -42,7 +42,7 @@ HackerGame = {};
 			});
 		},
 		baseInit = function(settings) {
-			var overallScore = 0, $obj = this,
+			var $obj = this,
 				tOut = function (text) {
 					console.log("core:init:tOut", [text]);
 					var out = "";
@@ -57,8 +57,6 @@ HackerGame = {};
 			console.log("core:init", [settings]);
 			hg.config = $.extend(hg.config, settings);
 
-			
-			hg.state = new hg.cons.State();
 			hg.config.terminal.completion = hg.commandCompletion;
 			hg.config.terminal.prompt = function (fn) {
 				var comp = hg.state.computer,
@@ -82,7 +80,10 @@ HackerGame = {};
 
 			$("#anon-sama").popover();
 
-			
+			// This is where it has to be. There is an error alerted in FF if
+			// This is moved one command lower. 
+			hg.state = new hg.cons.State();
+
 			hg.term = $obj.terminal(hg.exec, hg.config.terminal);
 			
 			hg.tEcho = function (text) {
@@ -112,15 +113,12 @@ HackerGame = {};
 
 				$("table.assignment-list").append($tr);
 			});
-
-			hg.stats.overallScore = overallScore;
-
+			
 			return $obj;
 		},
 		contentInit = function () {
 
 			hg.refreshTranslations();
-			hg.state = new hg.cons.State();
 
 			hashChange(null);
 
@@ -154,8 +152,11 @@ HackerGame = {};
 	hg.util = {}; // utility methods
 	hg.action = {}; // action methods
 	hg.include = {}; // includer object, called from assignments
-	hg.pack = {}; // packer object
+	hg.dump = {}; // packer object
 	hg.editor = {}; // editor methods
+	hg.load = {}; // load methods
+	hg.ind = {}; // indicators module
+	hg.stats = {}; // stats module
 
 	// ==============
 	// Public methods

@@ -1,7 +1,8 @@
 hgTest = {};
 
 var tests = [
-	"simple"
+	"simple",
+	"util"
 ];
 
 (function ($, hg) {
@@ -35,6 +36,7 @@ var tests = [
 	
 	hgTest.run = function () {
 		$("#qunit,#qunit-fixture").show();
+		$li.empty().remove();
 		runTestSuite(0);
 	};
 })(jQuery, HackerGame);

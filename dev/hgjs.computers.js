@@ -105,7 +105,7 @@ HackerGame
 		}
 	};
 	
-	hg.pack.computer = function () {
+	hg.dump.computer = function () {
 		console.log("pack.computer", []);
 		var fs = null, cmp = hg.state.getDefaultComputer(), status = false;
 		if (cmp) { 
