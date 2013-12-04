@@ -1,8 +1,7 @@
 hgTest = {};
 
 var tests = [
-	"simple",
-	"util"
+	"simple", "util"
 ];
 
 (function ($, hg) {

@@ -107,7 +107,7 @@ HackerGame
 		var ret = false;
 		console.log("util.isDir", [dir]);
 		hg.util.pathIterator(dir, function (obj) {
-			ret = typeof(obj) == "object";
+			ret = typeof(obj) == "object" && obj !== null;
 		});
 		return ret;
 	};
@@ -116,15 +116,23 @@ HackerGame
 		return hg.state.computer.pwd + (hg.state.computer.pwd == "/" ? "" : "/") + path;
 	};
 	hg.util.cleanPath = function (path) {
-		var returnPath = [];
+		var returnPath = [], emptyPath, isAbs = path.charAt(0) == "/";
 		console.log("util.cleanPath", [path]);
+		if (path == "/") { return "/"; }
+		if (path == ".") { return ""; }
+		if (path.charAt(path.length - 1) == "/") { path = path.substr(0, path.length - 1); }
 		$.each(path.split("/"), function (i, elt) {
 			if (elt == ".") { return; }
-			if (elt == "..") { returnPath.pop(); }
+			
+			if (elt == "..") { 
+				returnPath.pop(); 
+				if (isAbs && returnPath.length == 0) { returnPath.push(""); }
+			}
 			else if(elt || i == 0) { returnPath.push(elt); }
 		});
 
-		return returnPath.length == 0 ? "/" : returnPath.join("/");
+		emptyPath = returnPath.length == 0 || (returnPath.length == 1 && !returnPath[0]);
+		return emptyPath ? "/" : returnPath.join("/");
 	};
 	hg.util.pathIterator = function (dir, fn) {
 		var path = hg.util.path(dir),

@@ -194,3 +194,56 @@ test("util.fileExists", function () {
 	ok(fn("../nonexisting") === (fs.nonexisting !== undefined), "../nonexisting not found.");
 	ok(fn("../bin/nonexisting") === (fs.bin.nonexisting !== undefined), "../bin/nonexisting not found.");
 });
+
+test("util.isDir", function () {
+	var fn = HackerGame.util.isDir, pwd = HackerGame.state.computer.pwd;
+
+	// doesn't exist
+	ok(! fn("/nonexistingdir"), "Nonexisting file.");
+	
+	// is file but not dir
+	ok(! fn("/bin/tree"), "Existing file but not directory.");
+
+	// root
+	ok(fn("/"), "There really is a root.");
+	ok(fn("/../../"), "And the root is the ultimate begining and end!");
+
+	// is file and dir
+	ok(fn("/bin/"), "/bin/ is dir");
+	ok(fn("/bin"), "/bin is dir");
+
+	HackerGame.state.changeDir("/");
+	ok(fn("bin"), "bin is dir");
+
+	HackerGame.state.changeDir("/bin");
+	ok(! fn("bin"), "bin is not dir from /bin");
+
+	HackerGame.state.changeDir(pwd);
+});
+
+test("util.cleanPath", function () {
+	var fn = HackerGame.util.cleanPath,
+		testStrings = {
+			"/" : "/",
+			"/../": "/",
+			"/..":  "/",
+			"/bin/../": "/",
+			"/bin/..": "/",
+			"/etc/./setts/": "/etc/setts",
+			"/.././etc/../etc/./": "/etc",
+			"bla/ble": "bla/ble",
+			"bla/ble/": "bla/ble",
+			"bla/../ble": "ble",
+			"bla/../ble/": "ble",
+			".": "",
+			"bla/./ble/..": "bla"
+		};
+	$.each(testStrings, function (input, expected) {
+		equal(fn(input), expected, input + " ok.");
+	});
+});
+
+test("util.absPath", function () {
+	var fn = HackerGame.util.absPath;
+	ok(1, "bla")
+});
