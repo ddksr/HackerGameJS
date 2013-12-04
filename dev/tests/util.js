@@ -70,3 +70,23 @@ test("util.fileType", function () {
 	equal(fn("a"), "t", "Text file.");
 	equal(fn(""), "t", "Empty text file.");
 });
+
+test("util.path", function () {
+	var fn = HackerGame.util.path,
+		pwd = HackerGame.state.computer.pwd;
+	deepEqual(fn("/"), [], "Root works.");
+	deepEqual(fn("/bla"), ["bla"], "Root nodes work.");
+	deepEqual(fn("bla"), ["bla"], "Relative path from root works.");
+	deepEqual(fn("/bla/ble"), ["bla", "ble"], "Absolute path works.");
+	deepEqual(fn("bla/ble"), ["bla", "ble"], "Long relative path from root works.");
+
+	HackerGame.state.changeDir("/bin");
+	deepEqual(fn("/"), [], "Root after chdir works.");
+	deepEqual(fn(), ["bin"], "Default (PWD) works.");
+	deepEqual(fn("bla"), ["bin", "bla"], "Longer relative path works.");
+	deepEqual(fn("bla/ble"), ["bin", "bla", "ble"], "Longest relative path works.");
+
+
+	HackerGame.state.changeDir(pwd);
+	deepEqual(fn("bla/ble"), ["bla", "ble"], "After chdir to previous PWD, path works.");
+});

@@ -57,13 +57,13 @@ HackerGame
 		var ret = null,
 			pathString = (rawPathString && 
 						  (rawPathString.charAt(rawPathString.length-1) == "/" ? 
-						   rawPathString.substr(0, rawPathString.length-1) : rawPathString)) 
+						   rawPathString.substr(0, rawPathString.length-2) : rawPathString)) 
 				|| null,
 			pwdPath = hg.state.computer.pwd.split("/").slice(1),
 			path = (pathString && pathString.split("/")) || [];
 		console.log("util.path", [rawPathString]);
 		if (hg.state.computer.pwd == "/") { pwdPath = []; }
-		if (pathString == "/" || (!pathString && hg.state.computer.pwd == "/")) {
+		if (rawPathString == "/" || pathString == "/" || (!pathString && hg.state.computer.pwd == "/")) {
 			ret = [];
 		}
 		else if (path) {
