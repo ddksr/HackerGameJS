@@ -105,3 +105,83 @@ test("util.checkFilePermission", function () {
 	strictEqual(fn("/tmp"), true, "tmp has permission.");
 	strictEqual(fn("/home/bla"), true, "home/bla has permission.");
 });
+
+test("util.pathIterator", function () {
+	var fn = HackerGame.util.pathIterator, status = false;
+	
+	status = false;
+	fn("/", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found root");
+	
+	status = false;
+	fn("/bin", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found /bin");
+	
+	status = false;
+	fn("/bin/..", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found /bin/..");
+
+	status = false;
+	fn("/bin/.", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found /bin/.");
+
+	status = false;
+	fn("/bin/../..", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found /bin/../..");
+
+	status = false;
+	fn("/bin/.././bin/.././bin", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found /bin/.././bin/.././bin");
+
+	status = false;
+	fn("/bin/.././bin/.././bin/", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found /bin/.././bin/.././bin/");
+
+	status = false;
+	fn("bin", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(status, "Found bin from root");
+
+	status = false;
+	fn("/gagagagagagaga", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(! status, "Didn't found /gagagagagagaga");
+	
+	
+	status = false;
+	fn("/bin/gagagagagagaga", function (obj) {
+		status = obj !== undefined;
+	});
+	ok(! status, "Didn't found /bin/gagagagagagaga");
+});
+
+test("util.fileExists", function () {
+	var fn = HackerGame.util.fileExists,
+		fs = HackerGame.state.computer.fs;
+	
+	ok(fn("/") && fs !== undefined, "Root found.");
+	ok(fn("/bin") && fs.bin !== undefined, "/bin found.");
+	ok(fn("/bin/..") && fs !== undefined, "/bin/.. found.");
+	ok(fn(".") && fs !== undefined, ". found.");
+	ok(fn(".././bin") && fs.bin !== undefined, "/.././bin found.");
+	ok(fn(".././bin/") && fs.bin !== undefined, "/.././bin/ found.");
+	ok(fn("../../bin/..") && fs !== undefined, "../../bin/.. found.");
+	ok(fn("./.") && fs !== undefined, "./. found.");
+	
+});
