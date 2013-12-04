@@ -61,3 +61,12 @@ test("util.randResponseTime", function () {
 		ok(val <= 20 && val >= 10, "Random generagor works, " + i + ". experiment.");
 	});
 });
+
+test("util.fileType", function () {
+	var fn = HackerGame.util.fileType;
+	equal(fn({}), "d", "Empty directory");
+	equal(fn({ a: null }), "d", "Non-empty directory");
+	equal(fn(null), "b", "Binary file.");
+	equal(fn("a"), "t", "Text file.");
+	equal(fn(""), "t", "Empty text file.");
+});
