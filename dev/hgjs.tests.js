@@ -7,8 +7,26 @@ var tests = [
 
 (function ($, hg) {
 	var $li = $(document.createElement("li")), 
-		i = 0,
+		iTest = 0,
+		iCallback = 0,
+		defaultCallbackWait = 2000,
+		callbackWait = defaultCallbackWait, // 2000 ms
 		finish = function () {},
+		callbacks = [],
+		nextCallback = function () {
+			callbacks[iCallback].call(null);
+			iCallback += 1;
+
+			if (iCallback >= callbacks.length) {
+				callbacks = [];
+				iCallback = 0;
+			}
+			else {
+				setTimeout(function () {
+					nextCallback();
+				}, callbackWait);
+			}
+		},
 		runTestSuite = function (i) {
 			if (i >= tests.length) { 
 				finish();
@@ -29,13 +47,23 @@ var tests = [
 	};
 	
 	hgTest.next = function () {
-		i += 1;
-		runTestSuite(i);
+		iTest += 1;
+		runTestSuite(iTest);
 	};
 	
 	hgTest.run = function () {
 		$("#qunit,#qunit-fixture").show();
 		$li.empty().remove();
 		runTestSuite(0);
+	};
+
+	hgTest.c = function (fn) {
+		callbacks.push(fn);
+	};
+
+	hgTest.runCallbacks = function (ms) {
+		if (ms) { callbackWait = ms; }
+		else { callbackWait = defaultCallbackWait; }
+		nextCallback();
 	};
 })(jQuery, HackerGame);
