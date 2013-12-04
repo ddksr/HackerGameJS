@@ -175,13 +175,22 @@ test("util.fileExists", function () {
 	var fn = HackerGame.util.fileExists,
 		fs = HackerGame.state.computer.fs;
 	
-	ok(fn("/") && fs !== undefined, "Root found.");
-	ok(fn("/bin") && fs.bin !== undefined, "/bin found.");
-	ok(fn("/bin/..") && fs !== undefined, "/bin/.. found.");
-	ok(fn(".") && fs !== undefined, ". found.");
-	ok(fn(".././bin") && fs.bin !== undefined, "/.././bin found.");
-	ok(fn(".././bin/") && fs.bin !== undefined, "/.././bin/ found.");
-	ok(fn("../../bin/..") && fs !== undefined, "../../bin/.. found.");
-	ok(fn("./.") && fs !== undefined, "./. found.");
+	ok(fn("/") === (fs !== undefined), "Root found.");
+	ok(fn("/bin") === (fs.bin !== undefined), "/bin found.");
+	ok(fn("/bin/..") === (fs !== undefined), "/bin/.. found.");
+	ok(fn(".") === (fs !== undefined), ". found.");
+	ok(fn(".././bin") === (fs.bin !== undefined), "/.././bin found.");
+	ok(fn(".././bin/") === (fs.bin !== undefined), "/.././bin/ found.");
+	ok(fn("../../bin/..") === (fs !== undefined), "../../bin/.. found.");
+	ok(fn("./.") === (fs !== undefined), "./. found.");
 	
+
+	ok(fn("/bin/tree") === (fs.bin.tree !== undefined), "/bin/tree found.");
+	ok(fn("/../bin/../bin/tree") === (fs.bin.tree !== undefined), "/../bin/../bin/tree found.");
+	ok(fn("/etc/hostname") === (fs.etc.hostname !== undefined), "/etc/hostname found.");
+	ok(fn("/bin/./../etc/./hostname") === (fs.etc.hostname !== undefined), "/bin/./../etc/./hostname found.");
+	
+
+	ok(fn("../nonexisting") === (fs.nonexisting !== undefined), "../nonexisting not found.");
+	ok(fn("../bin/nonexisting") === (fs.bin.nonexisting !== undefined), "../bin/nonexisting not found.");
 });

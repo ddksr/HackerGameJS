@@ -12,7 +12,8 @@ HackerGame
 			"bin": {},
 			"home": {},
 			"dev": {},
-			"tmp": {}
+			"tmp": {},
+			"etc": {}
 		},
 		computers = {
 			// Define computers here in format location: { ... properties ... }
@@ -49,6 +50,8 @@ HackerGame
 		if (!computers[name].fs.home[props.user]) { 
 			computers[name].fs.home[props.user] = {};
 		}
+
+		computers[name].fs.etc.hostname = props.hostname;
 	});
 	hg.cons.Computer = function Computer (name, isDefault) {
 		var props = {};
