@@ -1,6 +1,6 @@
 module("simple");
 
-test("Game loaded", function () {
+test("loading", function () {
 	ok(window.HackerGame, "HackerGame loaded");
 
 
@@ -20,7 +20,7 @@ test("Game loaded", function () {
 	ok($.fn.hgBlink, "$(sel).hackerGame loaded.");
 });
 
-test("Game initialized", function () {
+test("initialialization", function () {
 	ok(HackerGame.state, "State loaded.");
 	ok(HackerGame.state.computer, "Computer loaded.");
 	ok(! HackerGame.assignment, "Assignment not loaded.");
@@ -28,7 +28,7 @@ test("Game initialized", function () {
 	ok($("body.loading").length == 0, "Loading finished.");
 });
 
-test("Translations", function () {
+test("translations", function () {
 	var string = "This string doesn't have a translation. Hopefuly. Probably not.";
 	equal(HackerGame.t(string), string, "Translation returned the same string.");
 });

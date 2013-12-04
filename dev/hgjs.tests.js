@@ -1,20 +1,20 @@
 hgTest = {};
 
 var tests = [
-	"simple", "util"
+	"simple", "util", "state",
+	"ass-intro"
 ];
 
 (function ($, hg) {
 	var $li = $(document.createElement("li")), 
 		i = 0,
-		finish = function (i) {
-
-		},
+		finish = function () {},
 		runTestSuite = function (i) {
 			if (i >= tests.length) { 
 				finish();
 				return; 
 			}
+			
 			$.getScript("tests/" + tests[i] + ".js");
 		};
 

@@ -1,6 +1,6 @@
 module("util");
 
-test("util.extend", function () {
+test("extend", function () {
 	var defaultObj = {
 			a: 1,
 			b: 2,
@@ -40,11 +40,11 @@ test("util.extend", function () {
 	deepEqual(HackerGame.util.extend(defaultObj, overObj), resObj, "Object extending works.");
 });
 
-test("util.randIP", function () {
+test("randIP", function () {
 	var ip, 
 		i, 
 		testFun = function (i, seg) {
-			ok(seg > 0 && seg < 256, "IP segment size ok, "+i+". experiment.");
+			ok(seg >= 0 && seg < 256, "IP segment size ok, "+i+". experiment.");
 		};
 	for (i = 0; i < 100; i++) {
 		ip = HackerGame.util.randIP().split(".");
@@ -54,7 +54,7 @@ test("util.randIP", function () {
 	}
 });
 
-test("util.randResponseTime", function () {
+test("randResponseTime", function () {
 	var rand = HackerGame.util.randResponseTime(10, 20),
 		rands = [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()];
 	$.each(rands, function (i, val) {
@@ -62,7 +62,7 @@ test("util.randResponseTime", function () {
 	});
 });
 
-test("util.fileType", function () {
+test("fileType", function () {
 	var fn = HackerGame.util.fileType;
 	equal(fn({}), "d", "Empty directory");
 	equal(fn({ a: null }), "d", "Non-empty directory");
@@ -71,7 +71,7 @@ test("util.fileType", function () {
 	equal(fn(""), "t", "Empty text file.");
 });
 
-test("util.path", function () {
+test("path", function () {
 	var fn = HackerGame.util.path,
 		pwd = HackerGame.state.computer.pwd;
 	deepEqual(fn("/"), [], "Root works.");
@@ -91,7 +91,7 @@ test("util.path", function () {
 	deepEqual(fn("bla/ble"), ["bla", "ble"], "After chdir to previous PWD, path works.");
 });
 
-test("util.checkFilePermission", function () {
+test("checkFilePermission", function () {
 	var fn = HackerGame.util.checkFilePermission;
 
 	strictEqual(fn("bla/bla"), null, "Root no permission.");
@@ -106,7 +106,7 @@ test("util.checkFilePermission", function () {
 	strictEqual(fn("/home/bla"), true, "home/bla has permission.");
 });
 
-test("util.pathIterator", function () {
+test("pathIterator", function () {
 	var fn = HackerGame.util.pathIterator, status = false;
 	
 	status = false;
@@ -171,7 +171,7 @@ test("util.pathIterator", function () {
 	ok(! status, "Didn't found /bin/gagagagagagaga");
 });
 
-test("util.fileExists", function () {
+test("fileExists", function () {
 	var fn = HackerGame.util.fileExists,
 		fs = HackerGame.state.computer.fs;
 	
@@ -195,7 +195,7 @@ test("util.fileExists", function () {
 	ok(fn("../bin/nonexisting") === (fs.bin.nonexisting !== undefined), "../bin/nonexisting not found.");
 });
 
-test("util.isDir", function () {
+test("isDir", function () {
 	var fn = HackerGame.util.isDir, pwd = HackerGame.state.computer.pwd;
 
 	// doesn't exist
@@ -221,7 +221,7 @@ test("util.isDir", function () {
 	HackerGame.state.changeDir(pwd);
 });
 
-test("util.cleanPath", function () {
+test("cleanPath", function () {
 	var fn = HackerGame.util.cleanPath,
 		testStrings = {
 			"/" : "/",
@@ -243,7 +243,7 @@ test("util.cleanPath", function () {
 	});
 });
 
-test("util.absPath", function () {
+test("absPath", function () {
 	var fn = HackerGame.util.absPath, 
 		pwd = HackerGame.state.computer.pwd,
 		testStrings = {
@@ -254,5 +254,7 @@ test("util.absPath", function () {
 	$.each(testStrings, function (input, expected) {
 		equal(fn(input), expected, input + " ok.");
 	});
-	
+	HackerGame.state.changeDir(pwd);
 });
+
+hgTest.next();

@@ -151,6 +151,9 @@ HackerGame
 								place = [hg.state.computer.fs];
 							}
 						}
+						else if (place[place.length-1] === undefined) {
+							return false;
+						}
 						else { 
 							place.push(place[place.length-1][path[i]]);
 						}

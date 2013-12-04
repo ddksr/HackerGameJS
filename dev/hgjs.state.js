@@ -120,47 +120,79 @@ HackerGame
 		return res;
 	};
 	hg.cons.State.prototype.makeDir = function (fold) {
-		var er = false;
+		var path, er = false, place = this.computer.fs;
 		console.log("State.makeDir", [fold]);
-		this.computer.hasChanged = true;
-		hg.util.pathIterator(null, function (cont) {
-			if (cont[fold]) {
-				er = "Directory already exists!";
-			}
-			else if (/[\/\\ ]+/.test(fold)) { er = "Not a valid name"; }
-			else if (/^\./.test(fold)) { er = "First char cannot be dor (.)"; }
-			else {
-				cont[fold] = {};
-			}
-		});
-		return er;
-	};
-	hg.cons.State.prototype.removeFile = function (fullPath) {
-		var path = hg.util.path(fullPath),
-			place = hg.state.computer.fs,
-			last = path[path.length -1];
-		console.log("State.removeFile", [fullPath]);
-		this.computer.hasChanged = true;
-		if (path.length == 1) {
-			delete place[last];
-		}
+		if (typeof(fold) != "string") { er = "Path not valid!"; }
 		else {
-			$.each(path, function (i, obj) {
-				place = place[obj];
-				if (i == path.length - 2) {
-					if (typeof(place) == "object" && place[last] !== undefined) { 
-						delete place[last]; 
+			path = fold;
+			if (path.charAt(0) != "/") { path = hg.util.absPath(path); }
+			path = hg.util.cleanPath(path);
+			path = path.split("/").slice(1);
+			$.each(path, function (i, elt) {
+				if (i >= path.length - 1) {
+					if (/^\./.test(fold) || /^\./.test(fold)) {
+						er = "Not a valid name";
+					}
+					else if (place[elt] === undefined) {
+						place[elt] = {};
+						hg.state.computer.hasChanged = true;
 					}
 					else {
-						return false;
+						er = "Directory already exists!";
 					}
+				}
+				else if (place[elt] === undefined) {
+					er = "Path doesn't exist!";
+				}
+				else if (place[elt] !== null && typeof(place[elt]) == "object") {
+					place = place[elt];
+				}
+				else {
+					er = "Path doesn't exist!";
+					return -1;
 				}
 			});
 		}
-		if (! hg.util.isDir(hg.state.computer.pwd)) {
-			hg.state.changeDir("/");
+		return er;
+	};
+	hg.cons.State.prototype.removeFile = function (filePath) {
+		var path, er = false, place = this.computer.fs;
+		console.log("State.removeFile", [filePath]);
+		if (typeof(filePath) != "string") { er = "Path not valid!"; }
+		else {
+			path = filePath;
+			if (path.charAt(0) != "/") { path = hg.util.absPath(path); }
+
+			path = hg.util.cleanPath(path);
+			path = path.split("/").slice(1);
+			$.each(path, function (i, elt) {
+				if (i >= path.length - 1) {
+					if (place[elt] !== undefined) {
+						delete place[elt];
+						hg.state.computer.hasChanged = true;
+						if (! hg.util.fileExists(hg.state.computer.pwd)) {
+							hg.state.changeDir("/");
+						}
+						// TODO: check if PWD exists!!!
+					}
+					else {
+						er = "Directory already exists!";
+					}
+				}
+				else if (place[elt] === undefined) {
+					er = "Path doesn't exist!";
+				}
+				else if (place[elt] !== null && typeof(place[elt]) == "object") {
+					place = place[elt];
+				}
+				else {
+					er = "Path doesn't exist!";
+					return -1;
+				}
+			});
 		}
-		return true;
+		return er;
+
 	};
 	hg.cons.Task = function Task(taskObj, taskHtml) {
 		console.log("new Task", [taskObj, taskHtml]);
@@ -390,4 +422,3 @@ HackerGame
 		}];
 	};
 })(jQuery, HackerGame);
-
