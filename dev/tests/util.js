@@ -90,3 +90,18 @@ test("util.path", function () {
 	HackerGame.state.changeDir(pwd);
 	deepEqual(fn("bla/ble"), ["bla", "ble"], "After chdir to previous PWD, path works.");
 });
+
+test("util.checkFilePermission", function () {
+	var fn = HackerGame.util.checkFilePermission;
+
+	strictEqual(fn("bla/bla"), null, "Root no permission.");
+	strictEqual(fn(false), null, "False as input is forbidden.");
+	strictEqual(fn(""), null, "Empty string as input is forbidden.");
+	strictEqual(fn(["bla"]), null, "Array as input is forbidden.");
+
+	strictEqual(fn("/"), false, "Root no permission.");
+	strictEqual(fn("/bin"), false, "Bin no permission.");
+	strictEqual(fn("/home"), false, "Home no permission.");
+	strictEqual(fn("/tmp"), true, "tmp has permission.");
+	strictEqual(fn("/home/bla"), true, "home/bla has permission.");
+});

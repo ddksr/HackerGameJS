@@ -82,9 +82,13 @@ HackerGame
 		}
 		return ret;
 	};
-	hg.util.checkFilePermission = function (path) {
-		console.log("util.checkFilePermission", [path]);
-		return $.inArray(path, [
+	hg.util.checkFilePermission = function (absPath) {
+		console.log("util.checkFilePermission", [absPath]);
+		if (typeof(absPath) != "string" || absPath.charAt(0) !== "/") {
+			console.log("util.checkFilePermission needs an absolute path!");
+			return null;
+		}
+		return $.inArray(absPath, [
 			"/",
 			"/bin",
 			"/home"
