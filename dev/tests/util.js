@@ -244,6 +244,15 @@ test("util.cleanPath", function () {
 });
 
 test("util.absPath", function () {
-	var fn = HackerGame.util.absPath;
-	ok(1, "bla")
+	var fn = HackerGame.util.absPath, 
+		pwd = HackerGame.state.computer.pwd,
+		testStrings = {
+			"tralala": "/bin/tralala",
+			"bin/bla": "/bin/bin/bla"
+		};
+	HackerGame.state.changeDir("/bin");
+	$.each(testStrings, function (input, expected) {
+		equal(fn(input), expected, input + " ok.");
+	});
+	
 });
