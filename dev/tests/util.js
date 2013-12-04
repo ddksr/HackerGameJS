@@ -39,3 +39,17 @@ test("util.extend", function () {
 		};
 	deepEqual(HackerGame.util.extend(defaultObj, overObj), resObj, "Object extending works.");
 });
+
+test("util.randIP", function () {
+	var ip, 
+		i, 
+		testFun = function (i, seg) {
+			ok(seg > 0 && seg < 256, "IP segment size ok, "+i+". experiment.");
+		};
+	for (i = 0; i < 100; i++) {
+		ip = HackerGame.util.randIP().split(".");
+		ok(ip.length == 4, "Correct IP size, "+i+". experiment.");
+		$.each(ip, testFun);
+		ok($.inArray(ip[0], [10,127,254,255,1,2,169,172,192]) == -1, "First IP segment ok, "+i+". experiment.");
+	}
+});
