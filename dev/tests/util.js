@@ -53,3 +53,11 @@ test("util.randIP", function () {
 		ok($.inArray(ip[0], [10,127,254,255,1,2,169,172,192]) == -1, "First IP segment ok, "+i+". experiment.");
 	}
 });
+
+test("util.randResponseTime", function () {
+	var rand = HackerGame.util.randResponseTime(10, 20),
+		rands = [rand(), rand(), rand(), rand(), rand(), rand(), rand(), rand()];
+	$.each(rands, function (i, val) {
+		ok(val <= 20 && val >= 10, "Random generagor works, " + i + ". experiment.");
+	});
+});
