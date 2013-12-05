@@ -539,6 +539,3 @@ HackerGame = {};
 	
 })(jQuery, HackerGame);
 
-
-
-
