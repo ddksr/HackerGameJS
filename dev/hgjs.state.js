@@ -15,7 +15,7 @@ HackerGame
 			$hint = $task.find(".hint").clone();
 			
 			if ($help.length > 0) {
-				$task.find(".help").replaceWith($btn.addClass("help").text("Help").clone().popover({
+				$task.find(".help").replaceWith($btn.clone().addClass("help").text("Help").popover({
 					content: $help.html(),
 					title: hg.t("Help"),
 					placement: "top",
@@ -23,7 +23,7 @@ HackerGame
 				}));
 			}
 			if ($hint.length > 0) {
-				$task.find(".hint").replaceWith($btn.addClass("hint").text("Hint").clone().popover({
+				$task.find(".hint").replaceWith($btn.clone().addClass("hint").text("Hint").popover({
 					content: $help.html(),
 					title: hg.t("Hint"),
 					placement: "bottom",
@@ -212,6 +212,9 @@ HackerGame
 		this.set = taskObj.set || function () {};
 		this.unset = taskObj.unset || function () {};
 		this.points = taskObj.points;
+
+		hg.assignment.maxTaskPoints += this.points;
+
 		this.html = taskHtml || "";
 	};
 	hg.cons.Task.prototype.switchTask = function (previousTask) {
@@ -237,6 +240,7 @@ HackerGame
 		this.evaluate = function () { return true; };
 		this.queue = [];
 
+		this.maxTaskPoints = 0;
 		this.bestScore = hg.state.hasCompletedAssignment(assignment);
 		
 		hg.stats.currentScore = 0;

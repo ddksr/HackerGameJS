@@ -12,9 +12,7 @@ var tests = [
 		defaultCallbackWait = 1000,
 		callbackWait = defaultCallbackWait,
 		specificCallbackWait = {},
-		finish = function () {
-			alert("Tests finished!");
-		},
+		finish = function () {},
 		callbacks = [],
 		nextCallback = function () {
 			callbacks[iCallback].call(null);

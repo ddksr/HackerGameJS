@@ -1,5 +1,10 @@
 module("assignment/intro");
 
+// This needs to be called if not thw whole module is tesetd
+var nextTest = function () {
+	hgTest.next();
+};
+
 asyncTest("gameflow", function () {
 	var a = HackerGame.action,
 	c = hgTest.addCallback, 
@@ -12,7 +17,9 @@ asyncTest("gameflow", function () {
 			hg.term.focus(true); 
 			hg.term.exec(text); 
 		};
-	
+
+	nextTest = function () {};
+
 	c(function () {
 		a.input("editor");
 	});
@@ -199,6 +206,7 @@ asyncTest("gameflow", function () {
 	c(function () {
 		equal(completedTasks(),  8, "8. task OK.");
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
+		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints);
 		
 	});
 
@@ -268,6 +276,23 @@ asyncTest("gameflow", function () {
 	c(function () {
 		t("echo bla");
 	});
+
+	// CHECK HELP
+	c(function () {
+		$("#tab-task li:last").find(".help").click();
+	});
+	c(function () {
+		$("#tab-task li:last").find(".help").click();
+	});
+	
+	// Check HINT
+	c(function () {
+		$("#tab-task li:last").find(".hint").click();
+	});
+	c(function () {
+		$("#tab-task li:last").find(".hint").click();
+	});
+
 	c(function () {
 		t("echo hello world!!!");
 	});
@@ -289,6 +314,15 @@ asyncTest("gameflow", function () {
 	c(function () {
 		t("tree");
 	});
+
+	// Check HINT again
+	c(function () {
+		$("#tab-task li:last").find(".hint").click();
+	});
+	c(function () {
+		$("#tab-task li:last").find(".hint").click();
+	});
+
 	c(function () {
 		t("tree /home");
 	});
@@ -297,12 +331,17 @@ asyncTest("gameflow", function () {
 	});
 
 	c(function () {
+		var penalties =  parseInt(0.75 * 10, 10) + parseInt(0.75 * 25, 10);
 		equal(completedTasks(),  8, "8. task OK.");
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
 		equal($("#stats-completed-assignments").text(), "1/1", "Completed assignments in DOM.");
+
+		// HINT PENALTY
+		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints - penalties);
 	});
 
 	hgTest.runCallbacks(1000);
 });
 
 
+nextTest();

@@ -1,5 +1,8 @@
 module("state");
 
+var nextTest = function () {
+	hgTest.next();
+};
 
 test("filesystem", function () {
 	var state = HackerGame.state, 
@@ -133,6 +136,8 @@ test("stats", function () {
 asyncTest("pages", function () {
 	var a = HackerGame.action, c = hgTest.addCallback;
 
+	nextTest = function () {};
+
 	ok($("#link-page-game").is(".disabled"), "Game link disabled");
 
 	c(function () {
@@ -165,3 +170,4 @@ asyncTest("pages", function () {
  
 
 
+nextTest();
