@@ -94,6 +94,17 @@ HackerGame
 
 		this.place = this.computer.fs;
 	};
+	hg.cons.State.prototype.hasCompletedAssignment = function (assId) {
+		console.log("State.hasCompletedAssignment", [assId]);
+		var bestScore, $elt = $("table.assignment-list .ass-"+assId);
+		if ($elt.length > 0) {
+			bestScore = $elt.find(".ass-best-score").text();
+			if (bestScore && bestScore != "-") {
+				return parseInt(bestScore, 10);
+			}
+		}
+		return 0;		
+	};
 	hg.cons.State.prototype.getDefaultComputer = function () {
 		console.log("State.getDefaultComputer", []);
 		return this.computer.isDefault ? 
@@ -215,6 +226,7 @@ HackerGame
 		hg.assignment.evaluate = this.evaluate;
 	};
 	hg.cons.Assignment = function Assignment(assignment, loadCallback) {
+		
 		console.log("new Assignment", [assignment, loadCallback]);
 		this.id = assignment;
 		this.currentTask = -1;
@@ -224,6 +236,13 @@ HackerGame
 		this.startTime = 0;
 		this.evaluate = function () { return true; };
 		this.queue = [];
+
+		this.bestScore = hg.state.hasCompletedAssignment(assignment);
+		
+		hg.stats.currentScore = 0;
+		hg.stats.completedTasks = 0;
+
+
 		loadAssignment(assignment, loadCallback);
 	};
 	hg.cons.Assignment.prototype.startTimer = function () {
@@ -269,9 +288,12 @@ HackerGame
 			trials = $tr.find(".ass-trials").text();
 		console.log("Assignment.complete", []);
 		hg.timer.stop();
-		hg.stats.increment({
-			completedAssignments: 1
-		});
+
+		if (this.bestScore == 0) {
+			hg.stats.increment({
+				completedAssignments: 1
+			});
+		}
 
 		$tr.find(".ass-name a").addClass("completed-assignment");
 		

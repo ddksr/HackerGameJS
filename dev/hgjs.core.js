@@ -18,6 +18,7 @@ HackerGame = {};
 		},
 		startAssignment = function () { // Start workign on assignment
 			console.log("core:startAssignment", []);
+			hg.stats.refresh();
 			hg.assignment.isRunning = true;
 			hg.assignment.nextTask();
 			hg.assignment.startTimer();
@@ -95,12 +96,15 @@ HackerGame = {};
 			
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
-				var $tr = $(document.createElement("tr")).addClass("ass-"+ass.id),
+				var $tr = $(document.createElement("tr")).addClass("assignment").addClass("ass-"+ass.id),
 					$tdName = $(document.createElement("td")).addClass("ass-name"),
 					$tdCurrent = $(document.createElement("td")).addClass("ass-current-score"),
 					$tdBest = $(document.createElement("td")).addClass("ass-best-score"),
 					$tdTrials = $(document.createElement("td")).addClass("ass-trials"),
 					$a = $(document.createElement("a"));
+				
+				$tr.attr("data-id", ass);
+
 				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
 				$tdName.append($a);
 
@@ -273,7 +277,7 @@ HackerGame = {};
 			if (hg.mail.message && ! hg.ind.modal) {
 				img = hg.mail.message.isSensei ? "anon-small" : "any";
 				img = hg.config.basePath + hg.config.imagesPath + img + ".png";
-				title = "Message from <strong>" + hg.mail.message.sender + "</strong>";
+				title = hg.t("Message from <strong>" + hg.mail.message.sender + "</strong>");
 				$("#mailIcon").attr("src", img).css({
 					display: "block",
 					margin: "5px auto 0px auto"
