@@ -9,9 +9,11 @@ var tests = [
 	var $li = $(document.createElement("li")), 
 		iTest = 0,
 		iCallback = 0,
-		defaultCallbackWait = 2000,
-		callbackWait = defaultCallbackWait, // 2000 ms
-		finish = function () {},
+		defaultCallbackWait = 1000,
+		callbackWait = defaultCallbackWait,
+		finish = function () {
+			
+		},
 		callbacks = [],
 		nextCallback = function () {
 			callbacks[iCallback].call(null);
@@ -20,6 +22,7 @@ var tests = [
 			if (iCallback >= callbacks.length) {
 				callbacks = [];
 				iCallback = 0;
+				start(); // qunit: start async testing
 			}
 			else {
 				setTimeout(function () {

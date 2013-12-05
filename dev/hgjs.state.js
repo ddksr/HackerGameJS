@@ -298,7 +298,7 @@ HackerGame
 	hg.stats = {
 		refresh: function (exclude) {
 			var overallAssignments = hg.config.assignments.length,
-				tasksInAssignment = hg.assignment.tasks.length;
+				tasksInAssignment = hg.assignment ? hg.assignment.tasks.length : 0;
 			console.log("stats.refresh", [exclude]);
 			if (!exclude) { exclude = []; }
 			// TODO: can we do something with exclude or is it just in the way?
@@ -322,7 +322,7 @@ HackerGame
 			if (typeof(stat) == "object") {
 				$.each(stat, function (key, inc) {
 					if (hg.stats[key] !== undefined && !$.isFunction(hg.stats[key])) {
-						hg.stats[key] += inc;
+						hg.stats[key] += (parseInt(inc, 10) || parseFloat(inc, 10)) ? inc : 0;
 					}
 				});
 			}
@@ -340,12 +340,14 @@ HackerGame
 
 	// Actions (which user can do)
 	hg.action.page = function (pageId) {
-		var prevPageId = $("#page-links .active").attr("id").substr(10),
-			pageDisabled = $("#link-page-" + pageId).is(".disabled"),
+		var prevPageIdRaw = $("#page-links .active").attr("id"),
+			prevPageId = prevPageIdRaw && prevPageIdRaw.substr(10),
+			pageDisabled = $("#link-page-" + pageId+".disabled").length > 0,
 			showPage = function () {
 				$("#link-page-" + pageId).addClass("active"); 
 				$("#page-" + pageId).show("slow");
 			};
+		
 		console.log("action.page", [pageId]);
 		if (pageDisabled) { return; }
 		if (prevPageId) { 
