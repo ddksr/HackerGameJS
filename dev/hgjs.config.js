@@ -13,10 +13,15 @@
 		assignmentsPath: "ass/",
 		imagesPath: "img/",
 		assignments: [
+			"How to play",
 			{ 
 				id: "intro",
 				name: "Introduction to the terminal"
-			}
+			},
+			{
+				id: "move",
+				name: "How to move around"
+			},
 		],
 		user: {
 			email: "",

@@ -96,26 +96,37 @@ HackerGame = {};
 			
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
-				var $tr = $(document.createElement("tr")).addClass("assignment").addClass("ass-"+ass.id),
-					$tdName = $(document.createElement("td")).addClass("ass-name"),
+				var $tr = $(document.createElement("tr")),
+					$tdName = $(document.createElement("td")),
 					$tdCurrent = $(document.createElement("td")).addClass("ass-current-score"),
 					$tdBest = $(document.createElement("td")).addClass("ass-best-score"),
 					$tdTrials = $(document.createElement("td")).addClass("ass-trials"),
 					$a = $(document.createElement("a"));
 				
-				$tr.attr("data-id", ass);
+				if (ass && typeof(ass) == "object") {
+					$tr.addClass("assignment")
+						.addClass("ass-" + ass.id)
+						.attr("data-id", ass.id);
 
-				$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
-				$tdName.append($a);
+					$a.attr("href", "#/assignment/" + ass.id).text(hg.t(ass.name));
+					$tdName.addClass("ass-name").append(" - ").append($a);
+					
+					$tdCurrent.text("-");
+					$tdBest.text("-");
+					$tdTrials.text("0");
 
-				$tdCurrent.text("-");
-				$tdBest.text("-");
-				$tdTrials.text("0");
 
+					$tr.append($tdName).append($tdCurrent).append($tdBest).append($tdTrials);
 
-				$tr.append($tdName).append($tdCurrent).append($tdBest).append($tdTrials);
-
+				}
+				else {
+					$tdName.text(hg.t(ass))
+						.addClass("assignment-separator")
+						.attr("colspan", 4);
+					$tr.append($tdName);
+				}
 				$("table.assignment-list").append($tr);
+				
 			});
 			
 			return $obj;

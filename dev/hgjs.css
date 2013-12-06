@@ -117,3 +117,8 @@ body.loading .loading-gif {
 .text-right {
 	text-align: right;
 }
+
+.assignment-separator {
+	font-weight: bold;
+	text-transform: uppercase;
+}
