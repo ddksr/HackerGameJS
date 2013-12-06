@@ -12,7 +12,9 @@ var tests = [
 		defaultCallbackWait = 1000,
 		callbackWait = defaultCallbackWait,
 		specificCallbackWait = {},
-		finish = function () {},
+		finish = function () {
+			// TODO: check why this gets called so often
+		},
 		callbacks = [],
 		nextCallback = function () {
 			callbacks[iCallback].call(null);

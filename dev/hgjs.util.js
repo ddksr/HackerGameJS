@@ -83,8 +83,15 @@ HackerGame
 		}
 		return ret;
 	};
-	hg.util.checkFilePermission = function (absPath) {
-		console.log("util.checkFilePermission", [absPath]);
+	hg.util.checkFilePermission = function (absPath, totalTest) {
+		console.log("util.checkFilePermission", [absPath, totalTest]);
+		if (totalTest) {
+			if (absPath.charAt(0) != "/") {
+				absPath = hg.util.absPath(absPath);
+			}
+			absPath = hg.util.cleanPath(absPath);
+			return hg.util.checkFilePermission(absPath);
+		}
 		if (typeof(absPath) != "string" || absPath.charAt(0) !== "/") {
 			console.log("util.checkFilePermission needs an absolute path!");
 			return null;
@@ -151,10 +158,10 @@ HackerGame
 								place = [hg.state.computer.fs];
 							}
 						}
-						else if (place[place.length-1] === undefined) {
-							return false;
-						}
-						else { 
+						else {
+							if (place[place.length-1] === undefined) {
+								return false;
+							}
 							place.push(place[place.length-1][path[i]]);
 						}
 						iterator(i+1);
@@ -165,6 +172,79 @@ HackerGame
 		console.log("util.pathIterator", [dir, fn]);
 		if (path.length == 0) { fn(place[place.length-1]); }
 		else if (path) { iterator(-1); }
+
+		return true;
+	};
+
+	hg.util.getFile = function (pathToFile) {
+		var filename, dir, status, filePath;
+		if (pathToFile == "/") {
+			return ["/", "", hg.state.computer.fs];
+		}
+
+
+		if (pathToFile.charAt(0) != "/") {
+			pathToFile = hg.util.absPath(pathToFile);
+		}
+		pathToFile = hg.util.cleanPath(pathToFile);
+		
+		pathToFile = pathToFile.split("/");
+		
+		filename = pathToFile[pathToFile.length - 1];
+		pathToFile = pathToFile.slice(0, pathToFile.length - 1);
+		filePath = pathToFile.join("/");
+		if (! filePath) { filePath = "/"; }
+		
+		status = hg.util.pathIterator(filePath, function (lastDir) {
+			dir = lastDir;
+		});
+
+		if (status && dir) {
+			if (!filename) {
+				return [filePath, "", dir];
+			}
+			if (dir[filename] !== undefined) {
+				return [filePath, filename, dir[filename]];
+			}
+		}
+
+		return null;
+	};
+
+	hg.util.setFile = function (pathToFile, content) {
+		var filename, dir, status, filePath;
+	
+		if (pathToFile.charAt(0) != "/") {
+			pathToFile = hg.util.absPath(pathToFile);
+		}
+		pathToFile = hg.util.cleanPath(pathToFile);
+		
+		if (!hg.util.checkFilePermission(pathToFile)) {
+			return null; // not allowed
+		}
+		
+
+		pathToFile = pathToFile.split("/");
+		
+		filename = pathToFile[pathToFile.length - 1];
+		pathToFile = pathToFile.slice(0, pathToFile.length - 1);
+		filePath = pathToFile.join("/");
+
+		if (!filePath) { filePath = "/"; }
+		
+		status = hg.util.pathIterator(filePath, function (lastDir) {
+			dir = lastDir;
+		});
+		if (status && dir) {
+			dir[filename] = content;
+			hg.state.computer.hasChanged = true;
+			if (! hg.util.fileExists(hg.state.computer.pwd)) {
+				// If something happens to PWD, go to root
+				hg.state.changeDir("/");
+			}
+			return true;
+		}
+		return false;
 	};
 
 	// ===================

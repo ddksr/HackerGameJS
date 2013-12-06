@@ -205,6 +205,71 @@ HackerGame
 		return er;
 
 	};
+	hg.cons.State.prototype.openFile = function (path) {
+		var file = hg.util.getFile(path);
+		console.log("State.openFile", [path]);
+		if (file) {
+			return file[3];
+		}
+		return false;
+	};
+	hg.cons.State.prototype.saveFile = function (path, content) {
+		console.log("State.saveFile", [path, content]);
+		return hg.util.setFile(path, content);
+	};
+	
+	hg.cons.State.prototype.emptyTmp = function () {
+		hg.util.setFile("/tmp", {});
+	};
+
+	hg.cons.State.prototype.copy = function (src, dst, move) {
+		var from = hg.util.getFile(src), to;
+		console.log("State.copy", [src, dst, move]);
+		if (! from) { return false; }
+		if (move && !hg.util.checkFilePermission(src, true)) {
+			return null;
+		}
+		if (hg.util.isDir(dst)) {
+			to = hg.util.getFile(dst);
+			if (to) {
+				if (move || from[2] === null || typeof(from[2]) != "object") {
+					to[2][from[1]] = from[2];
+				}
+				else {
+					// Deep copy
+					to[2][from[1]] = jQuery.extend(true, {}, from[2]);
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			if (move || from[2] === null || typeof(from[2]) != "object") {
+				hg.util.setFile(dst, from[2]);
+			}
+			else {
+				// Deep copy
+				hg.util.setFile(dst,jQuery.extend(true, {}, from[2])); 
+			}
+		}
+		if (move) {
+			hg.state.removeFile(src);
+		}
+
+		hg.state.computer.hasChanged = true;
+		if (! hg.util.fileExists(hg.state.computer.pwd)) {
+			// If something happens to PWD, go to root
+			hg.state.changeDir("/");
+		}
+		return true;
+	};
+
+	hg.cons.State.prototype.move = function (src, dst) {
+		console.log("State.move", [src, dst]);
+		return hg.state.copy(src, dst, true);
+	};
+
 	hg.cons.Task = function Task(taskObj, taskHtml) {
 		console.log("new Task", [taskObj, taskHtml]);
 		this.id = taskObj.id || null;

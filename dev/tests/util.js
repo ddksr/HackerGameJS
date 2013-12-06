@@ -257,4 +257,117 @@ test("absPath", function () {
 	HackerGame.state.changeDir(pwd);
 });
 
+test("getFile", function () {
+	var hg = HackerGame,
+		fn = hg.util.getFile,
+		fs = hg.state.computer.fs,
+		pwd = hg.state.computer.pwd,
+		testObj = {
+			"/": ["/", "", fs],
+			"/bin": ["/", "bin", fs.bin],
+			"/../": ["/", "", fs],
+			"../bin": ["/", "bin", fs.bin],
+			"../bin/tree": ["/bin", "tree", null],
+			"/etc/hostname": ["/etc", "hostname", fs.etc.hostname],
+			"getFile/test1": ["/tmp/getFile", "test1", {}],
+			"getFile": ["/tmp", "getFile", {"test1": {}}],
+			"getFile/./test1/../../../bin": ["/", "bin", fs.bin]
+		};
+	hg.state.changeDir("/tmp");
+	hg.state.makeDir("/tmp/getFile");
+	hg.state.makeDir("/tmp/getFile/test1");
+	$.each(testObj, function (toTest, expected) {
+		deepEqual(fn(toTest), expected, "Get " + toTest);
+	});
+	hg.state.changeDir(pwd);
+});
+
+test("setFile", function () {
+	var hg = HackerGame,
+		fn = hg.util.getFile,
+		fs = hg.state.computer.fs,
+		pwd = hg.state.computer.pwd,
+		status = false;
+	hg.state.makeDir("/tmp/setFile");
+	hg.state.changeDir("/tmp/setFile");
+
+	status = hg.util.setFile("/", "bla");
+	strictEqual(status, null, "Cannot overwrite root.");
+	ok(fs != "bla", "Double check root.");
+
+	hg.state.computer.hasChanged = false;
+	status = hg.util.setFile("/bin", "bla");
+	strictEqual(status, null, "Cannot overwrite protected files (absolute path).");
+	ok(fs.bin != "bla", "Double check /bin.");
+
+	status = hg.util.setFile("../../bin", "bla");
+	strictEqual(status, null, "Cannot overwrite protected files (relative path).");
+	ok(fs.bin != "bla", "Triple check /bin.");
+
+	// set on root
+	status = hg.util.setFile("/setFile", "bla");
+	strictEqual(status, true, "Seting a file on root.");
+	strictEqual(fs.setFile, "bla", "Check new file on root.");
+	ok(hg.state.computer.hasChanged, "State changed");
+	hg.state.removeFile("/setFile");
+	strictEqual(fs.setFile, undefined, "Removed file.");
+
+	// set on nonexisting path
+	status = hg.util.setFile("/tmp/setFile/hoho0/hoho1", {"bla": "bla"});
+	strictEqual(status, false, "Seting a file on nonexistant path.");
+
+
+	// set folder (abs)
+	status = hg.util.setFile("/tmp/setFile/hoho1", {"bla": "bla"});
+	strictEqual(status, true, "Seting a new dir on absolute path.");
+	deepEqual(fs.tmp.setFile.hoho1, {"bla": "bla"}, "Check new dir on absolute path.");
+
+
+	// set folder (rel)
+	status = hg.util.setFile("hoho2", {"bla": "bla"});
+	strictEqual(status, true, "Seting a new dir on relative path.");
+	deepEqual(fs.tmp.setFile.hoho2, {"bla": "bla"}, "Check new dir on relative path.");
+	strictEqual(fs.tmp.setFile.hoho2.bla, "bla", "Check file in new dir on relative path.");
+
+	// set empty folder (rel)
+	status = hg.util.setFile("../setFile/./hoho3", {});
+	strictEqual(status, true, "Seting a new empty dir on relative path.");
+	deepEqual(fs.tmp.setFile.hoho3, {}, "Check new empty dir on relative path.");
+
+	// set binary (abs)
+	status = hg.util.setFile("/tmp/setFile/bin1", null);
+	strictEqual(status, true, "Seting binary on abs path.");
+	strictEqual(fs.tmp.setFile.bin1, null, "Binary on abs path correct.");
+
+	// set binary (rel)
+	status = hg.util.setFile("bin2", null);
+	strictEqual(status, true, "Seting binary on rel path.");
+	strictEqual(fs.tmp.setFile.bin2, null, "Binary on rel path correct.");
+
+	// set text (abs)
+	status = hg.util.setFile("/tmp/setFile/txt1", "bla");
+	strictEqual(status, true, "Seting text file on abs path.");
+	strictEqual(fs.tmp.setFile.txt1, "bla", "Text file on abs path correct.");
+
+	// set text (rel)
+	status = hg.util.setFile("/tmp/setFile/txt2", "bla");
+	strictEqual(status, true, "Seting text file on relative path.");
+	strictEqual(fs.tmp.setFile.txt2, "bla", "Text file on relative path correct.");
+
+	// check overwriting
+	status = hg.util.setFile("/tmp/setFile/txt2", "txt2 - bla");
+	strictEqual(status, true, "Overwriting text file OK.");
+	strictEqual(fs.tmp.setFile.txt2, "txt2 - bla", "Checked overwriting.");
+
+	// remove under
+	hg.state.makeDir("setFileUnder");
+	hg.state.changeDir("setFileUnder");
+	var x = hg.util.setFile("../", {});
+	deepEqual(fs.tmp.setFile, {}, "Under removed");
+	strictEqual(hg.state.computer.pwd, "/", "PWD = root");
+
+	hg.state.changeDir(pwd);
+});
+
+
 hgTest.next();
