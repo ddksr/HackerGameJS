@@ -22,7 +22,9 @@ HackerGame
 			"d": "directory",
 			"t": "text"
 		};
-	hg.util.extend = function (objDef, objOver) {
+
+	hg.util.extend = function (objDef, objOver) { 
+		// TODO: check if you can replace with native jQuery's
 		var obj = {};
 		console.log("util.extend", [objDef, objOver]);
 		$.each(objDef, function (key, _) {
@@ -38,6 +40,70 @@ HackerGame
 		});
 		return obj;
 	};
+
+	hg.util.parseInput = function (input) {
+		var segments = input.match(/(\w+) *(.*)/),
+			argsString = "",
+			rawArgsString = "",
+			args = [],
+			i = 0,
+			n = 0,
+			from = 0,
+			to = 0,
+			sep = null,
+			chr,
+			parseArg = function (trim) {
+				// trim spaces before from
+				while (trim && argsString.charAt(from) == ' ') {
+					from++;
+				}
+				
+				args.push(argsString.substring(from, to));
+				from = to + 1;
+				i = i+1;
+				sep = null;
+			},
+			command = null;
+		if (segments !== null) {
+			command = segments[1];
+			argsString = segments[2];
+			n = argsString.length;
+
+			while (i < n) {
+				chr = argsString.charAt(i);
+				to = i;
+				if (chr == '\'' || chr == '"') { // char can be a seperator
+					if (sep) {
+						if (chr === sep) { // seperator close
+							parseArg();
+						}
+						// else do nothing: chr is just a char between two seperators
+					}
+					else { // seperator start
+						sep = chr;
+						from = i + 1;
+					}
+				}
+				else if (!sep && chr == ' ') {
+					parseArg(true);
+				}
+				i++;
+			}
+			if (sep) {
+				// This must not happen, if the input is false
+				// report to calling function
+				return [command, null, null, argsString];
+			}
+			if (from < i && from < to) {
+				to = i;
+				parseArg(true);
+			}
+			rawArgsString = argsString;
+			argsString = args.join(" ");
+		}
+		return [command, argsString, args, rawArgsString];
+	};
+
 	hg.util.randIP = function () {
 		var generator = randIntGenerator(1,255), first = generator();
 		console.log("util.randIp", []);

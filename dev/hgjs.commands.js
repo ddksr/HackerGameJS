@@ -319,28 +319,33 @@ HackerGame
 			computer.fs.bin[name] = null;
 		});
 	};
+	
 	hg.exec = function(input, term) {
-		var segments = input.split(" "),
+		var segments = hg.util.parseInput(input),
 			fn = segments[0],
+			argsString = segments[1],
+			args = segments[2],
+			argsStringRaw = segments[3],
 			result,
 			noError = true,
-			attributes = segments.length > 1 ? segments.slice(1) : null;
+			callbackResult;
 		console.log("exec", [input, term]);
-		if ($.inArray(fn, hg.state.computer.properties.commandBlackList) > -1) {
+		if (args === null) {
+			term.error(hg.t("Parse error") + ": " + argsStringRaw);
+		}
+		else if ($.inArray(fn, hg.state.computer.properties.commandBlackList) > -1) {
 			noError = false;
 			hg.tError("Command is not defined!");
 		}
 		else if (commands[fn] && commands[fn].exec) {
-			if (commands[fn].fullArgs) { commands[fn].exec.call(term, attributes && attributes.join(" ")); }
-			else { commands[fn].exec.apply(term, attributes); }
+			if (commands[fn].fullArgs) { result = commands[fn].exec.call(term, argsString); }
+			else { result = commands[fn].exec.apply(term, args); }
 		}
 		else if(fn === "eval" || fn === "export") {
 			if (attributes) {
 				try {
-					result = window.eval(attributes.join(" "));
-					if (result !== undefined) {
-						hg.tEcho(new String(result));
-					}
+					result = window.eval(argsStringRaw);	
+					hg.tEcho(new String(result));
 				} catch(e) {
 					hg.tError(new String(e));
             	}
@@ -354,8 +359,14 @@ HackerGame
 			// Callback is the main task checker.
 			// If the input passes the callback
 			// You can move to the next task
-			var callbackResult = hg.assignment.evaluate.call(term, input, noError),
-				status;
+			callbackResult = hg.assignment.evaluate.call(term, {
+				input: input,
+				command: fn,
+				argsString: argsString,
+				args: args,
+				noError: noError,
+				
+			});
 			if (callbackResult) {
 				hg.assignment.nextTask();
 			}

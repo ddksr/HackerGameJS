@@ -24,61 +24,62 @@ task for getting to know the terminal and the game.
 		},
 		{
 			id: "echo",
-			evaluate: function (input) {
-				var rgx = /echo hello.world/gi;
-				return rgx.test(input);
+			evaluate: function (obj) {
+				var rgx = /hello.world/gi;
+				return obj.command === "echo" && rgx.test(obj.argsString);
 			},
 			points: 10
 		},
 		{
 			id: "sensei",
-			evaluate: function (input) {
-				var rgxFin = /^sensei \w+/gi,
+			evaluate: function (obj) {
+				var rgxFin = /^sensei .+/gi,
 					rgxHelp = /^help sensei/gi;
-				if (rgxHelp.test(input)) {
+				if (rgxHelp.test(obj.input)) {
 					stash.sensei = true;
 				}
-				return stash.sensei && rgxFin.test(input);
+				return stash.sensei && rgxFin.test(obj.input);
 			},
 			points: 15
 		},
 		{
 			id: "report-time",
-			evaluate: function (input) {
-				return parseInt(input.split(" ")[1], 10) == Math.floor(hg.timer.counter/60);
+			evaluate: function (obj) {
+				return parseInt(obj.args[0], 10) == Math.floor(hg.timer.counter/60);
 			},
 			points: 10
 		},
 		{
 			id: "report-score",
-			evaluate: function (input) {
-				return parseInt(input.split(" ")[1], 10) == hg.stats.currentScore;
+			evaluate: function (obj) {
+				return parseInt(obj.args[0], 10) == hg.stats.currentScore;
 			},
 			points: 10
 		},
 		{
 			id: "pwd",
-			evaluate: function (input) {
+			evaluate: function (obj) {
 				var rgx = /^pwd$/;
-				return rgx.test(input);
+				return rgx.test(obj.input);
 			},
 			points: 5
 		},
 		{
 			id: "tree",
 			evaluate: function (input) {
-				var rgx1 = /^tree$/, rgx2 = /^tree \/home\/?$/;
 				if (!stash.tree) { stash.tree = {}; }
-				if (rgx1.test(input)) { stash.tree.rgx1 = true; }
-				if (rgx2.test(input)) { stash.tree.rgx2 = true; }
-				return stash.tree.rgx1 && stash.tree.rgx2;
+				if (input.command != "tree") { return false; }
+				
+				if (input.argsString == "") { stash.tree.a = true; }
+				if (input.argsString == "/home") { stash.tree.b = true; }
+				return stash.tree.a && stash.tree.b;
 			},
 			points: 25
 		},
 		{
 			id: "finish",
-			evaluate: function (input) {
-				return input == "sensei help";
+			evaluate: function (obj) {
+				return obj.command == "sensei" && obj.argsString == "help";
 			},
 			points: 10
 		}

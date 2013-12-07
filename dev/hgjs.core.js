@@ -164,6 +164,7 @@ HackerGame = {};
 	// =========================
 
 	hg.cons = {}; // constructors
+	hg.cli = {}; // CLI methods
 	hg.network = {}; // network methods
 	hg.util = {}; // utility methods
 	hg.action = {}; // action methods

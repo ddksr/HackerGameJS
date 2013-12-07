@@ -40,6 +40,26 @@ test("extend", function () {
 	deepEqual(HackerGame.util.extend(defaultObj, overObj), resObj, "Object extending works.");
 });
 
+test("parseInput", function () {
+	var fn = HackerGame.util.parseInput,
+		testExpect = {
+			'echo "': ['echo', null, null, '"'],
+			'echo bu': ['echo', 'bu', ['bu'], 'bu'],
+			'echo bu bu bu': ['echo', 'bu bu bu', ['bu', 'bu', 'bu'], 'bu bu bu'],
+			'echo "bu"': ['echo', 'bu', ['bu'], '"bu"'],
+			'echo "bu\'s bu"': ['echo', 'bu\'s bu', ['bu\'s bu'], '"bu\'s bu"'],
+			'echo \'bla bla\' "bla \' bla" "bla" bla': [
+				'echo',
+				'bla bla bla \' bla bla bla',
+				['bla bla', 'bla \' bla', 'bla', 'bla'],
+				'\'bla bla\' "bla \' bla" "bla" bla'
+			]
+		};
+	$.each(testExpect, function (t, e) {
+		deepEqual(fn(t), e, t);
+	});
+});
+
 test("randIP", function () {
 	var ip, 
 		i, 

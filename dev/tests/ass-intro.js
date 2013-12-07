@@ -211,7 +211,7 @@ asyncTest("gameflow", function () {
 	});
 
 	c(function () {
-		equal($("#stats-completed-assignments").text(), "1/1", "Completed assignments in DOM.");
+		equal($("#stats-completed-assignments").text(), "1/3", "Completed assignments in DOM.");
 	});
 
 
@@ -334,7 +334,7 @@ asyncTest("gameflow", function () {
 		var penalties =  parseInt(0.75 * 10, 10) + parseInt(0.75 * 25, 10);
 		equal(completedTasks(),  8, "8. task OK.");
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
-		equal($("#stats-completed-assignments").text(), "1/1", "Completed assignments in DOM.");
+		equal($("#stats-completed-assignments").text(), "1/3", "Completed assignments in DOM.");
 
 		// HINT PENALTY
 		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints - penalties);
