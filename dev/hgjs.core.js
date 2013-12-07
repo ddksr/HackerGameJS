@@ -174,6 +174,7 @@ HackerGame = {};
 	hg.load = {}; // load methods
 	hg.ind = {}; // indicators module
 	hg.stats = {}; // stats module
+	hg.msg = {}; // mesages
 
 	// ==============
 	// Public methods
@@ -199,6 +200,12 @@ HackerGame = {};
 		});
 	};
 
+	hg.msg.alert = function (message, title) {
+		if (! title) { title = "Alert"; }
+		$("#alertMessageTitle").text(hg.t(title));
+		$("#alert .modal-body").text(hg.t(message));
+		$("#alert").modal("show");
+	};
 
 	// Loader (assignments and languages)
 	hg.load = {
@@ -218,7 +225,10 @@ HackerGame = {};
 			// Init stats
 			hg.assignment.numOfTasks = tasks.length;
 			hg.assignment.startTime = other.startTime;
-			hg.timer.set(other.startTime);
+			hg.timer.set(other.startTime, function () {
+				hg.assignment.fail();
+			});
+			
 			hg.stats.bestScore = $(".assignment-list .ass-" + hg.assignment.id + " .ass-trials").text();
 			hg.stats.currentScore = 0;
 			hg.stats.refresh();
@@ -506,13 +516,13 @@ HackerGame = {};
 			counter: 0,
 			lastCounter: null,
 			status: undefined,
-			set: function (setCounter, callback, ztCallback) {
-				console.log("timer.set", [setCounter, callback]);
+			set: function (setCounter, ztCallback) {
+				console.log("timer.set", [setCounter, ztCallback]);
 				if ($obj.is(".red-alert")) {
 					$obj.removeClass("red-alert");
 				}
 				this.counter = setCounter;
-				callbackFn = callback || function () {};
+				
 				zeroTimeCallback = ztCallback || function () {};
 				display();
 			},
@@ -525,7 +535,6 @@ HackerGame = {};
 				this.lastCounter = this.counter;
 				this.counter = 0;
 				if (this.status) { clearTimeout(this.status); }
-				callbackFn();
 			}
 		};
 		return this;
@@ -537,6 +546,9 @@ HackerGame = {};
 
 	$("body").addClass("loading");
 	$("body").append($(document.createElement("div")).addClass("loading-gif").html("&nbsp;"));
+
+
+	$("#alert").modal();
 
 	$.each(["tab", "input", "page"], function(i, segment) {
 		var offset = 6 + segment.length;

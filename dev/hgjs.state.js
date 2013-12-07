@@ -345,7 +345,12 @@ HackerGame
 	};
 	hg.cons.Assignment.prototype.fail = function () {
 		console.log("Assignment.fail", []);
+		var $trials = $(".assignment-list .ass-" + this.id + " .ass-trials"),
+			trialsNum = parseInt($trials.text(), 10) || 0;
 		hg.timer.stop();
+		
+		hg.stats.currentScore = 0;
+		hg.stats.refresh();
 
 		stateCache.push({
 			"type": "assignment",
@@ -353,6 +358,10 @@ HackerGame
 			"value": -1
 		});
 		hg.assignment.failCallback();
+
+		$trials.text(trialsNum + 1);
+		hg.action.page("assignments");
+		hg.msg.alert("Sorry, you failed. Your time is up. But try again! Failing is an important part of learing. ", "Time's up! You got cought!");
 	};
 	hg.cons.Assignment.prototype.complete = function () {
 		var $tr = $(".assignment-list .ass-"+hg.assignment.id),

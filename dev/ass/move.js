@@ -21,7 +21,7 @@
 			points: 10
 		}
 	], {
-		startTime: 900,
+		startTime: 3,
 		initCallback: draw
 	});
 
