@@ -361,7 +361,11 @@ HackerGame
 
 		$trials.text(trialsNum + 1);
 		hg.action.page("assignments");
+		
+
 		hg.msg.alert("Sorry, you failed. Your time is up. But try again! Failing is an important part of learing. ", "Time's up! You got cought!");
+
+		
 	};
 	hg.cons.Assignment.prototype.complete = function () {
 		var $tr = $(".assignment-list .ass-"+hg.assignment.id),
@@ -401,6 +405,7 @@ HackerGame
 		});
 
 		hg.assignment.successCallback();
+		hg.action.page("assignments");
 	};
 	hg.stats = {
 		refresh: function (exclude) {
