@@ -84,10 +84,9 @@ task for getting to know the terminal and the game.
 		}
 	], {
 		startTime: 900,
-		successCallback: lastTaskCompleted
+		successCallback: lastTaskCompleted,
+		startMail: true
 	});
-
-	$("#mail").popover("show");
 })(jQuery, HackerGame);
 
 

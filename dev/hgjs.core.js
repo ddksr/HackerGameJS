@@ -11,13 +11,14 @@ HackerGame = {};
 	var i18n, // language object
 		initAssignment = function () { // Prepare assignment
 			console.log("core:initAssignment", []);
-			hg.mail.close();
+
 			$("#link-page-game").removeClass("disabled");
 			hg.action.page("game");
 			hg.action.tab("assignment");
 		},
 		startAssignment = function () { // Start workign on assignment
 			console.log("core:startAssignment", []);
+			hg.assignment.startCallback();
 			hg.stats.refresh();
 			hg.assignment.isRunning = true;
 			hg.assignment.nextTask();
@@ -203,6 +204,7 @@ HackerGame = {};
 		assignment: function (tasks, other) {
 			var title, body, $instructions, $tasksHtml, $learnMore, $tryItOut;
 			console.log("load.assignment", [tasks, other]);
+
 			initDynamicFields();
 
 			title = $("#stash").find("#ass-title").text();
@@ -227,6 +229,8 @@ HackerGame = {};
 			
 			hg.assignment.successCallback = other.successCallback || function () {};
 			hg.assignment.failCallback = other.failCallback || function () {};
+			hg.assignment.startCallback = other.startCallback || function () {};
+			hg.assignment.initCallback = other.initCallback || function () {};
 
 			// Parse HTML
 			$("#tab-assignment .instructions").html($instructions);
@@ -234,16 +238,27 @@ HackerGame = {};
 			$("#tab-learn-more").html($learnMore);
 			$("#tab-try-it-out").html($tryItOut);
 
-			hg.mail.recieve({
-				subject: title,
-				isSensei: true,
-				body: body,
-				button: {
-					name: "Start",
-					action: initAssignment
-				}
-			});
 			$("#stash").empty();
+			if (other.startMail) {
+				hg.mail.recieve({
+					subject: title,
+					isSensei: true,
+					body: body,
+					button: {
+						name: "Start",
+						action: function () { 
+							hg.mail.close();
+							initAssignment();
+							hg.assignment.initCallback();
+						}
+					}
+				});
+				$("#mail").popover("show");
+			}
+			else {
+				initAssignment();
+				hg.assignment.initCallback();
+			}
 		},
 		language: function (langId, langObj) {
 			console.log("load.language", [landId, langObj]);

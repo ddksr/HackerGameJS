@@ -59,11 +59,11 @@ HackerGame
 		loadAssignment = function (assId, callback) {
 			var htmlUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".html",
 				htmlLangUrl = hg.config.basePath + hg.config.assignmentsPath + assId + "-" + hg.lang + ".html",
+				jsUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".js",
 				loadJS = function (html) {
 					$("#stash").html(html);
 					$.getScript(jsUrl, callback);
-				},
-				jsUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".js";
+				};
 			console.log("state:loadAssignment", [assId, callback]);
 			$.ajax({
 				url: htmlLangUrl,
@@ -76,7 +76,7 @@ HackerGame
 						url: htmlUrl,
 						method: 'get',
 						dataType: 'html',
-						success: loadJS
+						success: loadJS,
 					});
 				}
 			});
