@@ -176,8 +176,13 @@ HackerGame
 		return true;
 	};
 
+	hg.util.getSpecialFile = function (path) {
+		console.log("util.getSpecialFile", [path]);
+		return hg.state.computer.dfs[path] || null;
+	};
+
 	hg.util.getFile = function (pathToFile) {
-		var filename, dir, status, filePath;
+		var filename, dir, status, filePath, content;
 		if (pathToFile == "/") {
 			return ["/", "", hg.state.computer.fs];
 		}
@@ -204,7 +209,13 @@ HackerGame
 				return [filePath, "", dir];
 			}
 			if (dir[filename] !== undefined) {
-				return [filePath, filename, dir[filename]];
+				content = dir[filename];
+				
+				if (content === null) {
+					content = hg.util.getSpecialFile(filePath + "/" + filename);
+				}
+				
+				return [filePath, filename, content];
 			}
 		}
 
@@ -222,8 +233,6 @@ HackerGame
 		if (!hg.util.checkFilePermission(pathToFile)) {
 			return null; // not allowed
 		}
-		
-
 		pathToFile = pathToFile.split("/");
 		
 		filename = pathToFile[pathToFile.length - 1];

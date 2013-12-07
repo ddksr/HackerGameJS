@@ -15,6 +15,9 @@ HackerGame
 			"tmp": {},
 			"etc": {}
 		},
+		defaultDynFs = {
+			
+		},
 		computers = {
 			// Define computers here in format location: { ... properties ... }
 			"-": {
@@ -25,7 +28,8 @@ HackerGame
 				visibleFrom: null,
 				domain: null,
 				commandBlackList: {},
-				fs: {}
+				fs: {},
+				dfs: {} // binary files can have 
 			}
 		};
 	// initialize computers, IP map and DNS table
@@ -46,11 +50,13 @@ HackerGame
 		}
 
 		// Add special
-		computers[name].fs = hg.util.extend(defaultFs, computers[name].fs);
+		computers[name].fs = hg.util.extend($.extend(true, {}, defaultFs), 
+											computers[name].fs);
 		if (!computers[name].fs.home[props.user]) { 
 			computers[name].fs.home[props.user] = {};
 		}
 
+		$.each(defaultDynFs, function (path, fn) { computers[name].dfs[path] = fn; });
 		computers[name].fs.etc.hostname = props.hostname;
 	});
 	hg.cons.Computer = function Computer (name, isDefault) {
@@ -65,8 +71,9 @@ HackerGame
 		this.pwd = "/";
 		this.hasChanged = false;
 		this.fs = computers[name].fs;
+		this.dfs = computers[name].dfs;
 		$.each(computers[name], function (property, value) {
-			if ($.inArray(property, ["fs"]) == -1) { 
+			if ($.inArray(property, ["fs", "dfs"]) == -1) { 
 				props[property] = value; 
 			}
 		});

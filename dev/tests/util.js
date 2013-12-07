@@ -262,6 +262,7 @@ test("getFile", function () {
 		fn = hg.util.getFile,
 		fs = hg.state.computer.fs,
 		pwd = hg.state.computer.pwd,
+		result = null,
 		testObj = {
 			"/": ["/", "", fs],
 			"/bin": ["/", "bin", fs.bin],
@@ -279,6 +280,15 @@ test("getFile", function () {
 	$.each(testObj, function (toTest, expected) {
 		deepEqual(fn(toTest), expected, "Get " + toTest);
 	});
+
+	// get special
+	fs.tmp.special = null;
+	hg.state.computer.dfs["/tmp/special"] = function () {
+		return [true, "bla"];
+	};
+	result = fn("special");
+	ok($.isFunction(result[2]), "Got special file.");
+
 	hg.state.changeDir(pwd);
 });
 
@@ -365,6 +375,9 @@ test("setFile", function () {
 	var x = hg.util.setFile("../", {});
 	deepEqual(fs.tmp.setFile, {}, "Under removed");
 	strictEqual(hg.state.computer.pwd, "/", "PWD = root");
+
+
+	
 
 	hg.state.changeDir(pwd);
 });
