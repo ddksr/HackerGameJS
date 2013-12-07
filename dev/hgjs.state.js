@@ -5,6 +5,9 @@ HackerGame
 **/
 (function ($, hg) {
 	var stateCache = [], 
+		timeToScore = function () {
+			return parseInt(hg.timer.lastCounter / 20, 10);
+		},
 		initTaskHTML = function ($task) {
 			var $help, $hint, 
 				$btn = $(document.createElement("button")).addClass("btn").addClass("btn-info").addClass("btn-sm");
@@ -365,7 +368,11 @@ HackerGame
 		}
 
 		$tr.find(".ass-name a").addClass("completed-assignment");
-		
+
+		hg.stats.increment({
+			currentScore: timeToScore()
+		});
+
 		if (bestScore == "-" || (parseInt(bestScore, 10) < hg.stats.currentScore)) {
 			bestScore = hg.stats.currentScore;
 		}

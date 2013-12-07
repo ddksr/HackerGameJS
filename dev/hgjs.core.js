@@ -480,6 +480,7 @@ HackerGame = {};
 		var $obj = this,
 			ms = 1000, // number of ms to trigger
 			callbackFn,
+			zeroTimeCallback,
 			display = function() {
 				minutes = Math.floor(hg.timer.counter/60);
 				seconds = hg.timer.counter - minutes*60;
@@ -494,20 +495,25 @@ HackerGame = {};
 				var minutes, seconds;
 				hg.timer.counter -= 1;
 				display();
-				if (isNaN(hg.timer.counter) || hg.timer.counter <= 0) { return; }
+				if (isNaN(hg.timer.counter) || hg.timer.counter <= 0) { 
+					zeroTimeCallback();
+					return; 
+				}
 				hg.timer.status = setTimeout(step, ms);
 			};
 		console.log("$.fn.hackerGameTimer", []);
 		hg.timer = {
 			counter: 0,
+			lastCounter: null,
 			status: undefined,
-			set: function (setCounter, callback) {
+			set: function (setCounter, callback, ztCallback) {
 				console.log("timer.set", [setCounter, callback]);
 				if ($obj.is(".red-alert")) {
 					$obj.removeClass("red-alert");
 				}
 				this.counter = setCounter;
 				callbackFn = callback || function () {};
+				zeroTimeCallback = ztCallback || function () {};
 				display();
 			},
 			start: function () {
@@ -516,7 +522,8 @@ HackerGame = {};
 			},
 			stop: function () {
 				console.log("timer.stop", []);
-				counter = 0;
+				this.lastCounter = this.counter;
+				this.counter = 0;
 				if (this.status) { clearTimeout(this.status); }
 				callbackFn();
 			}

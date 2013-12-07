@@ -12,6 +12,7 @@ asyncTest("gameflow", function () {
 		completedTasks = function () {
 			return $("#tab-task li").length;
 		},
+		bonus = function () { return parseInt(hg.timer.lastCounter / 20, 10); },
 		t = function (text) { 
 			hg.term.enable();
 			hg.term.focus(true); 
@@ -206,7 +207,7 @@ asyncTest("gameflow", function () {
 	c(function () {
 		equal(completedTasks(),  8, "8. task OK.");
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
-		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints);
+		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints + bonus());
 		
 	});
 
@@ -335,9 +336,9 @@ asyncTest("gameflow", function () {
 		equal(completedTasks(),  8, "8. task OK.");
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
 		equal($("#stats-completed-assignments").text(), "1/3", "Completed assignments in DOM.");
-
-		// HINT PENALTY
-		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints - penalties);
+		
+		// HINT PENALTY and TIME BONUS
+		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints - penalties + bonus(), "Score corectly calculated.");
 	});
 
 	hgTest.runCallbacks(1000);
