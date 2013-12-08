@@ -3,6 +3,10 @@ body {
 	font-family: "Lucida Console", Monaco, monospace;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Lucida Console", Monaco, monospace;
+}
+
 #input-terminal, #editor {
 	border: 1px solid #aaa;
 	margin: 0 5px 5px 5px;

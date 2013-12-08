@@ -43,7 +43,9 @@ test("extend", function () {
 test("parseInput", function () {
 	var fn = HackerGame.util.parseInput,
 		testExpect = {
+			'echo': ['echo', "", [], ""],
 			'echo "': ['echo', null, null, '"'],
+			'echo /': ['echo', "/", ['/'], "/"],
 			'echo bu': ['echo', 'bu', ['bu'], 'bu'],
 			'echo bu bu bu': ['echo', 'bu bu bu', ['bu', 'bu', 'bu'], 'bu bu bu'],
 			'echo "bu"': ['echo', 'bu', ['bu'], '"bu"'],

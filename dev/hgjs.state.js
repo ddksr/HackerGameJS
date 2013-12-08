@@ -134,40 +134,22 @@ HackerGame
 		return res;
 	};
 	hg.cons.State.prototype.makeDir = function (fold) {
-		var path, er = false, place = this.computer.fs;
+		var err = false;
 		console.log("State.makeDir", [fold]);
-		if (typeof(fold) != "string") { er = "Path not valid!"; }
+		if (typeof(fold) != "string") { err = "Path not valid!"; }
 		else {
-			path = fold;
-			if (path.charAt(0) != "/") { path = hg.util.absPath(path); }
-			path = hg.util.cleanPath(path);
-			path = path.split("/").slice(1);
-			$.each(path, function (i, elt) {
-				if (i >= path.length - 1) {
-					if (/^\./.test(fold) || /^\./.test(fold)) {
-						er = "Not a valid name";
-					}
-					else if (place[elt] === undefined) {
-						place[elt] = {};
-						hg.state.computer.hasChanged = true;
-					}
-					else {
-						er = "Directory already exists!";
-					}
-				}
-				else if (place[elt] === undefined) {
-					er = "Path doesn't exist!";
-				}
-				else if (place[elt] !== null && typeof(place[elt]) == "object") {
-					place = place[elt];
-				}
-				else {
-					er = "Path doesn't exist!";
-					return -1;
-				}
-			});
+			var exists = hg.util.getFile(fold);
+			console.log(exists)
+			if (hg.util.fileExists(fold)) {
+				err = "File already exists!";
+			}
+			if (!err) {
+				err = hg.util.setFile(fold, {});
+				if (! err) { err = "Path doesn't exist!"; }
+				else { err = false; }
+			}
 		}
-		return er;
+		return err;
 	};
 	hg.cons.State.prototype.removeFile = function (filePath) {
 		var path, er = false, place = this.computer.fs;

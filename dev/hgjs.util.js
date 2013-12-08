@@ -94,12 +94,18 @@ HackerGame
 				// report to calling function
 				return [command, null, null, argsString];
 			}
+			if (argsString.length == 1) {
+				return [command, argsString, [argsString], argsString];
+			}
 			if (from < i && from < to) {
 				to = i;
 				parseArg(true);
 			}
 			rawArgsString = argsString;
 			argsString = args.join(" ");
+		}
+		else { 
+			command = input;
 		}
 		return [command, argsString, args, rawArgsString];
 	};

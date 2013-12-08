@@ -1,61 +1,101 @@
 (function ($, hg) {
 	var pwd = "/",
+		stash = {},
 		names = {
 			"/":  ["/", "C:", "C:"],
 			"/bin": ["bin", "Program Files", "C:\\Program Files"],
 			"/home": ["home", "Users", "C:\\Users"],
-			"/home/simon": ["simon", "Simon", "C:\\Users\\Simon"],
-			"/home/simon/documents" : ["documents", "Documents", "C:\\Users\\Simon\\Documents"],
-			"/home/simon/download" : ["download", "Downloads", "C:\\Users\\Simon\\Download"]
+			"/home/charlie": ["charlie", "Charlie", "C:\\Users\\Charlie"],
+			"/home/charlie/documents" : ["documents", "Documents", "C:\\Users\\Charlie\\Documents"],
+			"/home/charlie/download" : ["download", "Downloads", "C:\\Users\\Charlie\\Download"]
 		},
 		paths = {
 			"/": {
 				"/": ".",
-				"/bin": "bin",
-				"/home": "home",
-				"/home/simon": "home/simon",
-				"/home/simon/documents": "home/simon/documents",
-				"/home/simon/download": "home/simon/download"
+				"/bin": ["bin", "Program Files"],
+				"/home": ["home", "Users"],
+				"/home/charlie": ["home/charlie", "User\\Charlie"],
+				"/home/charlie/documents": [
+					"home/charlie/documents",
+					"Users\\Charlie\\Documents"
+				],
+				"/home/charlie/download": [
+					"home/charlie/download",
+					"Users\\Charlie\\Downloads"
+				]
 			},
 			"/bin": {
 				"/": "..",
 				"/bin": ".",
-				"/home": "../home",
-				"/home/simon": "../home/simon",
-				"/home/simon/documents": "../home/simon/documents",
-				"/home/simon/download": "../home/simon/documents"
+				"/home": ["../home", "../Users"],
+				"/home/charlie": [
+					"../home/charlie",
+					"..\\Users\\Charlie"
+				],
+				"/home/charlie/documents": [
+					"../home/charlie/documents",
+					"..\\Users\\Charlie\\Documents"
+				],
+				"/home/charlie/download": [
+					"../home/charlie/download",
+					"..\\Users\\Charline\\Downloads"
+				],	
 			},
 			"/home": {
 				"/": "..",
-				"/bin": "../bin",
+				"/bin": [
+					"../bin",
+					"..\\Program Files"
+				],
 				"/home": ".",
-				"/home/simon": "simon",
-				"/home/simon/documents": "simon/documents",
-				"/home/simon/download": "simon/downlaod"
+				"/home/charlie": ["charlie", "Charlie"],
+				"/home/charlie/documents": [
+					"charlie/documents",
+					"Charlie\\Documents"
+				],
+				"/home/charlie/download": [
+					"charlie/download",
+					"Charlie\\Downloads",
+				]
 			},
-			"/home/simon": {
-				"/": ".",
-				"/bin": "../../bin",
+			"/home/charlie": {
+				"/": "../..",
+				"/bin": [
+					"../../bin",
+					"../../Program Files",
+				],
 				"/home": "..",
-				"/home/simon": ".",
-				"/home/simon/documents": "documents",
-				"/home/simon/download": "download"
+				"/home/charlie": ".",
+				"/home/charlie/documents": ["documents", "Documents"],
+				"/home/charlie/download": ["download", "Downloads"]
 			},
-			"/home/simon/documents": {
+			"/home/charlie/documents": {
 				"/": ".",
-				"/bin": "../../../bin",
+				"/bin": [
+					"../../../bin",
+					"../../../Program Files"
+				],
 				"/home": "../..",
-				"/home/simon": "..",
-				"/home/simon/documents": ".",
-				"/home/simon/download": "../download"
+				"/home/charlie": "..",
+				"/home/charlie/documents": ".",
+				"/home/charlie/download": [
+					"../download",
+					"..Downloads"
+				]
 			},
-			"/home/simon/download": {
+			"/home/charlie/download": {
 				"/": ".",
-				"/bin": "../../../bin",
+				"/bin": [
+					"../../../bin",
+					"../../../Program Files",
+					],
 				"/home": "../..",
-				"/home/simon": "..",
-				"/home/simon/documents": "../documents",
-				"/home/simon/download": "."
+				"/home/charlie": "..",
+				"/home/charlie/documents": [
+					"../documents",
+					"../Documents"
+				],
+				"/home/charlie/download": "."
 			}
 		},
 		draw = function () {
@@ -68,7 +108,8 @@
 				svg = d3.select("#canvas").append("svg"),
 				diagonal, cluster, nodes, links, link, node, stats,
 				getPaths = function (d) {
-					var relative = paths[pwd][d.name],
+					var relativeRaw = paths[pwd][d.name],
+						relative = $.isArray(relativeRaw) ? relativeRaw[dType] : relativeRaw,
 						absolute = dType === 0 ? d.name : names[d.name][2],
 						text = hg.t("Relative") + ": " + relative + "\n"
 							+ hg.t("Absolute") + ": " + absolute;
@@ -103,10 +144,10 @@
 					name: '/home',
 					children: [
 						{
-							name: '/home/simon',
+							name: '/home/charlie',
 							children: [
-								{ name: '/home/simon/documents' },
-								{ name: '/home/simon/download' }
+								{ name: '/home/charlie/documents' },
+								{ name: '/home/charlie/download' }
 							]
 						}
 					]
@@ -182,6 +223,73 @@
 			id: "pwd",
 			evaluate: function (c) { return c.input === "pwd"; },
 			points: 10
+		},
+		{
+			id: "ls",
+			evaluate: function (c) { 
+				return c.command === "ls" && c.argsString.match(/\/?bin/) !== null; 
+			},
+			points: 20
+		},
+		{
+			id: "cd",
+			evaluate: function (c) {
+				return hg.state.computer.pwd === "/bin";
+			},
+			points: 20
+		},
+		{
+			id: "cd-back",
+			evaluate: function (c) {
+				return hg.state.computer.pwd === "/" && c.input == "cd /";
+			},
+			points: 20
+		},
+		{
+			id: "cd-bin-back",
+			evaluate: function (c) {
+				var s = stash;
+				if (! s["cd-bin-back"]) { s["cd-bin-back"] = {}; }
+				s = s["cd-bin-back"];
+				s.bin = s.bin || hg.state.computer.pwd === "/bin";
+				s.back = s.back || (hg.state.computer.pwd === "/" && c.input.match(/cd \.\./) !== null);
+				return s.bin && s.back;
+			},
+			points: 30
+		},
+		{
+			id: "cd-tmp",
+			evaluate: function (c) {
+				return hg.state.computer.pwd === "/tmp";
+			},
+			points: 5
+		},
+		{
+			id: "mkdir",
+			evaluate: function (c) {
+				var s = stash.mkdir,
+					tmp = hg.state.computer.pwd === "/tmp/assignment",
+					mkdir = c.input.match(/mkdir assignment/) !== null,
+					created = typeof(hg.state.computer.fs.tmp.assignment) === "object";
+				if (!s) {
+					stash.mkdir = {};
+					s = stash.mkdir;
+				}
+				s.mkdir = s.mkdir || mkdir;
+				s.tmp = s.tmp || tmp;
+				s.created = s.created || created;
+				return s.tmp && s.mkdir && s.created;
+			},
+			points: 20
+		},
+		{
+			id: "mkdir-rel",
+			evaluate: function (c) {
+				var pwd = hg.state.computer.pwd === "/tmp/assignment",
+					mkdir = c.input.match(/mkdir ..\/\w+/) !== null;
+				return pwd && mkdir;
+			},
+			points: 30
 		}
 	], {
 		startTime: 0,
