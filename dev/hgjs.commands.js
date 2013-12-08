@@ -149,7 +149,7 @@ HackerGame
 					   "If no directory is specified, the working directory hierarchy",
 					   "is displayed.",
 					   "Usage: tree [DIRECTORY]",
-					   "Example: tree",
+					   "Example 1: tree",
 					   "Example 2: tree /",
 					   "Linux: tree [DIRECTORY]"]
 			},
@@ -170,7 +170,7 @@ HackerGame
 				},
 				help: ["ls - list directory",
 					   "Usage: ls [directory]",
-					   "Example: ls",
+					   "Example 1: ls",
 					   "Example 2: ls /home",
 					   "Linux: ls [directory]"]
 			},
@@ -182,6 +182,7 @@ HackerGame
 				},
 				help: ["mkdir - create a directory in the current directory",
 					   "Usage: mkdir directory",
+					   "Example: mkdir /tmp/new_directory",
 					   "Linux: mkdir dir1, [dir2, [dir3, ...]]"]
 			},
 			"pwd": {
@@ -191,6 +192,7 @@ HackerGame
 				},
 				help: ["pwd - path to current directory",
 					   "Usage: pwd",
+					   "Example: pwd",
 					   "Linux: pwd"]
 			},
 			"cd": {
@@ -202,7 +204,9 @@ HackerGame
 					}
 				},
 				help: ["cd - change directory",
-					   "Usage: cd path",
+					   "Usage: cd [PATH]",
+					   "Example 1: cd ..",
+					   "Example 2: cd /home",
 					   "Linux: cd path"]
 			},
 			"rm": {
@@ -232,13 +236,15 @@ HackerGame
 					}
 				},
 				help: ["rm - remove file or directory",
-					   "Usage: rm path",
+					   "Usage: rm PATH",
+					   "Example: rm /tmp/file",
 					   "Linux: rm path_to_file OR rmdir path_to_empty_directory"]
 			},
 			// EDITING
 			"edit": {
 				help: ["edit - edit file",
 					   "Usage: edit FILE",
+					   "Example: edit /etc/hostname",
 					   "Linux: there are many command line programs for editing files,", 
 					   "but they are not necessarily installed.",
 					   "- joe FILE",
@@ -247,6 +253,11 @@ HackerGame
 					   "- vi FILE",
 					   "- vim FILE"],
 				exec: function (file) {
+					if (!hg.util.fileExists(file) && !hg.util.isDir(file)) {
+						hg.tError("File doesn't exist");
+						return;
+					}
+
 					hg.editor.openCallback = function () {
 						hg.term.pause();
 						hg.editor.focus();
@@ -275,7 +286,8 @@ HackerGame
 				},
 				fullArgs: true,
 				help: ["sensei - send a message to sensei via secure connection",
-					   "Usage: sensei MESSAGE"]
+					   "Usage: sensei MESSAGE",
+					   "Example: sensei Hello sensei, how are you?"]
 			},
 			"echo": {
 				exec: function (input) { 
@@ -285,6 +297,7 @@ HackerGame
 				fullArgs: true,
 				help: ["echo - print text in terminal", 
 					   "Usage: echo TEXT",
+					   "Example: echo Hello!",
 					   "Linux: echo TEXT"]
 			},
 			"help": {
@@ -309,7 +322,9 @@ HackerGame
 					}
 				},
 				help: ["help - display help information", 
-					   "Usage: help COMMAND",
+					   "Usage: help [COMMAND]",
+					   "Example 1: help",
+					   "Example 2: help ls",
 					   "Linux: man or COMMAND -h or COMMAND --help"]
 			}
 		};
