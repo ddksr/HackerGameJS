@@ -224,11 +224,14 @@ HackerGame = {};
 
 			// Init stats
 			hg.assignment.numOfTasks = tasks.length;
+			
 			hg.assignment.startTime = other.startTime;
+			
 			hg.timer.set(other.startTime, function () {
 				hg.assignment.fail();
 			});
 			
+
 			hg.stats.bestScore = $(".assignment-list .ass-" + hg.assignment.id + " .ass-trials").text();
 			hg.stats.currentScore = 0;
 			hg.stats.refresh();
@@ -491,15 +494,20 @@ HackerGame = {};
 			ms = 1000, // number of ms to trigger
 			callbackFn,
 			zeroTimeCallback,
-			display = function() {
+			display = function(noCounting) {
 				minutes = Math.floor(hg.timer.counter/60);
 				seconds = hg.timer.counter - minutes*60;
 				minutes = (minutes < 10 ? "0" : "") + minutes;
 				seconds = (seconds < 10 ? "0" : "") + seconds;
-				if (hg.timer.counter <= 60 && !$obj.is(".red-alert")) {
+				if (!noCounting && hg.timer.counter <= 60 && !$obj.is(".red-alert")) {
 					$obj.addClass("red-alert");
 				}
-				$obj.text(minutes + ":" + seconds);
+				if (!noCounting) { 
+					$obj.text(minutes + ":" + seconds); 
+				}
+				else {
+					$obj.text("--:--");
+				}
 			},
 			step = function () {
 				var minutes, seconds;
@@ -524,7 +532,7 @@ HackerGame = {};
 				this.counter = setCounter;
 				
 				zeroTimeCallback = ztCallback || function () {};
-				display();
+				display(setCounter === 0);
 			},
 			start: function () {
 				console.log("timer.start", []);

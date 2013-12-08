@@ -180,11 +180,11 @@
 	hg.load.assignment([
 		{
 			id: "pwd",
-			evaluate: function (input) { return input === "pwd"; },
+			evaluate: function (c) { return c.input === "pwd"; },
 			points: 10
 		}
 	], {
-		startTime: 900,
+		startTime: 0,
 		initCallback: draw
 	});
 

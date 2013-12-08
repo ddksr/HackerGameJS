@@ -319,7 +319,7 @@ HackerGame
 	};
 	hg.cons.Assignment.prototype.startTimer = function () {
 		console.log("Assignment.startTimer", []);
-		hg.timer.start();
+		if (this.startTime) { hg.timer.start(); }
 	};
 	hg.cons.Assignment.prototype.nextTask = function () {
 		var nextTask,
