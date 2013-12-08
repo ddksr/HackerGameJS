@@ -61,6 +61,7 @@
 	<h3>Why are working directories important?</h3>
 	<p>
 		They are not really important. They are just here to help. Every file in a file system has an absolute path to it. If you are using Windows, the absolute path to Program Files folder is <code>C:\Program Files</code>. 
+		Windows systems seperate files with '\' character and Unix-based systems with '/'. A webpage URL is also an example of a absolute path. Example: <code>http://www.google.si/maps</code>.
 	</p>
 	<p>
 		If we know the absolute path, we know how to access it. We access it with <code>C:\Program Files</code>. Simple. But what about if the absolute path is very long? And we need to type it more than one time? Would you type <code>C:\Folder 1\Folder 2\Folder 3\My Favorite File</code> everytime you need your favorite file? I hope not!
@@ -74,7 +75,7 @@
 	<p>
 		Let's examine Charlie's computer. Who is Charlie? Well, nobody really. Just our imagination. 
 		His current working directory is <code>/home/charlie</code> (the absolute path to the directory). Now he would like to switch the working directory 
-		to <code>/home/simon/download</code>. 
+		to <code>/home/charlie/download</code>. 
 		The command to do that (same on every operating system) is <code>cd</code> (<strong>c</strong>hange <strong>d</strong>irectory). 
 		He has two options:
 		<ul>

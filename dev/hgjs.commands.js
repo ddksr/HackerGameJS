@@ -76,33 +76,41 @@ HackerGame
 				},
 				help: ["ping - send a ping package to remote computer", 
 					   "Usage: ping IP|DOMAIN [NUMBER_OF_PINGS=5 [TIME_TO_LIVE=60]]",
+					   "Example: ping localhost",
 					   "TIME_TO_LIVE is in seconds.",
 					   "Linux: ping"]
 			},
 			// FILE SYSTEM
 			"cat": {
 				exec: function (file) {
-					var term = this;
+					var term = this, contents = hg.util.getFile(file);
 					console.log("command.cat", [file]);
-					hg.util.pathIterator(file, function (contents) {
-						if (contents === null) {
-							hg.tError("Cannot display binary files.");
-						}
-						else if (typeof(contents) == "object") {
-							hg.tError("Cannot display directory contents.");
-						}
-						else {
-							hg.tEcho(contents);
-						}
-					});
+					if (contents === null) {
+						hg.tError("File doesn't exist.");
+					}
+					contents = contents[2];
+					if (contents === null) {
+						hg.tError("Cannot display binary files.");
+					}
+					else if (typeof(contents) == "object") {
+						hg.tError("Cannot display directory contents.");
+					}
+					else {
+						hg.tEcho(contents);
+					}
+
 				},
 				help: ["cat - display file contents",
 					   "Usage: cat FILE",
+					   "Example: cat /etc/hostname",
 					   "Linux: cat FILE"]
 			},
 			"tree": {
 				exec: function (dir) {
-					var path = hg.util.path(dir),
+					var correctPath = dir || hg.state.computer.pwd,
+						absPath = correctPath.charAt(0) == "/" ? correctPath : hg.util.absPath(correctPath),
+						cleanPath = hg.util.cleanPath(absPath),
+						path = hg.util.path(cleanPath),
 						term = this,
 						start = "/",
 						place = hg.state.computer.fs,
@@ -141,19 +149,29 @@ HackerGame
 					   "If no directory is specified, the working directory hierarchy",
 					   "is displayed.",
 					   "Usage: tree [DIRECTORY]",
+					   "Example: tree",
+					   "Example 2: tree /",
 					   "Linux: tree [DIRECTORY]"]
 			},
 			"ls": {
 				exec: function (folder) {
-					var dirs = ". ..";
+					var dirs = ". ..", place = hg.util.getFile(folder || ".");
 					console.log("command.ls", [folder]);
-					$.each(hg.state.place, function (k, _) {
+					
+					if(! place || typeof(place) != "object") { 
+						hg.tError("Directory doesn't exist!");
+						return;
+					}
+					
+					$.each(place[2], function (k, _) {
 						dirs += " " + k;
 					});
 					hg.tEcho(dirs);
 				},
 				help: ["ls - list directory",
 					   "Usage: ls [directory]",
+					   "Example: ls",
+					   "Example 2: ls /home",
 					   "Linux: ls [directory]"]
 			},
 			"mkdir": {
@@ -178,6 +196,7 @@ HackerGame
 			"cd": {
 				exec: function (fold) {
 					console.log("command.cd", [fold]);
+					if (! fold) { fold = "/home/" + hg.state.computer.properties.user; }
 					if (! hg.state.changeDir(fold)) {
 						hg.tError(fold + " is not a directory");
 					}
@@ -355,7 +374,7 @@ HackerGame
 			noError = false;
 			hg.tError("Command is not defined!");
 		}
-		if (input != '' && hg.assignment.currentTask >= 0 && hg.assignment.evaluate) {
+		if (input != '' && hg.assignment && hg.assignment.currentTask >= 0 && hg.assignment.evaluate) {
 			// Callback is the main task checker.
 			// If the input passes the callback
 			// You can move to the next task

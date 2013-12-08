@@ -255,6 +255,7 @@ HackerGame
 
 	hg.util.getFile = function (pathToFile) {
 		var filename, dir, status, filePath, content;
+		if (!pathToFile) { return null; }
 		if (pathToFile == "/") {
 			return ["/", "", hg.state.computer.fs];
 		}

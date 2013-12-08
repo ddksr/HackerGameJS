@@ -9,6 +9,7 @@ asyncTest("gameflow", function () {
 	var a = HackerGame.action,
 	c = hgTest.addCallback, 
 		hg = HackerGame,
+		maxTaskPoints = 0,
 		completedTasks = function () {
 			return $("#tab-task li").length;
 		},
@@ -68,6 +69,7 @@ asyncTest("gameflow", function () {
 	});
 
 	c(function () {
+		maxTaskPoints = hg.assignment.maxTaskPoints;
 		hg.mail.open();
 	}, 1000);
 
@@ -207,7 +209,7 @@ asyncTest("gameflow", function () {
 	c(function () {
 		equal(completedTasks(),  8, "8. task OK.");
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
-		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints + bonus());
+		equal(hg.stats.currentScore, maxTaskPoints + bonus());
 		
 	});
 
@@ -338,7 +340,7 @@ asyncTest("gameflow", function () {
 		equal($("#stats-completed-assignments").text(), "1/3", "Completed assignments in DOM.");
 		
 		// HINT PENALTY and TIME BONUS
-		equal(hg.stats.currentScore, hg.assignment.maxTaskPoints - penalties + bonus(), "Score corectly calculated.");
+		equal(hg.stats.currentScore, maxTaskPoints - penalties + bonus(), "Score corectly calculated.");
 	});
 
 	hgTest.runCallbacks(1000);
