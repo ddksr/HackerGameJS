@@ -122,3 +122,28 @@ body.loading .loading-gif {
 	font-weight: bold;
 	text-transform: uppercase;
 }
+
+/* SVG popup */
+.svg-popup {
+	width: 120px;
+	height: 30px;
+	background: transparent;
+}
+
+/* SVG */
+svg .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+svg .selected circle {
+	fill: #480000;
+}
+svg .node {
+    font: 10px sans-serif;
+}
+
+svg .link {
+    fill: none;
+    stroke: #ccc;
+}
