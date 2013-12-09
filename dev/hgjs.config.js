@@ -22,6 +22,11 @@
 				id: "move",
 				name: "How to move around"
 			},
+			"Security",
+			{
+				id: "password",
+				name: "Cracking passwords"
+			}
 		],
 		user: {
 			email: "",
@@ -33,3 +38,4 @@
 		}
 	};
 })(jQuery, HackerGame);
+
