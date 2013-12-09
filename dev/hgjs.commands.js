@@ -243,8 +243,9 @@ HackerGame
 			// EDITING
 			"edit": {
 				help: ["edit - edit file",
-					   "Usage: edit FILE",
+					   "Usage: edit FILE [KEY]",
 					   "Example: edit /etc/hostname",
+					   "Example: edit /tmp/protected thisIsAFilePassword",
 					   "Linux: there are many command line programs for editing files,", 
 					   "but they are not necessarily installed.",
 					   "- joe FILE",
@@ -252,21 +253,19 @@ HackerGame
 					   "- emacs FILE",
 					   "- vi FILE",
 					   "- vim FILE"],
-				exec: function (file) {
-					if (!hg.util.fileExists(file) && !hg.util.isDir(file)) {
-						hg.tError("File doesn't exist");
-						return;
-					}
-
+				exec: function (file, key) {
+					console.log("command.edit", [file, key]);
 					hg.editor.openCallback = function () {
-						hg.term.pause();
 						hg.editor.focus();
 					};
-					hg.editor.closeCallback = function () {
-						hg.term.resume();
-					};
-					hg.editor.watch(file);
-					hg.editor.focus();
+					hg.editor.closeCallback = function () {};
+					var response = hg.editor.watch(file, key);
+					if (response) {
+						hg.tError(response);
+					}
+					else {
+						hg.editor.focus();
+					}
 				}
 			},
 			// INTERNAL
@@ -376,7 +375,7 @@ HackerGame
 			else { result = commands[fn].exec.apply(term, args); }
 		}
 		else if(fn === "eval" || fn === "export") {
-			if (attributes) {
+			if (argsStringRaw) {
 				try {
 					result = window.eval(argsStringRaw);	
 					hg.tEcho(new String(result));

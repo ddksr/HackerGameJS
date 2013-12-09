@@ -65,7 +65,7 @@ HackerGame = {};
 					props = comp.properties,
 					user = props.user,
 					dir = (comp.pwd == "/" && "/") || null,
-					hostname = props.hostname;
+					hostname = (comp.fs.etc && comp.fs.etc.hostname) || props.hostname;
 				console.log("terminal.prompt", []);
 				if (!dir) {
 					dir = comp.pwd;
@@ -77,7 +77,7 @@ HackerGame = {};
 						dir = dir[dir.length-1];
 					}
 				}
-				fn("[" + user + "@" + hostname + " " + dir + "]$ ");
+				fn("[" + user + "@" + hostname.split("\n")[0] + " " + dir + "]$ ");
 			};
 
 			$("#anon-sama").popover();
@@ -279,6 +279,12 @@ HackerGame = {};
 			if (typeof(langId) == "object") { langObj = landId; }
 			else if (langObj) { hg.lang = langId; }
 			i18n = $.extend(i18n, langObj);
+		},
+		specialFile: function (path, content) {
+			console.log("load.specialFile", [path, content]);
+			if (! $.isFunction(content)) { return null; }
+			hg.util.setFile(path, null);
+			hg.state.computer.dfs[path] = content;
 		}
 	};
 
@@ -372,7 +378,11 @@ HackerGame = {};
 		return $termObj;
 	};
 	$.fn.hackerGameEditor = function (settings) {
-		var $edtObj = this, filePath = null, place = null, filename=null;
+		var $edtObj = this, 
+			filePath = null, 
+			filename=null,
+			editable = false,
+			special = false;
 		console.log("$.fn.hackerGameEditor", [settings]);
 
 		hg.editor.enable = function () {
@@ -382,7 +392,11 @@ HackerGame = {};
 			$($edtObj).attr("contentEditable", "false");
 		};
 		hg.editor.getContent = function () {
-			return $($edtObj).html().replace(/<br>/g, "\n");
+			var content = $($edtObj).html().replace(/<br>/g, "\n");
+			if (content.charAt(content.length - 1) == '\n') {
+				content = content.substr(0, content.length - 1);
+			}
+			return content;
 		};
 		hg.editor.setContent = function (content) {
 			$($edtObj).html(content.replace(/\n/g, "<br>"));
@@ -393,64 +407,49 @@ HackerGame = {};
 		hg.editor.blur = function () {
 			hg.action.input("terminal");
 		};
-		hg.editor.watch = function (path) {
-			var tmpPlace = hg.state.computer.fs, aryPath;
-			if (! path) { return; }
-			filePath = path.charAt(0) == "/" ? path : hg.util.absPath(path);
-			if (filePath.charAt(filePath.length -1) == "/") {
-				filePath = filePath.substr(0, filePath.length - 2);
-			}
-			aryPath = filePath.split("/").slice(1);
-			$.each(aryPath, function (i, file) {
-				var tmpFile;
-				if (tmpPlace === null) {
-					// Do nothing, something went wrong 
-					place = null;
-					filename = null;
-					return;
-				}
-				
-				tmpFile = tmpPlace[file];
+		hg.editor.watch = function (path, specialInput) { // TODO: rewrite, now you can!
+			var fileData,
+				specialMeta = null;
+			editable = true;
+			if (hg.util.fileExists(path)) {
+				fileData = hg.util.getFile(path);
 
-				if (tmpFile === null) {
-					hg.tError("Cannot edit binary file!");
-				}
-				else if (tmpFile === undefined) {
-					if (i == aryPath.length - 1 ) {
-						filename = file;
+				if (fileData[3] == "b" && specialInput) {
+					specialMeta = hg.util.getSpecialFile(path)(specialInput);
+					if (specialMeta !== null) {
+						if (specialMeta[0]) {
+							fileData[2] = specialMeta[1];
+							editable = false;
+						}
+						else {
+							return specialMeta[1];
+						}
 					}
 					else {
-						hg.tError("File doesn't exist!");
-						tmpPlace = null;
+						return "File is not a text file..";
 					}
 				}
-				else if (typeof(tmpFile) == "object") {
-					tmpPlace = tmpFile;
-				}
-				else if (typeof(tmpFile) == "string") {
-					if (i == aryPath.length - 1 ) {
-						filename = file;
-					}
-					else {
-						hg.tError("File doesn't exist!");
-						tmpPlace = null;
-					}
-				}
-			});
-			if (tmpPlace && filename) {
-				place = tmpPlace;
-				hg.editor.enable();
-				hg.editor.setContent(place[filename] || "");
-				$("#button-save-editor, #button-close-editor").attr("disabled", false);
-				if ($.isFunction(hg.editor.openCallback)) {
-					hg.editor.openCallback();
+				else if (fileData[3] != "t") {
+					return "File is not a text file..";
 				}
 			}
 			else {
-				hg.editor.blur();
-				hg.editor.openCallback = null;
-				hg.editor.closeCallback = null;
+				// create file
+				fileData = hg.util.setFile(path, "");
+				if (fileData) {
+					fileData = hg.util.getFile(path);
+				}
+				else { return "Path doesn't exist."; }
 			}
+			hg.editor.setContent(fileData[2]);
+			filePath = fileData[0];
+			filename = fileData[1];
+			
+			$("#button-save-editor").attr("disabled", !editable);
+			$("#button-close-editor").attr("disabled", false);
+			if (editable) { hg.editor.enable(); }
+
+			return false;
 		};
 		hg.editor.unwatch = function () {
 			$("#button-save-editor, #button-close-editor").attr("disabled", true);
@@ -465,9 +464,16 @@ HackerGame = {};
 			hg.editor.closeCallback = null;
 		};
 		hg.editor.save = function () {
-			var message = hg.t("File") + " " + filePath + " " + hg.t("saved") + ".";
+			var message = hg.t("File") + " " + filePath + filename + " " + hg.t("saved") + ".";
 			console.log("Saving file ... ");
-			place[filename] = hg.editor.getContent();
+			if (! editable) {
+				console.log("Not editable");
+				return;
+			}
+			
+			hg.util.setFile((filePath + filename), hg.editor.getContent());
+			
+
 			hg.state.computer.hasChanged = true;
 			$("#editor-message").hide().text(message).fadeIn("slow", function () {
 				setTimeout(function () {

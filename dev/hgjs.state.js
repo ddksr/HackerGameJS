@@ -139,7 +139,6 @@ HackerGame
 		if (typeof(fold) != "string") { err = "Path not valid!"; }
 		else {
 			var exists = hg.util.getFile(fold);
-			console.log(exists)
 			if (hg.util.fileExists(fold)) {
 				err = "File already exists!";
 			}

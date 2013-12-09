@@ -250,16 +250,15 @@ HackerGame
 
 	hg.util.getSpecialFile = function (path) {
 		console.log("util.getSpecialFile", [path]);
-		return hg.state.computer.dfs[path] || null;
+		return hg.state.computer.dfs[path] || function () { return null; };
 	};
 
-	hg.util.getFile = function (pathToFile) {
-		var filename, dir, status, filePath, content;
-		if (!pathToFile) { return null; }
+	hg.util.getFilenameFilepath = function (pathToFile) {
+		var filename, filePath;
+		console.log("util.getFilenameFilepath", pathToFile);
 		if (pathToFile == "/") {
-			return ["/", "", hg.state.computer.fs];
+			return ["/", ""];
 		}
-
 
 		if (pathToFile.charAt(0) != "/") {
 			pathToFile = hg.util.absPath(pathToFile);
@@ -271,6 +270,23 @@ HackerGame
 		filename = pathToFile[pathToFile.length - 1];
 		pathToFile = pathToFile.slice(0, pathToFile.length - 1);
 		filePath = pathToFile.join("/");
+		return [filePath, filename];
+	};
+
+	hg.util.getFile = function (pathToFile) {
+		var filename, dir, status, filePath, content;
+		console.log("util.getFile", [pathToFile]);
+		if (!pathToFile) { return null; }
+		
+		filePath = hg.util.getFilenameFilepath(pathToFile);
+		filename = filePath[1];
+		filePath = filePath[0];
+		if (filePath == "/" && filename == "")
+		{
+			return [filePath, filename, 
+					hg.state.computer.fs, hg.util.fileType(hg.state.computer.fs)];
+		}
+		
 		if (! filePath) { filePath = "/"; }
 		
 		status = hg.util.pathIterator(filePath, function (lastDir) {
@@ -284,11 +300,7 @@ HackerGame
 			if (dir[filename] !== undefined) {
 				content = dir[filename];
 				
-				if (content === null) {
-					content = hg.util.getSpecialFile(filePath + "/" + filename);
-				}
-				
-				return [filePath, filename, content];
+				return [filePath + "/", filename, content, hg.util.fileType(content)];
 			}
 		}
 
@@ -297,7 +309,7 @@ HackerGame
 
 	hg.util.setFile = function (pathToFile, content) {
 		var filename, dir, status, filePath;
-	
+		console.log('util.setFile', [pathToFile, content]);
 		if (pathToFile.charAt(0) != "/") {
 			pathToFile = hg.util.absPath(pathToFile);
 		}
