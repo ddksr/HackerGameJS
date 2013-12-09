@@ -274,6 +274,20 @@ HackerGame = {};
 				hg.assignment.initCallback();
 			}
 		},
+		externalFile: function (internalFilePath, externalFilePath) {
+			console.log("core.externalFile", [internalFilePath, externalFilePath]);
+			$.ajax({
+				url: externalFilePath,
+				async: false,
+				dataType: "text",
+				success: function (content) {
+					hg.util.setFile(internalFilePath, content);
+				},
+				error: function (a,b) {
+					console.log("core.externalFile AJAX ERROR", [a,b]);
+				}
+			});
+		},
 		language: function (langId, langObj) {
 			console.log("load.language", [landId, langObj]);
 			if (typeof(langId) == "object") { langObj = landId; }

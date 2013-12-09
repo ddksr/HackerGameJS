@@ -4,6 +4,8 @@
 		return i == "bla" ? [true, "success"] : [false, "error"]; 
 	});
 
+	hg.load.externalFile("/tmp/test2", "ass/password/dbDump.txt");
+
 	hg.load.assignment([
 		
 	], {
