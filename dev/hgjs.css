@@ -22,6 +22,7 @@ h1, h2, h3, h4, h5, h6 {
 	background-color: black;
 	color: white;
 	padding: 5px;
+	overflow: scroll;
 }
 #stats {
 	margin: 5px 0 0 0;

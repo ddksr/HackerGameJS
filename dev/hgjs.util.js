@@ -60,7 +60,7 @@ HackerGame
 				
 				args.push(argsString.substring(from, to));
 				from = to + 1;
-				i = i+1;
+				if (from > n) { from = n; }
 				sep = null;
 			},
 			command = null;
@@ -76,6 +76,7 @@ HackerGame
 					if (sep) {
 						if (chr === sep) { // seperator close
 							parseArg();
+							i = i+1; // jump over
 						}
 						// else do nothing: chr is just a char between two seperators
 					}
@@ -97,7 +98,7 @@ HackerGame
 			if (argsString.length == 1) {
 				return [command, argsString, [argsString], argsString];
 			}
-			if (from < i && from < to) {
+			if (from < i && from <= to) {
 				to = i;
 				parseArg(true);
 			}
@@ -295,12 +296,12 @@ HackerGame
 
 		if (status && dir) {
 			if (!filename) {
-				return [filePath, "", dir];
+				return [filePath, "", dir, hg.util.fileType(dir)];
 			}
 			if (dir[filename] !== undefined) {
 				content = dir[filename];
 				
-				return [filePath + "/", filename, content, hg.util.fileType(content)];
+				return [filePath + (filePath.charAt(filePath.length - 1) == "/" ? "" : "/"), filename, content, hg.util.fileType(content)];
 			}
 		}
 

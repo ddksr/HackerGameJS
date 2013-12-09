@@ -427,9 +427,8 @@ HackerGame = {};
 			editable = true;
 			if (hg.util.fileExists(path)) {
 				fileData = hg.util.getFile(path);
-
 				if (fileData[3] == "b" && specialInput) {
-					specialMeta = hg.util.getSpecialFile(path)(specialInput);
+					specialMeta = hg.util.getSpecialFile(fileData[0] + fileData[1])(specialInput);
 					if (specialMeta !== null) {
 						if (specialMeta[0]) {
 							fileData[2] = specialMeta[1];
@@ -440,11 +439,11 @@ HackerGame = {};
 						}
 					}
 					else {
-						return "File is not a text file..";
+						return "File is not a text file.";
 					}
 				}
 				else if (fileData[3] != "t") {
-					return "File is not a text file..";
+					return "File is not a text file.";
 				}
 			}
 			else {

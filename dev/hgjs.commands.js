@@ -80,6 +80,88 @@ HackerGame
 					   "TIME_TO_LIVE is in seconds.",
 					   "Linux: ping"]
 			},
+			// PASWORD CRACKERS
+			"brute": {
+				exec: function (pathToFile, num) {
+					var fileData = hg.util.getFile(pathToFile), result, special, fails = [],
+						charGenerator = function () {
+							var chrNum = 97;
+							return function () {
+								var str = String.fromCharCode(chrNum);
+								if (chrNum > 122) { return null; }
+								chrNum++;
+								return str;
+							};
+						},
+						brute = function (n, str) {
+							var i = 0, gen = charGenerator(), chr = gen(), status;
+							if (!str) { str = ""; }
+							while(chr) {
+								if (n > 1) {
+									status = brute(n-1, str + chr);
+									if (status) { return status; }
+								}
+								else {
+									status = special(str + chr)[0];
+									if (status) { 
+										fails.push(hg.t("Success") + ": " + str+chr);
+										return str + chr;
+									}
+									fails.push(hg.t("Try") + ": " + str+chr);
+								}
+								chr = gen();
+							}
+						};
+					console.log("command.brute", [pathToFile, num]);
+					if (! num) { num = 0; }
+					else { num = parseInt(num, 10); }
+					if (fileData !== null) {
+						special = hg.util.getSpecialFile(fileData[0] + fileData[1]);
+						if (special() !== null) { 
+							hg.tEcho("Brute force attack!!!");
+							hg.term.pause();
+							if (num == 0) {
+								num = 1;
+								while(!result && num <= 3) {
+									result = brute(num);
+									
+									num++;
+								}
+							}
+							else if (num > 3) {
+								hg.tEcho(num + " is too much for this computer. Trying 3 characters ...");
+							}
+							else {
+								result = brute(num);
+							}
+							if (result) {
+								hg.term.echo(hg.t("Password found") + ": " + result);
+								hg.term.echo(hg.t("Try") + ": edit " + pathToFile + " " + result);
+							}
+							else {
+								hg.tEcho("Brute force failed.");
+							}
+							hg.util.setFile("/tmp/brute.log", fails.join("\n"));
+							hg.term.echo(hg.t("Log dumped to") + ": /tmp/brute.log");
+							hg.term.echo(hg.t("To view use command") + ": edit /tmp/brute.log");
+							hg.term.resume();
+						}
+						else {
+							hg.tError("File is not password protected.");
+						}
+					}
+					else {
+						hg.tError("File doesn't exist.");
+					}
+				},
+				help: []
+			},
+			"dict": {
+				exec: function (pathToFile, pathToDict) {
+
+				},
+				help: []
+			},
 			// FILE SYSTEM
 			"cat": {
 				exec: function (file) {
@@ -87,6 +169,7 @@ HackerGame
 					console.log("command.cat", [file]);
 					if (contents === null) {
 						hg.tError("File doesn't exist.");
+						return;
 					}
 					contents = contents[2];
 					if (contents === null) {

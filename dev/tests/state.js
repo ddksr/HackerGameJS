@@ -201,7 +201,7 @@ test("filesystem - moving and copying files", function () {
 
 test("stats", function () {
 	var s = HackerGame.stats,
-		assNum = HackerGame.config.assignments.length,
+		assNum = HackerGame.ind.NUM_OF_ASSIGNMENTS,
 		completedAssignments = s.completedAssignments,
 		completedTasks = s.completedTasks,
 		bestScore = s.bestScore,

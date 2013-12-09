@@ -47,6 +47,8 @@ test("parseInput", function () {
 			'echo "': ['echo', null, null, '"'],
 			'echo /': ['echo', "/", ['/'], "/"],
 			'echo bu': ['echo', 'bu', ['bu'], 'bu'],
+			'echo a b': ['echo', 'a b', ['a', 'b'], 'a b'],
+			'echo test d': ['echo', 'test d', ['test', 'd'], 'test d'],
 			'echo bu bu bu': ['echo', 'bu bu bu', ['bu', 'bu', 'bu'], 'bu bu bu'],
 			'echo "bu"': ['echo', 'bu', ['bu'], '"bu"'],
 			'echo "bu\'s bu"': ['echo', 'bu\'s bu', ['bu\'s bu'], '"bu\'s bu"'],
@@ -286,15 +288,15 @@ test("getFile", function () {
 		pwd = hg.state.computer.pwd,
 		result = null,
 		testObj = {
-			"/": ["/", "", fs],
-			"/bin": ["/", "bin", fs.bin],
-			"/../": ["/", "", fs],
-			"../bin": ["/", "bin", fs.bin],
-			"../bin/tree": ["/bin", "tree", null],
-			"/etc/hostname": ["/etc", "hostname", fs.etc.hostname],
-			"getFile/test1": ["/tmp/getFile", "test1", {}],
-			"getFile": ["/tmp", "getFile", {"test1": {}}],
-			"getFile/./test1/../../../bin": ["/", "bin", fs.bin]
+			"/": ["/", "", fs, "d"],
+			"/bin": ["/", "bin", fs.bin, "d"],
+			"/../": ["/", "", fs, "d"],
+			"../bin": ["/", "bin", fs.bin, "d"],
+			"../bin/tree": ["/bin/", "tree", null, "b"],
+			"/etc/hostname": ["/etc/", "hostname", fs.etc.hostname, "t"],
+			"getFile/test1": ["/tmp/getFile/", "test1", {}, "d"],
+			"getFile": ["/tmp/", "getFile", {"test1": {}}, "d"],
+			"getFile/./test1/../../../bin": ["/", "bin", fs.bin, "d"]
 		};
 	hg.state.changeDir("/tmp");
 	hg.state.makeDir("/tmp/getFile");
@@ -302,14 +304,6 @@ test("getFile", function () {
 	$.each(testObj, function (toTest, expected) {
 		deepEqual(fn(toTest), expected, "Get " + toTest);
 	});
-
-	// get special
-	fs.tmp.special = null;
-	hg.state.computer.dfs["/tmp/special"] = function () {
-		return [true, "bla"];
-	};
-	result = fn("special");
-	ok($.isFunction(result[2]), "Got special file.");
 
 	hg.state.changeDir(pwd);
 });
