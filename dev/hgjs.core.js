@@ -97,7 +97,8 @@ HackerGame = {};
 			
 			// Initialize available task list
 			$.each(hg.config.assignments, function (i, ass) {
-				var $tr = $(document.createElement("tr")),
+				var assNum = 0,
+					$tr = $(document.createElement("tr")),
 					$tdName = $(document.createElement("td")),
 					$tdCurrent = $(document.createElement("td")).addClass("ass-current-score"),
 					$tdBest = $(document.createElement("td")).addClass("ass-best-score"),
@@ -116,7 +117,7 @@ HackerGame = {};
 					$tdBest.text("-");
 					$tdTrials.text("0");
 
-
+					hg.ind.NUM_OF_ASSIGNMENTS += 1;
 					$tr.append($tdName).append($tdCurrent).append($tdBest).append($tdTrials);
 
 				}
@@ -129,7 +130,6 @@ HackerGame = {};
 				$("table.assignment-list").append($tr);
 				
 			});
-			
 			return $obj;
 		},
 		contentInit = function () {
@@ -284,7 +284,8 @@ HackerGame = {};
 
 	// Indicators
 	hg.ind = {
-		modal: false
+		modal: false,
+		NUM_OF_ASSIGNMENTS: 0
 	};
 
 	// Mail system

@@ -392,7 +392,7 @@ HackerGame
 	};
 	hg.stats = {
 		refresh: function (exclude) {
-			var overallAssignments = hg.config.assignments.length,
+			var overallAssignments = hg.ind.NUM_OF_ASSIGNMENTS,
 				tasksInAssignment = hg.assignment ? hg.assignment.tasks.length : 0;
 			console.log("stats.refresh", [exclude]);
 			if (!exclude) { exclude = []; }
