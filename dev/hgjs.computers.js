@@ -13,7 +13,10 @@ HackerGame
 			"home": {},
 			"dev": {},
 			"tmp": {},
-			"etc": {}
+			"etc": {
+				"brute": {},
+				"dict": { "passwords": "password\npassword1234\n123456789"}
+			}
 		},
 		defaultDynFs = {
 			

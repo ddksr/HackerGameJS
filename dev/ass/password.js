@@ -4,7 +4,7 @@
 		return i == "aux" ? [true, "success"] : [false, "error"]; 
 	});
 
-	hg.load.externalFile("/tmp/test2", "ass/password/dbDump.txt");
+	hg.load.externalFile("/etc/dict/passwords", "ass/password/passwords.txt");
 
 	hg.load.assignment([
 		

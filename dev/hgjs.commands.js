@@ -157,8 +157,58 @@ HackerGame
 				help: []
 			},
 			"dict": {
-				exec: function (pathToFile, pathToDict) {
+				exec: function (pathToFile) {
+					var fileData = hg.util.getFile(pathToFile), 
+						result, special, dict = "/etc/dict/passwords",
+						passwords = [],
+						fails = [];
+					console.log("command.dict", [pathToFile]);
+					
+					if (fileData !== null) {
+						special = hg.util.getSpecialFile(fileData[0] + fileData[1]);
+						if (special() !== null) { 
+							hg.tEcho("Dictionary attack!!!");
+							hg.term.pause();
+							
+							dict = hg.util.getFile(dict);
+							if (dict === null) {
+								hg.tError("Error: no dictionary file in" + "/etc/dict/passwords");
+								hg.term.resume();
+								return;
+							}
+							passwords = dict[2].split("\n");
+							$.each(passwords, function (i, pass) {
+								if (pass === "") { return; }
+								result = special(pass)[0];
+								if (! result) {
+									fails.push(hg.t("Try") + ": " + pass);
+								}
+								else {
+									fails.push(hg.t("Success") + ": " + pass);
+									result = pass;
+								}
+								return typeof(result) === typeof(false);
+							});
 
+							if (result) {
+								hg.term.echo(hg.t("Password found") + ": " + result);
+								hg.term.echo(hg.t("Try") + ": edit " + pathToFile + " " + result);
+							}
+							else {
+								hg.tEcho("Dictionary attack failed.");
+							}
+							hg.util.setFile("/tmp/dict.log", fails.join("\n"));
+							hg.term.echo(hg.t("Log dumped to") + ": /tmp/dict.log");
+							hg.term.echo(hg.t("To view use command") + ": edit /tmp/dict.log");
+							hg.term.resume();
+						}
+						else {
+							hg.tError("File is not password protected.");
+						}
+					}
+					else {
+						hg.tError("File doesn't exist.");
+					}
 				},
 				help: []
 			},
