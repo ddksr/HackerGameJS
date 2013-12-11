@@ -164,6 +164,22 @@ Object methods:
 - switchTask (previousTask) - switch between tasks
 
 
+hg.dump.computer ()
+-------------------
+
+Dump computer information if changes. Also, mark computer.hasChanges = false
+If chanes in filesystem (computer.hasChanges):
+  - dump = [ computerObj, callback ]
+Else:
+  - dump = [ null, callback ]
+Computer object has next keys:
+  - user : string
+  - hostname : string
+  - fs : object - file system (DFS cannot be loaded)
+
+If callback is called, the computer.hasChanges is reset to True
+
+
 hg.dump.state ()
 ----------------
 
@@ -699,22 +715,6 @@ core: startAssignment()
 -----------------------
 
 Start assignment (time couting, command line evalvation ...).
-
-
-dump = hg.dump.computer ()
---------------------------
-
-Dump computer information if changes. Also, mark computer.hasChanges = false
-If chanes in filesystem (computer.hasChanges):
-  - dump = [ computerObj, callback ]
-Else:
-  - dump = [ null, callback ]
-Computer object has next keys:
-  - user : string
-  - hostname : string
-  - fs : object - file system (DFS cannot be loaded)
-
-If callback is called, the computer.hasChanges is reset to True
 
 
 jQuery: .hackerGame([settings])

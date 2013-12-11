@@ -165,7 +165,7 @@ HackerGame
 	};
 	
 	/**
-	 * dump = hg.dump.computer ()
+	 * hg.dump.computer ()
 	 *
 	 * Dump computer information if changes. Also, mark computer.hasChanges = false
 	 * If chanes in filesystem (computer.hasChanges):
