@@ -13,7 +13,7 @@
 		assignmentsPath: "ass/",
 		imagesPath: "img/",
 		assignments: [
-			"How to play",
+			"Training",
 			{ 
 				id: "intro",
 				name: "Introduction to the terminal"
@@ -22,11 +22,15 @@
 				id: "move",
 				name: "How to move around"
 			},
-			"Security",
+			{
+				id: "copy",
+				name: "Moving and copying files"
+			},
 			{
 				id: "password",
 				name: "Cracking passwords"
-			}
+			},
+			"Level 1: Discovering insecurity"
 		],
 		user: {
 			email: "",

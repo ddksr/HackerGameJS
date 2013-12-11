@@ -197,7 +197,7 @@ HackerGame = {};
 		$(selector + ".i18n").each(function () {
 			var defaultString = $(this).attr("data-lang"),
 				hasKey = i18n && i18n[defaultString],
-				data = $(this).data("data-lang"),
+				data = $(this).data("translation"),
 				text = hg.t(defaultString);
 			if ($(this).is(".text")) {
 				// If the i18n element also has the text chass
@@ -209,16 +209,16 @@ HackerGame = {};
 					// We store the previous translation so that
 					// translations can be switched but only the first time
 					// when data is false
-					if (hasKes && !data) { 
-						$(this).data("data-lang", $(this).html());
+					if (hasKey && !data) { 
+						$(this).data("translation", $(this).html());
 					}
-					$(this).html((this).html());
+					$(this).html(text);
 				}
 				else if (data) {
 					$(this).html(data);
 				}
 			}
-			else { $(this).html(hg.t(defaultString)); }
+			else { $(this).html(text); }
 		});
 	};
 
