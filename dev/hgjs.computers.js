@@ -112,7 +112,7 @@ HackerGame
 	};
 
 	/**
-	 * pong = hg.network.ping (location)
+	 * hg.network.ping (location)
 	 * - location : string - location to ping
 	 *
 	 * Pings 'location' and returns TRUE on success.

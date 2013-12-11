@@ -9,8 +9,8 @@ HackerGame = {};
 	// Internal objects and methods initialization
 	// ===========================================
 	var i18n, // language object
-		/*
-		 * initAssignment()
+		/**
+		 * core: initAssignment ()
 		 * 
 		 * Initialize loaded assignment. 
 		 * Switch to Game page. 
@@ -22,8 +22,8 @@ HackerGame = {};
 			hg.action.page("game");
 			hg.action.tab("assignment");
 		},
-		/*
-		 * startAssignment
+		/**
+		 * core: startAssignment()
 		 * 
 		 * Start assignment (time couting, command line evalvation ...).
 		 */
@@ -36,8 +36,8 @@ HackerGame = {};
 			hg.assignment.startTimer();
 			hg.action.tab("task");
 		},
-		/*
-		 * initDynamicFields ([selector])
+		/**
+		 * core: initDynamicFields ([selector])
 		 * - selector : string - jQuery selector string
 		 * 
 		 * Go trough selector or body and replace dynamic fields with associated values.
@@ -60,8 +60,8 @@ HackerGame = {};
 				}
 			});
 		},
-		/*
-		 * baseInit ([settings])
+		/**
+		 * core: baseInit ([settings])
 		 * - settings : object - settings objects to overwrite config
 		 *
 		 * This is the base initialization. It initializes the terminal
@@ -157,8 +157,8 @@ HackerGame = {};
 			});
 			return $obj;
 		},
-		/*
-		 * contentInit
+		/**
+		 * core: contentInit
 		 * 
 		 * Content initialization (translations evaluated and loading image removed).
 		 * Note: has to be called after baseInit and after any server scripts are loaded.
@@ -171,8 +171,8 @@ HackerGame = {};
 
 			$("body").removeClass("loading");
 		},
-		/*
-		 * hashChange (evt)
+		/**
+		 * core: hashChange (evt)
 		 * - evt : object - event object
 		 * 
 		 * Event function which listens to hash changes.
@@ -219,14 +219,14 @@ HackerGame = {};
 
 	// Terminal methods
 
-	/*
+	/**
 	 * hg.term
 	 *
 	 * Terminal object
 	 */
 	hg.term = null;
 
-	/*
+	/**
 	 * hg.tEcho (string)
 	 * - text : string
 	 * 
@@ -235,7 +235,7 @@ HackerGame = {};
 	 */
 	hg.tEcho = function () {};
 
-	/*
+	/**
 	 * hg.tError (text)
 	 * - text : string
 	 * 
@@ -245,7 +245,7 @@ HackerGame = {};
 	hg.tError = function () {};
 
 
-	/*
+	/**
 	 * hg.t (string)
 	 * - string : string - translation key
 	 *
@@ -256,7 +256,7 @@ HackerGame = {};
 		return (i18n && i18n[string]) || string;
 	};
 
-	/*
+	/**
 	 * hg.refreshTranslations ([selector])
 	 * - selector : string - jQuery selector string
 	 * 
@@ -293,7 +293,7 @@ HackerGame = {};
 		});
 	};
 
-	/*
+	/**
 	 * hg.msg.alert (message, [title])
 	 * - message : string
 	 * - title : string - title string
@@ -310,7 +310,7 @@ HackerGame = {};
 
 	// Loader (assignments and languages)
 	hg.load = {
-		/*
+		/**
 		 * hg.load.assignment (tasks, other)
 		 * - tasks : array - contains tasks objects
 		 * - other : object - other important information
@@ -402,7 +402,7 @@ HackerGame = {};
 				hg.assignment.initCallback();
 			}
 		},
-		/*
+		/**
 		 * hg.load.externalFile (internalFilePath, externalFilePath)
 		 * - internalFilePath : string - internal file path to new file
 		 * - externalFilePath : string - external file path to file that will be loaded
@@ -423,7 +423,7 @@ HackerGame = {};
 				}
 			});
 		},
-		/*
+		/**
 		 * hg.load.language (languageId, languageObject)
 		 * - languageId : string - language id
 		 * - languageObject : object - contains translations in form english: translated
@@ -436,7 +436,7 @@ HackerGame = {};
 			else if (langObj) { hg.lang = langId; }
 			i18n = $.extend(i18n, langObj);
 		},
-		/*
+		/**
 		 * hg.load.specialFile (path, content)
 		 * - path : string - internal path to file
 		 * - content : function (input) - function which takes one argument
@@ -459,7 +459,7 @@ HackerGame = {};
 	};
 
 	// Indicators
-	/*
+	/**
 	 * hg.ind
 	 *
 	 * Indicator object. Cosits of global states and constants.
@@ -474,7 +474,7 @@ HackerGame = {};
 	// Mail system
 	hg.mail = {
 		message: undefined, // string message
-		/*
+		/**
 		 * hg.mail.setNew ()
 		 *
 		 * Call to set the mail icon red.
@@ -486,7 +486,7 @@ HackerGame = {};
 			}
 			$("#mail").hgBlink();
 		},
-		/*
+		/**
 		 * hg.mail.setEmpty ()
 		 * 
 		 * Call to set the mailbox icon as empty.
@@ -495,7 +495,7 @@ HackerGame = {};
 			console.log("mail.setEmpty", []);
 			$("#mail").removeClass("red-alert");
 		},
-		/*
+		/**
 		 * hg.mail.recieve (message, clickOpen)
 		 * - message : object
 		 * - clickOpen : function - callback when mail is opened
@@ -521,7 +521,7 @@ HackerGame = {};
 			};
 			hg.mail.setNew();
 		},
-		/*
+		/**
 		 * hg.mail.open ()
 		 * 
 		 * Message dialog box initialization after mail icon is clicked.
@@ -554,7 +554,7 @@ HackerGame = {};
 			$("#mail").popover("hide");
 			hg.mail.setEmpty();
 		},
-		/*
+		/**
 		 * hg.mail.close()
 		 *
 		 * Close message dialog.
@@ -570,8 +570,8 @@ HackerGame = {};
 	// jQuery plugins
 	// ==============
 
-	/*
-	 * .hackerGame([settings])
+	/**
+	 * jQuery: .hackerGame([settings])
 	 * - settings : object - object to overwrite configuration
 	 * 
 	 * Make DOM object into the game terminal
@@ -599,7 +599,7 @@ HackerGame = {};
 	};
 	
 	/**
-	 * .hackerGameEditor([settings])
+	 * jQuery: .hackerGameEditor([settings])
 	 *
 	 * Make DOM object into game Editor. Settings are currently not used.
 	 */
@@ -782,7 +782,7 @@ HackerGame = {};
 	};
 
 	/**
-	 * .hackerGameTimer()
+	 * jQuery: .hackerGameTimer()
 	 *
 	 * Initialize hackergame timer.
 	 */

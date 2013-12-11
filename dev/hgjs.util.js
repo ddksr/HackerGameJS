@@ -24,9 +24,11 @@ HackerGame
 		};
 
 	/**
-	 * obj = hg.util.extend (default, over)
+	 * hg.util.extend (default, over)
 	 * - default : object - default object that gets overwritten
 	 * - over : object - overwritting object
+	 *
+	 * Return: object
 	 *
 	 * This utility behaves a lot like $.extend but if it detects that both
 	 * default[key] and over[key] are objects, it will recursively call itself
@@ -51,9 +53,11 @@ HackerGame
 	};
 
 	/**
-	 * parsed = hg.util.parseInput (input)
+	 * hg.util.parseInput (input)
 	 * - input : string - user input from command line
 	 * 
+	 * Return: array
+	 *
 	 * Parse user input and return: [command, argsStr, args, rawArgsString]
 	 * - command : string - user command
 	 * - argsStr : string - parsed arguments as a string (removing ' and " )
@@ -130,21 +134,64 @@ HackerGame
 		return [command, argsString, args, rawArgsString];
 	};
 
+
+	/**
+	 * hg.util.randIP ()
+	 * 
+	 * Return: string
+	 *
+	 * Generate random IP address.
+	 */
 	hg.util.randIP = function () {
 		var generator = randIntGenerator(1,255), first = generator();
 		console.log("util.randIp", []);
 		while ($.inArray(first, notValidIP) > -1) { first = generator(); }
 		return [first, generator(), generator(), generator()].join(".");
 	};
+
+	/**
+	 * hg.util.randResponseTime (from, to)
+	 * - from : integer
+	 * - to : integer
+	 * 
+	 * Return: function
+	 *
+	 * Return generator for random response time.
+	 */
 	hg.util.randResponseTime = function(from, to) {
 		console.log("util.randResponseTime", [from, to]);
 		return randIntGenerator(from, to);
 	};
+
+	/**
+	 * hg.util.fileType (file, [longName])
+	 * - file: mixed - file content
+	 * - longName : boolean - if true, long filetype name will be returned
+	 *
+	 * Return: string
+	 *
+	 * Return filetype with respect to file content.
+	 * Types:
+	 * - b: binary ( can also be special! )
+	 * - d: directory
+	 * - t: text
+	 */
 	hg.util.fileType = function (file, longName) {
 		var type = (file === null && fileTypes["null"]) || fileTypes[typeof(file)];
 		console.log("util.fileType", [file, longName]);
 		return longName ? fileTypesLong[type] : type;
 	};
+
+	/**
+	 * hg.util.path = function ([rawPathString])
+	 * - rawPathString : string - raw path (relative, absolute ... )
+	 *
+	 * Return: array - path array
+	 * 
+	 * Return path array. If rawPathString isn't specified, PWD will be used.
+	 * Absolute path is prepended automatically.
+	 * Example: /one/two -> ['one', 'two']
+	 */
 	hg.util.path = function (rawPathString) {
 		var ret = null,
 			pathString = (rawPathString && 
@@ -175,6 +222,15 @@ HackerGame
 		}
 		return ret;
 	};
+
+	/**
+	 * hg.util.checkFilePermission (absPath, [totalTest])
+	 * - absPath : string - absolute path to file
+	 * - totalTest : boolean - if true, path will be cleand and if relative, changed to absolute
+	 * Return: boolean
+	 *
+	 * Check if wile is writtable.
+	 */
 	hg.util.checkFilePermission = function (absPath, totalTest) {
 		console.log("util.checkFilePermission", [absPath, totalTest]);
 		if (totalTest) {
@@ -194,6 +250,15 @@ HackerGame
 			"/home"
 		]) == -1;
 	};
+
+	/**
+	 * hg.util.fileExists (loc)
+	 * - loc : string - location of file (filepath)
+	 *
+	 * Return: boolean
+	 *
+	 * Check if file exists. Note: directory is also a file!
+	 */ 
 	hg.util.fileExists = function (loc) {
 		var ret = false;
 		console.log("util.fileExists", [loc]);
@@ -202,6 +267,15 @@ HackerGame
 		});
 		return ret;
 	};
+
+	/**
+	 * hg.util.isDir (dir)
+	 * - dir : string - directory filepath
+	 * 
+	 * Return: boolean
+	 * 
+	 * Check if file is directory. If file doesn't exists, false is returned
+	 */
 	hg.util.isDir = function (dir) {
 		var ret = false;
 		console.log("util.isDir", [dir]);
@@ -210,10 +284,29 @@ HackerGame
 		});
 		return ret;
 	};
+
+	/**
+	 * hg.util.absPath (path)
+	 * - path : string - relative path to file
+	 * 
+	 * Return: string
+	 * 
+	 * Create absolute path to file (this is a straightforward and stupid method, it just
+	 * prepends PWD. Note: no checking if path is already absolute is done.
+	 */
 	hg.util.absPath = function (path) {
 		console.log("util.absPath", [path]);
 		return hg.state.computer.pwd + (hg.state.computer.pwd == "/" ? "" : "/") + path;
 	};
+
+	/**
+	 * hg.util.cleanPath (path)
+	 * - path : string - absolute or relative path
+	 *
+	 * Return: string
+	 *
+	 * Return cleaned path. Example: /one/two/../two2 -> /one/two2
+	 */
 	hg.util.cleanPath = function (path) {
 		var returnPath = [], emptyPath, isAbs = path.charAt(0) == "/";
 		console.log("util.cleanPath", [path]);
@@ -233,6 +326,17 @@ HackerGame
 		emptyPath = returnPath.length == 0 || (returnPath.length == 1 && !returnPath[0]);
 		return emptyPath ? "/" : returnPath.join("/");
 	};
+
+	/**
+	 * hg.util.pathIterator (dir, fn)
+	 * - dir : string : directory to iterate to
+	 * - fn : function - callback
+	 *
+	 * Return: boolean
+	 *
+	 * Iterate trough path and call the callback function on the last
+	 * directory that was iterated. Return true if everything OK, else false.
+	 */
 	hg.util.pathIterator = function (dir, fn) {
 		var path = hg.util.path(dir),
 			res = null,
@@ -268,11 +372,30 @@ HackerGame
 		return true;
 	};
 
+	/**
+	 * hg.util.getSpecialFile (path)
+	 * - path : string - ABSOLUTE path to special file
+	 *
+	 * Return: function
+	 *
+	 * Get special file. If no special file exists, a function that when called
+	 * returns null is generated.
+	 */
 	hg.util.getSpecialFile = function (path) {
 		console.log("util.getSpecialFile", [path]);
 		return hg.state.computer.dfs[path] || function () { return null; };
 	};
 
+	/**
+	 * hg.util.getFilenameFilepath (pathToFile)
+	 * - pathToFile : string - path to some file
+	 * 
+	 * Return: array
+	 *
+	 * Function cleans the path and returns the path to file and filename in array.
+	 * Example 1: /home/user/file -> ['/home/user/', 'file']
+	 * Example 2: / -> ['/', '']
+	 */
 	hg.util.getFilenameFilepath = function (pathToFile) {
 		var filename, filePath;
 		console.log("util.getFilenameFilepath", pathToFile);
@@ -293,6 +416,20 @@ HackerGame
 		return [filePath, filename];
 	};
 
+	/**
+	 * hg.util.getFile (pathToFile)
+	 * - pathToFile : string - path to file
+	 *
+	 * Return: array|null
+	 *
+	 * Gets the specified file in a informative way. The output array is:
+	 * [dirPath, fileName, fileContent, fileType]
+	 * - dirPath: path to containing directory
+	 * - fileName: filename of file in DirPath
+	 * - fileContent: contents of file
+	 * - fileType: file type of file
+	 * If file doesn't exits or path is incorrect, null is returned.
+	 */
 	hg.util.getFile = function (pathToFile) {
 		var filename, dir, status, filePath, content;
 		console.log("util.getFile", [pathToFile]);
@@ -327,6 +464,15 @@ HackerGame
 		return null;
 	};
 
+	/**
+	 * hg.util.setFile (pathToFile, content)
+	 * - pathToFile : string - pat to file to set (can be a new file)
+	 * - content : mixed - content of the new file
+	 * 
+	 * Return: boolean
+	 * 
+	 * Sets new file content if path to file exists and return true. If not, false is returned.
+	 */
 	hg.util.setFile = function (pathToFile, content) {
 		var filename, dir, status, filePath;
 		console.log('util.setFile', [pathToFile, content]);
@@ -364,6 +510,14 @@ HackerGame
 	// ===================
 	// jQuery util plugins
 	// ===================
+	/**
+	 * jQuery: .hgBlink ([numOfBlinks, [time]])
+	 * - numOfBlinks : integer - number of blinks
+	 * - time : integer - time between blinks
+	 * 
+	 * jQuery plugin for DOM element blinking.
+	 *
+	 */
 	$.fn.hgBlink = function (numOfBlinks, time) {
 		console.log("$.fn.hgBlink", [numOfBlinks, time]);
 		if (!numOfBlinks) { numOfBlinks = 3; }

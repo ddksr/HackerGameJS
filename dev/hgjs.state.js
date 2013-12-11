@@ -5,9 +5,23 @@ HackerGame
 */
 (function ($, hg) {
 	var stateCache = [], 
+		/**
+		 * state: timeToScore ()
+		 *
+		 * Return: integer
+		 *
+		 * Convert remaining time to score.
+		 */
 		timeToScore = function () {
 			return parseInt(hg.timer.lastCounter / 20, 10);
 		},
+	
+		/**
+		 * state: initTaskHTML ($task)
+		 * - $task : jQuery object - task HTML
+		 * 
+		 * Initialize task HTML. Convert hits and help to buttons etc.
+		 */		 
 		initTaskHTML = function ($task) {
 			var $help, $hint, 
 				$btn = $(document.createElement("button")).addClass("btn").addClass("btn-info").addClass("btn-sm");
@@ -39,6 +53,12 @@ HackerGame
 				$("#tab-task").scrollTop($("#tab-task").get(0).scrollHeight);
 			});
 		},
+	
+		/**
+		 * state: evalAssignmentQueue ()
+		 *
+		 * Evaluate assignment queue. Calculate bonuses etc.
+		 */
 		evalAssignmentQueue = function () {
 			console.log("state:evalAssignmentQueue", []);
 			var task = this,
@@ -54,11 +74,27 @@ HackerGame
 				hg.assignment.queue = [];
 			}
 		},
+	
+		/**
+		 * state: closeTask
+		 *
+		 * Close current task.
+		 */
 		closeTask = function (id) {
 			console.log("state:closeTask", [id]);
 			$("#tab-task .tasks-list #task-"+id).addClass("completed-task");
 			$("#tab-task .tasks-list #task-"+id).find(".hint, .help").popover('destroy').empty().remove();
 		},
+
+		/**
+		 * state: loadAssignment (assId, [callback])
+		 * - assId : string - assignment id
+		 * - callback : function - callback called when script file is loaded
+		 *
+		 * Load assignment HTML and JavaScript. First HTML is loaded into #stash div element.
+		 * Then the JS is loaded and evaluated (it can use its HTML elements 
+		 * directly from #stash. Callback is called if script is successfully loaded.
+		 */
 		loadAssignment = function (assId, callback) {
 			var htmlUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".html",
 				htmlLangUrl = hg.config.basePath + hg.config.assignmentsPath + assId + "-" + hg.lang + ".html",
@@ -84,6 +120,30 @@ HackerGame
 				}
 			});
 		};
+	/**
+	 * hg.cons.State (computer, [config, [innerState]])
+	 * - comptuer : object - computer object
+	 * - config : object - configuration for the state
+	 * - innerState : object - NOT USED YET
+	 * 
+	 * Constructor for State object.
+	 * 
+	 * Object fields:
+	 * - computer : object - computer object
+	 * - place : object - directory object for current working directory
+	 * 
+	 * Object methods:
+	 * - hasCompletedAssignments ()
+	 * - getDefaultComputer () 
+	 * - changeDir (directory)
+	 * - makeDir (directory)
+	 * - removeFile (filePath)
+	 * - openFile (filePath)
+	 * - saveFile (filePath, content)
+	 * - emptyTmp ()
+	 * - copy (src, dst)
+	 * - move (src, dst)
+	 */
 	hg.cons.State = function State(computer, config, innerState) {
 		console.log("new State", [computer, config, innerState]);
 		this.computer = computer || new hg.cons.Computer(hg.config.defaultComputer, true);
@@ -254,6 +314,29 @@ HackerGame
 		return hg.state.copy(src, dst, true);
 	};
 
+	/**
+	 * hg.cons.Task (taskObj, taskHtml)
+	 * - taskObj : object - task configurations
+	 * - taskHtml : string - task html from #stash
+	 *
+	 * Object taskObj:
+	 * - evaluate : function - callback when user uses a command
+	 * - set : function - callback when task is initialized
+	 * - unset : function - callback when task is destroyed
+	 * - points : number - points user can achieve with this task
+	 *
+	 * Constructor for Task object.
+	 *
+	 * Object fields:
+	 * - id : string
+	 * - evaluate : function
+	 * - set : function
+	 * - unset : function
+	 * - pointes : function
+	 * 
+	 * Object methods:
+	 * - switchTask (previousTask) - switch between tasks
+	 */
 	hg.cons.Task = function Task(taskObj, taskHtml) {
 		console.log("new Task", [taskObj, taskHtml]);
 		this.id = taskObj.id || null;
@@ -277,6 +360,33 @@ HackerGame
 		initTaskHTML($li);
 		hg.assignment.evaluate = this.evaluate;
 	};
+
+	/**
+	 * hg.cons.Assignment (assId, loadCallback)
+	 * - assId : assignment id
+	 *
+	 * Constructor for Assignment object.
+	 * Note: this gets called before assignment is initialized.
+	 * Constructor also calls loadAssignment ()
+	 *
+	 * Object fields:
+	 * - id : string - assignment id
+	 * - currentTask : integer - pointer to current task
+	 * - numOfTasks : integer - number of tasks
+	 * - tasks : array - container for Task objects
+	 * - isRunning : boolean - true when assignment is initialized and started (running)
+	 * - startTime : integer - starting counter for timer
+	 * - evaluate : function - evaluate function for every assignment
+	 * - queue : array - assignment actions queue
+	 * - maxTaskPoints : integer - maximum number of points tasks can bring
+	 * - bestScore : integer - best assignment score
+	 *
+	 * Object methods:
+	 * - startTimer () - start hg.timer
+	 * - nextTask () - switch to next task
+	 * - fail () - called when assignment fails
+	 * - complete () - called when all tasks are completed
+	 */
 	hg.cons.Assignment = function Assignment(assignment, loadCallback) {
 		
 		console.log("new Assignment", [assignment, loadCallback]);
@@ -390,6 +500,12 @@ HackerGame
 		hg.assignment = null;
 	};
 	hg.stats = {
+		/**
+		 * hg.stats.refresh ([exlude])
+		 * - exclude : array - stats to exclude from refreshing (NOT YET USED)
+		 * 
+		 * Function refreshes the stats values in DOM.
+		 */
 		refresh: function (exclude) {
 			var overallAssignments = hg.ind.NUM_OF_ASSIGNMENTS,
 				tasksInAssignment = hg.assignment ? hg.assignment.tasks.length : 0;
@@ -402,6 +518,12 @@ HackerGame
 			$("#stats-best-score").text(hg.stats.bestScore);
 			$("#stats-overall-score").text(hg.stats.overallScore);
 		},
+		/**
+		 * hg.stats.aggregate ([hold])
+		 * - hold : boolean - if true, don't automatically refresh stats
+		 *
+		 * Aggregates overall score.
+		 */
 		aggregate: function (hold) {
 			$(".table.assignment-list tr").each(function (i, elt) {
 				var best = $(elt).find(".ass-best-score").text();
@@ -411,6 +533,15 @@ HackerGame
 			} );
 			if (! hold) { hg.stats.refresh(); }
 		},
+		
+		/**
+		 * hg.stats.increment (stat, val, [hold])
+		 * - stat : string - stat to be incremented
+		 * - val : integer - increment stat by value
+		 * - hold : boolean - if true, don't refresh stats after changes
+		 *
+		 * Increment stats.
+		 */
 		increment: function (stat, val, hold) {
 			console.log("stats.increment", [stat, val, hold]);
 			if (typeof(stat) == "object") {
@@ -433,6 +564,19 @@ HackerGame
 	};
 
 	// Actions (which user can do)
+	/**
+	 * hg.action
+	 *
+	 * Special module with functions that get triggered by location hashes.
+	 * #/actionMethod/actionArgument -> hg.action.actionMethod (actionArgument)
+	 * Example: #/page/help -> hg.action.page (help)
+	 */
+	/**
+	 * hg.action.page (pageId)
+	 * - pageId : string - page id to switch to
+	 * 
+	 * Switch page
+	 */
 	hg.action.page = function (pageId) {
 		var prevPageIdRaw = $("#page-links .active").attr("id"),
 			prevPageId = prevPageIdRaw && prevPageIdRaw.substr(10),
@@ -452,6 +596,13 @@ HackerGame
 			showPage();
 		}
 	};
+
+	/**
+	 * hg.action.input (inputId)
+	 * - inputId : string - input tab to change to
+	 *
+	 * Change input tab.
+	 */
 	hg.action.input = function (inputId) {
 		var prevInputId = $("#input-links .active").attr("id").substring(11),
 			showInput = function () {
@@ -467,6 +618,13 @@ HackerGame
 			showInput();
 		}
 	};
+
+	/**
+	 * hg.action.tab (tabId)
+	 * - tabId : string - info tab to change to
+	 * 
+	 * Change info tab.
+	 */
 	hg.action.tab = function (tabId) {
 		var prevTabId = $("#tab-links .active").attr("id").substring(9),
 			showTab = function () {
@@ -482,6 +640,13 @@ HackerGame
 			showTab();
 		}
 	};
+
+	/**
+	 * hg.action.assignment (assId)
+	 * - assId : string - selected assignment
+	 * 
+	 * Select assignment.
+	 */
 	hg.action.assignment = function (assId) {
 		var status = false;
 		console.log("action.assignment", [assId]);
@@ -502,12 +667,29 @@ HackerGame
 
 		$("#link-tab-game").removeClass("disabled");
 	};
+
+	/**
+	 * hg.action.mail ()
+	 * 
+	 * Open email.
+	 */
 	hg.action.mail = function (cmnd) {
 		console.log("action.mail", [cmnd]);
 		if (cmnd == "open") { hg.mail.open(); }
 	};
 
-
+	/**
+	 * hg.dump.state ()
+	 * 
+	 * Return: array
+	 *
+	 * Dump state to JSON. 
+	 * Return format: [stateJson, callback]
+	 * Object stateJson can be null if no state changes exist.
+	 * Callback resets the changes back to previous state. Everything
+	 * That has happend between one dump and one callback call is also
+	 * appended to the state.
+	 */
 	hg.dump.state = function () {
 		var tmpCache = stateCache;
 		console.log("pack.state", []);
