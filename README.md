@@ -7,3 +7,9 @@ Downlaod
 ========
 
 Download the latest relese: https://github.com/ddksr/HackerGameJS/raw/master/hgjs-latest.zip
+
+
+Documentation
+=============
+
+Go to [DOCS.md](DOCS.md).
