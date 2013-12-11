@@ -1,8 +1,8 @@
-/**
+/*
 
 HackerGame
 
-**/
+*/
 (function ($, hg) {
 	var toText = function (input) {
 			var output = "";
@@ -500,6 +500,15 @@ HackerGame
 					   "Linux: man or COMMAND -h or COMMAND --help"]
 			}
 		};
+	/**
+	 * hg.commandCompletion (term, string, fn)
+	 * - term : object - terminal object
+	 * - string : string - current input string
+	 * - fn : function - terminal callback
+	 *
+	 * Searches trough available commands and returns the candidates for command
+	 * completion.
+	 */
 	hg.commandCompletion = function (term, string, fn) {
 		var candidates = [];
 		console.log("commandCompletion", [term, string, fn]);
@@ -519,6 +528,11 @@ HackerGame
 		
 		fn(candidates);
 	};
+
+	/**
+	 * hg.initComputerCommands (computer)
+	 * Initializes basic computer comands when the computer is initialized.
+	 */
 	hg.initComputerCommands = function (computer) {
 		console.log("initComputerCommands", [computer]);
 		$.each(commands, function (name, _) {
@@ -526,6 +540,17 @@ HackerGame
 		});
 	};
 	
+	/**
+	 * hg.exec (input, term)
+	 * - input : string - user input
+	 * - term : object - terminal object
+	 * 
+	 * Evaluates user input. This is the most important function called from the terminal.
+	 * It serches for available commands or parses the input to javascript or displays
+	 * an error. It also calls the assignment callback for evaluating tasks.
+	 *
+	 * THIS FUNCTION IS PASSED TO THE TERMINAL.
+	 */
 	hg.exec = function(input, term) {
 		var segments = hg.util.parseInput(input),
 			fn = segments[0],

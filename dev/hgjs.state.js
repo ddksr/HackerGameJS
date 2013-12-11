@@ -1,8 +1,8 @@
-/**
+/*
 
 HackerGame
 
-**/
+*/
 (function ($, hg) {
 	var stateCache = [], 
 		timeToScore = function () {

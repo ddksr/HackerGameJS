@@ -1,28 +1,37 @@
 
-/**
+/*
 
 HackerGame
 
-**/
+*/
 (function ($, hg) {
-	var notValidIP = [10,127,254,255,1,2,169,172,192],
-		randIntGenerator = function (from, to) {
+	var notValidIP = [10,127,254,255,1,2,169,172,192], // not vaild first ip numbers
+		randIntGenerator = function (from, to) { // random integer generator
 			console.log("randIntGenerator", [from, to]);
 			if (!from) { from = 0; }
 			if (!to) { to = 1; }
 			return function () { return Math.round(Math.random()*(to-from)+from); };
 		},
-		fileTypes = {
+		fileTypes = { // possible file types
 			"null": "b", 
 			"object": "d",
 			"string": "t"
 		},
-		fileTypesLong = {
+		fileTypesLong = { // long filetypes names
 			"b": "binary",
 			"d": "directory",
 			"t": "text"
 		};
 
+	/**
+	 * obj = hg.util.extend (default, over)
+	 * - default : object - default object that gets overwritten
+	 * - over : object - overwritting object
+	 *
+	 * This utility behaves a lot like $.extend but if it detects that both
+	 * default[key] and over[key] are objects, it will recursively call itself
+	 * upon them. 
+	 */
 	hg.util.extend = function (objDef, objOver) { 
 		// TODO: check if you can replace with native jQuery's
 		var obj = {};
@@ -41,6 +50,16 @@ HackerGame
 		return obj;
 	};
 
+	/**
+	 * parsed = hg.util.parseInput (input)
+	 * - input : string - user input from command line
+	 * 
+	 * Parse user input and return: [command, argsStr, args, rawArgsString]
+	 * - command : string - user command
+	 * - argsStr : string - parsed arguments as a string (removing ' and " )
+	 * - args : array - parsed argumetns as array
+	 * - rawArgsString : string - same as argsString but unprocessed
+	 */
 	hg.util.parseInput = function (input) {
 		var segments = input.match(/(\w+) *(.*)/),
 			argsString = "",
