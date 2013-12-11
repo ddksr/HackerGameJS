@@ -349,6 +349,38 @@ HackerGame
 					   "Example 2: cd /home",
 					   "Linux: cd path"]
 			},
+			"mv": {
+				exec: function (src, dst) {
+					console.log("command.mv", [src, dst]);
+					var status = false, args = src && dst;
+					if (args) {
+						status = hg.state.move(src, dst);
+					}
+					if (!status) {
+						hg.tError("Something wrong with the path.");
+					}
+				},
+				help: ["mv - move file",
+					   "Usage: mv FILE NEW_FILE",
+					   "Example: mv /tmp/dir /dir",
+					   "Linux: cp"]
+			},
+			"cp": {
+				exec: function (src, dst) {
+					console.log("command.cd", [src, dst]);
+					var status = false, args = src && dst;
+					if (args) {
+						status = hg.state.copy(src, dst);
+					}
+					if (!status) {
+						hg.tError("Something wrong with the path.");
+					}
+				},
+				help: ["cp - copy file",
+					   "Usage: cp FILE NEW_FILE",
+					   "Example: cd /tmp /tmp2",
+					   "Linux: cp"]
+			},
 			"rm": {
 				exec: function (path) {
 					var fullPath = null, 

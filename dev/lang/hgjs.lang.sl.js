@@ -107,6 +107,15 @@ HackerGame.load.language('sl', {
 	'Example 1: cd ..': 'Primer 1: cd ..',
 	'Example 2: cd /home': 'Primer 2: cd /home',
 	
+
+	"mv - move file": 'mv - premakni datoteko',
+	"Usage: mv FILE NEW_FILE": "Uporaba: mv DATOTEKA NOVA_DATOTEKA",
+	"Example: mv /tmp/dir /dir" : 'Primer: mv /tmp/dir /dir',
+
+	"cp - copy file": 'cp - kopiraj datoteko',
+	"Usage: cp FILE NEW_FILE": "Uporaba: cp ORGINAL KOPIJA",
+	"Example: cd /tmp /tmp2": 'Primer: cd /tmp /tmp2',
+
 	'rm - remove file or directory': 'rm - odstrani datoteko ali imenik',
 	'Usage: rm PATH': 'Uporaba: rm DATOTEKA',
 	'Example: rm /tmp/file': 'Primer: rm /tmp/datoteka',
