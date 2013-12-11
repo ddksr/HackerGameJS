@@ -47,7 +47,7 @@ HackerGame
 							dataString = "icmp_seq=" + (i + 1) 
 								+ " ttl="+ttl+" time=" 
 								+ (status ? (time/1000) : ttl) + " ms";
-							hg.tEcho("Pinging " + loc + " ... " + dataString + " " + (status ? "OK" : "LOST"));
+							hg.terminal.echo(hg.t("Pinging") + " " + loc + " ... " + dataString + " " + hg.t(status ? "OK" : "LOST"));
 							i += 1;
 							if (i < num) {
 								time = responseTime();
@@ -56,11 +56,11 @@ HackerGame
 							else {
 								proc = ((num-numOfSuccess)/num*100);
 								proc = Math.round(proc * 1000)/1000;
-								stats = num + " packets transmited, " + numOfSuccess 
-									+ " recieved, " 
+								stats = num + " " + hg.t("packets transmited") + ", " + numOfSuccess 
+									+ " " + hg.t("recieved") + ", " 
 									+ proc + "% pacet loss, time " + timeSuma;
-								hg.tEcho("\n--- " + loc + " ping statistics ---");
-								hg.tEcho(stats);
+								hg.terminal.echo("\n--- " + loc + " ping statistics ---");
+								hg.terminal.echo(stats);
 								term.resume();
 							}
 						};
@@ -129,7 +129,7 @@ HackerGame
 								}
 							}
 							else if (num > 3) {
-								hg.tEcho(num + " is too much for this computer. Trying 3 characters ...");
+								hg.term.echo(num + hg.t(" is too much for this computer. Trying 3 characters ..."));
 							}
 							else {
 								result = brute(num);
@@ -151,10 +151,15 @@ HackerGame
 						}
 					}
 					else {
-						hg.tError("File doesn't exist.");
+						hg.tError("File doesn't exist!");
 					}
 				},
-				help: []
+				help: ["brute - use brute force attack to crack password protected file",
+					   "Usage: brute FILE [NUM]",
+					   "- FILE: password protected file",
+					   "- NUM (optional): number of characters",
+					   "                  if not specified, NUM=1..3",
+					   "Example: brute file.txt 3"]
 			},
 			"dict": {
 				exec: function (pathToFile) {
@@ -207,10 +212,12 @@ HackerGame
 						}
 					}
 					else {
-						hg.tError("File doesn't exist.");
+						hg.tError("File doesn't exist!");
 					}
 				},
-				help: []
+				help: ["dict - use common passwords to crack password protected file",
+					   "Usage: dict FILE",
+					   "Example: dict file.txt"]
 			},
 			// FILE SYSTEM
 			"cat": {
@@ -218,7 +225,7 @@ HackerGame
 					var term = this, contents = hg.util.getFile(file);
 					console.log("command.cat", [file]);
 					if (contents === null) {
-						hg.tError("File doesn't exist.");
+						hg.tError("File doesn't exist!");
 						return;
 					}
 					contents = contents[2];
@@ -301,11 +308,11 @@ HackerGame
 					});
 					hg.tEcho(dirs);
 				},
-				help: ["ls - list directory",
-					   "Usage: ls [directory]",
+				help: ["ls - list directory contents",
+					   "Usage: ls [DIRECTORY]",
 					   "Example 1: ls",
 					   "Example 2: ls /home",
-					   "Linux: ls [directory]"]
+					   "Linux: ls [DIRECTORY]"]
 			},
 			"mkdir": {
 				exec: function (folder) {
@@ -313,8 +320,8 @@ HackerGame
 					console.log("command.mkdir", [folder]);
 					if (er) { hg.tError(er); } 
 				},
-				help: ["mkdir - create a directory in the current directory",
-					   "Usage: mkdir directory",
+				help: ["mkdir - create a directory",
+					   "Usage: mkdir DIRECTORY",
 					   "Example: mkdir /tmp/new_directory",
 					   "Linux: mkdir dir1, [dir2, [dir3, ...]]"]
 			},
@@ -359,11 +366,11 @@ HackerGame
 					else {
 						fullPath = hg.util.cleanPath("/" + path.join("/"));
 						if (!hg.util.checkFilePermission(fullPath)) {
-							hg.tError("You do not have permission");
+							hg.tError("You do not have permissions!");
 						}
 						else {
 							if (! hg.state.removeFile(fullPath)) {
-								hg.tError("File or directory doesn't exist.");
+								hg.tError("File or directory doesn't exist!");
 							}
 						}
 					}
@@ -377,8 +384,9 @@ HackerGame
 			"edit": {
 				help: ["edit - edit file",
 					   "Usage: edit FILE [KEY]",
-					   "Example: edit /etc/hostname",
-					   "Example: edit /tmp/protected thisIsAFilePassword",
+					   "- KEY: optional, if file is password protected",
+					   "Example 1: edit /etc/hostname",
+					   "Example 2: edit /tmp/protected thisIsAFilePassword",
 					   "Linux: there are many command line programs for editing files,", 
 					   "but they are not necessarily installed.",
 					   "- joe FILE",
@@ -450,7 +458,7 @@ HackerGame
 						hg.term.echo(toText(commands[command].help));
 					}
 					else {
-						hg.tError("No information on command " + command);
+						hg.tError("No information on command" + " " + command);
 					}
 				},
 				help: ["help - display help information", 

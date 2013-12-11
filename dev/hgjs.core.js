@@ -195,8 +195,30 @@ HackerGame = {};
 		console.log("refreshTranslations", [selector]);
 		selector = selector ? (selector + " ") : "";
 		$(selector + ".i18n").each(function () {
-			var defaultString = $(this).attr("data-lang");
-			$(this).text(hg.t(defaultString));
+			var defaultString = $(this).attr("data-lang"),
+				hasKey = i18n && i18n[defaultString],
+				data = $(this).data("data-lang"),
+				text = hg.t(defaultString);
+			if ($(this).is(".text")) {
+				// If the i18n element also has the text chass
+				// is is asumed that the key would be very long
+				// so short keys are also supported.
+				// If the t() returns the same key, we know that the
+				// Translation didn't happen so wi don't overwrite the text
+				if (hasKey) {
+					// We store the previous translation so that
+					// translations can be switched but only the first time
+					// when data is false
+					if (hasKes && !data) { 
+						$(this).data("data-lang", $(this).html());
+					}
+					$(this).html((this).html());
+				}
+				else if (data) {
+					$(this).html(data);
+				}
+			}
+			else { $(this).html(hg.t(defaultString)); }
 		});
 	};
 
@@ -289,7 +311,7 @@ HackerGame = {};
 			});
 		},
 		language: function (langId, langObj) {
-			console.log("load.language", [landId, langObj]);
+			console.log("load.language", [langId, langObj]);
 			if (typeof(langId) == "object") { langObj = landId; }
 			else if (langObj) { hg.lang = langId; }
 			i18n = $.extend(i18n, langObj);
