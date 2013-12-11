@@ -14,7 +14,7 @@
 			greetings: 'Welcome!',
 			name: 'hacker-terminal',
 			height: 400,
-			tabcompletion: true,
+			tabcompletion: true
 		},
 		// Base path for AJAX loads
 		basePath: "", // TODO: use this!!!
@@ -45,7 +45,7 @@
 			{
 				id: "password2",
 				name: "Get the secret word"
-			},
+			}
 		],
 		// Default user information: this refreshes the dynamic fields
 		user: {

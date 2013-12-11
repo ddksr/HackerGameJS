@@ -115,7 +115,7 @@ HackerGame
 						url: htmlUrl,
 						method: 'get',
 						dataType: 'html',
-						success: loadJS,
+						success: loadJS
 					});
 				}
 			});

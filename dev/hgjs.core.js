@@ -590,7 +590,7 @@ HackerGame = {};
 			// Load saved state from CONFIG
 			if (hg.config.state) { 
 				hg.load.state({
-					state: hg.config.state,
+					state: hg.config.state
 				}); 
 			}
 			contentInit.call($termObj);

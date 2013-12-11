@@ -595,8 +595,7 @@ HackerGame
 				command: fn,
 				argsString: argsString,
 				args: args,
-				noError: noError,
-				
+				noError: noError
 			});
 			if (callbackResult) {
 				hg.assignment.nextTask();
