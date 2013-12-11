@@ -1,9 +1,8 @@
-import re
 import argparse
 
 parser = argparse.ArgumentParser(description='Extract documentation from JS files into MD.')
 
-FILE_OUT = "../APIDOC.md"
+FILE_OUT = "../DOCS.md"
 
 FILES_PREFIX = "../dev/hgjs."
 FILES_POSTFIX = ".js"
@@ -13,6 +12,24 @@ STARTER = "/**"
 
 ENDER = "*/"
 UNDER_CHR = "-"
+
+
+START_DOC = """Developers guide
+================
+
+Adding assignments
+------------------
+Bla bla ...
+
+Translating
+-----------
+
+
+HacerGame object reference
+==========================
+
+"""
+END_DOC=""
 
 def sort_method(x, y):
 	if x[0:2] == y[0:2] == "hg":
@@ -68,9 +85,8 @@ if __name__ == "__main__":
 		fid.close()
 
 	fid = open(FILE_OUT, "w")
-	print sorted(out.keys(), cmp=sort_method)
+	fid.write(START_DOC)
 	for key in sorted(out.keys(), cmp=sort_method):
 		fid.write("\n".join(out[key]))
-
+	fid.write(END_DOC)
 	fid.close()
-	print 
