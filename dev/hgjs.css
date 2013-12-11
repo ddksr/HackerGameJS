@@ -123,16 +123,20 @@ body.loading .loading-gif {
 	text-align: right;
 }
 
+.text-center {
+	text-align: center;
+}
+
 .assignment-separator {
 	font-weight: bold;
 	text-transform: uppercase;
 }
 
-/* SVG popup */
-.svg-popup {
-	width: 120px;
-	height: 30px;
-	background: transparent;
+
+
+/* Backgrounds */
+.bg-white {
+	background-color: white;
 }
 
 /* SVG */
@@ -152,3 +156,4 @@ svg .link {
     fill: none;
     stroke: #ccc;
 }
+

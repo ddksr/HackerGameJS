@@ -27,10 +27,14 @@
 				name: "Moving and copying files"
 			},
 			{
-				id: "password",
-				name: "Cracking passwords"
+				id: "password1",
+				name: "How to crack passwords"
 			},
-			"Level 1: Discovering insecurity"
+			"Level 1",
+			{
+				id: "password2",
+				name: "Get the secret word"
+			},
 		],
 		user: {
 			email: "",

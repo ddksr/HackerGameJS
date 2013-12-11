@@ -158,7 +158,7 @@ HackerGame.load.language('sl', {
 	'text_help1-2': 'Razvili so se grafični uporabniški vmesniki. Na začetku je bilo še vse zelo togo, venar so se eksperti kmalu prilagodili. Novi uporabniki so se grafičnih vmesnikov naučili veliko hitreje. Tako so bili terminali skoraj pozabljeni. Skoraj. Zakaj še vedno obstajajo? Celo na Windows operacijskem sistemu?',
 	'text_help1-3': 'Ker so izjemno močno orodje. Razlogov za to je več. Veliko močnih orodij je bilo že spisanih predno so obstajali grafični vmesniki in se še vedno uporabljajo danes. Programerji nimajo težav z uporabo terminala in zato niso spreminjali starih programov, da bi bili grafični. Razvoj negrafičnih programov je tudi veliko hitrejši od razvoja grafičnih. Če moraš kaj na hitro izračunati, analizirati nek tekst ali pa potrditi kakšno svojo hipotezo, najverjetneje pripraviš negrafični program.',
 	'text_help1-4': 'Igra te bo v korakih vpeljala v uporabo terminala. Ne samo to, spoznala te bo z ogromno novimi konepti, ki niso težki za razumevanje, lahko ti pa pomagajo uresničiti tvoje cilje. Ne le cilje inženirjev računalništva, ampak tudi drugih ekspertov. Celo biologi, kemiki, matematiki, strojni inženirji ter fiziki morajo poznati vsaj osnove programiranja, če želijo postati strokovnjaki na svojem področju.',
-	'text_help2-1': 'Najprej izberi misijo. Klikni nanjo in počakaj nekaj trenutkov. Če je to tvoja prva naloga, boš prejel e-pošto. Do nje dostopaš v desnem zgonjem kotu. Če ni to tvoja prva naloga, te bo preusmerilo v igro.',
+	'text_help2-1': 'Najprej izberi misijo. Klikni nanjo in počakaj nekaj trenutkov. Če je to tvoja prva naloga, boš prejel e-pošto. Do nje dostopaš v desnem zgornjem kotu. Če ni to tvoja prva naloga, te bo preusmerilo v igro.',
 	'text_help2-2': 'Igra je preprosta. Na levi je terminal in urejevalnik besedil, na desni pa navodila ter dodatne informacije. V zavihku Naloge med igro prejemaš naloge, ki jih moraš opraviti. Če si uspešen ali pa ne, na koncu si preusmerjen nazaj na stran z misijami, kjer si lahko ogledaš dosežene točke.',
 	'text_help2-3': 'Terminal je enostavno uporabljati. V terminal zapišeš ukaz v obliki <code>UKAZ [AGUMENTI]</code> in pritisneš ENTER na tipkovnici.',
 	'text_help3-1': 'Vsak ukaz ima svojo pomoč. Do nje lahko dostopaš z ukazom <code>help UKAZ</code> (primer: <code>help pwd</code>. Pomoč sestavljajo opis delovanja ukaza, opis uporabe ukaza in referenco na podoben ukaz na operacijskem sistemu GNU/Linux.',
@@ -176,13 +176,25 @@ HackerGame.load.language('sl', {
 
 	// Headings
 	// --------
+	'This is you first visit': 'Tukaj sem prvič',
+	'I am new to computers': 'Računalnik še spoznavam',
+	'I know how to do stuff': 'Vem, kako se kaj naredi',
+	'I used Linux terminal before': 'Uporabljal sem že Linux terminal',
+	'I am a hacker': 'Sem heker',
+	'I want to improve the game': 'Želim izboljšati igro',
+	'Game veterans': 'Tukaj nisem prvič',
+	'Introduction': 'Uvod',
+	'How to play the game': 'Kako igrati?',
+	'How to use the help command': 'Kako uporabljati ukaz HELP',
+	'Understanding command usage': 'Razumevanje, kako deluje ukaz',
 
 	// Assignments
 	// -----------
-	'Training': '0. Trening',
-	'Level 1: Discovering insecurity': '1. Raziskovanje nevarnosti',
+	'Training': 'Trening',
+	'Level 1': 'Level 1',
 	'Introduction to the terminal': 'Uvod v terminal',
 	'How to move around': 'Kako se premikati naokoli',
 	'Moving and copying files': 'Premikanje in kopiranje datotek',
-	'Cracking passwords': 'Krekanje gesel'
+	'How to crack passwords': 'Kako razbiti geslo?',
+	'Get the secret word': 'Ugotovi skrivno besedo'
 });
