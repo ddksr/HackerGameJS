@@ -7,7 +7,7 @@ Bla bla ...
 
 Translating
 -----------
-
+Bla bla ... 
 
 HacerGame object reference
 ==========================
@@ -19,11 +19,13 @@ Special module with functions that get triggered by location hashes.
 #/actionMethod/actionArgument -> hg.action.actionMethod (actionArgument)
 Example: #/page/help -> hg.action.page (help)
 
+
 hg.action.assignment (assId)
 ----------------------------
 - assId : string - selected assignment
 
 Select assignment.
+
 
 hg.action.input (inputId)
 -------------------------
@@ -31,10 +33,12 @@ hg.action.input (inputId)
 
 Change input tab.
 
+
 hg.action.mail ()
 -----------------
 
 Open email.
+
 
 hg.action.page (pageId)
 -----------------------
@@ -42,11 +46,13 @@ hg.action.page (pageId)
 
 Switch page
 
+
 hg.action.tab (tabId)
 ---------------------
 - tabId : string - info tab to change to
 
 Change info tab.
+
 
 hg.commandCompletion (term, string, fn)
 ---------------------------------------
@@ -56,6 +62,7 @@ hg.commandCompletion (term, string, fn)
 
 Searches trough available commands and returns the candidates for command
 completion.
+
 
 hg.cons.Assignment (assId, loadCallback)
 ----------------------------------------
@@ -83,6 +90,7 @@ Object methods:
 - fail () - called when assignment fails
 - complete () - called when all tasks are completed
 
+
 hg.cons.Computer (name, isDefault)
 ----------------------------------
 - name : string - computer name
@@ -105,6 +113,7 @@ Fields:
   - visibleFrom (NOT USED)
   - domain (NOT USED)
   - commandBlackList : object - blacklisted commands
+
 
 hg.cons.State (computer, [config, [innerState]])
 ------------------------------------------------
@@ -130,6 +139,7 @@ Object methods:
 - copy (src, dst)
 - move (src, dst)
 
+
 hg.cons.Task (taskObj, taskHtml)
 --------------------------------
 - taskObj : object - task configurations
@@ -153,6 +163,7 @@ Object fields:
 Object methods:
 - switchTask (previousTask) - switch between tasks
 
+
 hg.dump.state ()
 ----------------
 
@@ -165,35 +176,42 @@ Callback resets the changes back to previous state. Everything
 That has happend between one dump and one callback call is also
 appended to the state.
 
+
 hg.editor.blur ()
 -----------------
 
 Blur Editor (switch to Terminal tab)
+
 
 hg.editor.disable ()
 --------------------
 
 Disable Editor
 
+
 hg.editor.enable ()
 -------------------
 
 Enable Editor
+
 
 hg.editor.focus ()
 ------------------
 
 Focus Editor (switch to Editor tab)
 
+
 hg.editor.getContent ()
 -----------------------
 
 Get Editor content
 
+
 hg.editor.save ()
 -----------------
 
 Save contents to watch file (this overwrites special fies !!!)
+
 
 hg.editor.setContent ()
 -----------------------
@@ -201,10 +219,12 @@ hg.editor.setContent ()
 
 Set editor content.
 
+
 hg.editor.unwatch ()
 --------------------
 
 Unwatch current file.
+
 
 hg.editor.watch (path, specialInput)
 ------------------------------------
@@ -213,6 +233,7 @@ hg.editor.watch (path, specialInput)
 
 Watch text or special file in editor. If not special, the file
 get editable.
+
 
 hg.exec (input, term)
 ---------------------
@@ -225,6 +246,7 @@ an error. It also calls the assignment callback for evaluating tasks.
 
 THIS FUNCTION IS PASSED TO THE TERMINAL.
 
+
 hg.ind
 ------
 
@@ -232,9 +254,11 @@ Indicator object. Cosits of global states and constants.
 - modal : boolean - is there a modal dialog displayed
 - NUM_OF_ASSIGNMENTS - number of assignments
 
+
 hg.initComputerCommands (computer)
 ----------------------------------
 Initializes basic computer comands when the computer is initialized.
+
 
 hg.load.assignment (tasks, other)
 ---------------------------------
@@ -263,6 +287,7 @@ Resets the stats, etc.
 
 THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS
 
+
 hg.load.externalFile (internalFilePath, externalFilePath)
 ---------------------------------------------------------
 - internalFilePath : string - internal file path to new file
@@ -270,12 +295,14 @@ hg.load.externalFile (internalFilePath, externalFilePath)
 
 Load external file as text with AJAX into the filesystem as a text file.
 
+
 hg.load.language (languageId, languageObject)
 ---------------------------------------------
 - languageId : string - language id
 - languageObject : object - contains translations in form english: translated
 
 Load language object to the game. Doesn't run hg.refreshTranslations()
+
 
 hg.load.specialFile (path, content)
 -----------------------------------
@@ -291,6 +318,7 @@ The content function must return an array in the form:
 - status : boolean - if the input was correct
 - string : string - the return string
 
+
 hg.load.state (obj)
 -------------------
 - obj : object - state object
@@ -304,15 +332,18 @@ State object can contain two objects:
   - hostname : string
   - fs : object - file system (DFS cannot be loaded)
 
+
 hg.mail.close()
 ---------------
 
 Close message dialog.
 
+
 hg.mail.open ()
 ---------------
 
 Message dialog box initialization after mail icon is clicked.
+
 
 hg.mail.recieve (message, clickOpen)
 ------------------------------------
@@ -330,15 +361,18 @@ Object 'button' must contain:
 - name : string - button title
 - action : function - callback when button is clicked
 
+
 hg.mail.setEmpty ()
 -------------------
 
 Call to set the mailbox icon as empty.
 
+
 hg.mail.setNew ()
 -----------------
 
 Call to set the mail icon red.
+
 
 hg.msg.alert (message, [title])
 -------------------------------
@@ -348,11 +382,13 @@ hg.msg.alert (message, [title])
 Display alert dialog with 'message' as message body and 'title'
 as dialog title. If no title is specified, 'Alert' will be used
 
+
 hg.network.ping (location)
 --------------------------
 - location : string - location to ping
 
 Pings 'location' and returns TRUE on success.
+
 
 hg.refreshTranslations ([selector])
 -----------------------------------
@@ -360,11 +396,13 @@ hg.refreshTranslations ([selector])
 
 Refresh body or selector translations.
 
+
 hg.stats.aggregate ([hold])
 ---------------------------
 - hold : boolean - if true, don't automatically refresh stats
 
 Aggregates overall score.
+
 
 hg.stats.increment (stat, val, [hold])
 --------------------------------------
@@ -374,17 +412,20 @@ hg.stats.increment (stat, val, [hold])
 
 Increment stats.
 
+
 hg.stats.refresh ([exlude])
 ---------------------------
 - exclude : array - stats to exclude from refreshing (NOT YET USED)
 
 Function refreshes the stats values in DOM.
 
+
 hg.t (string)
 -------------
 - string : string - translation key
 
 The 'string' gets translated if possible.
+
 
 hg.tEcho (string)
 -----------------
@@ -393,6 +434,7 @@ hg.tEcho (string)
 Echo the text in the terminal.
 It also translates the text if possible.
 
+
 hg.tError (text)
 ----------------
 - text : string
@@ -400,20 +442,24 @@ hg.tError (text)
 Echo the text in the terminal as an error.
 It also translates the text if possible.
 
+
 hg.term
 -------
 
 Terminal object
+
 
 hg.timer.counter
 ----------------
 
 Integer field containing remaining number of seconds.
 
+
 hg.timer.lastCounter
 --------------------
 
 Stores the last counter value if timer was stopped before counter was zero.
+
 
 hg.timer.set (setCounter, ztCallback)
 -------------------------------------
@@ -422,20 +468,24 @@ hg.timer.set (setCounter, ztCallback)
 
 Initialize and set the timer.
 
+
 hg.timer.start
 --------------
 
 Start counting.
+
 
 hg.timer.status
 ---------------
 
 Stores the timeout value.
 
+
 hg.timer.stop
 -------------
 
 Stop counting. Stop callback doesn't get called.
+
 
 hg.util.absPath (path)
 ----------------------
@@ -446,6 +496,7 @@ Return: string
 Create absolute path to file (this is a straightforward and stupid method, it just
 prepends PWD. Note: no checking if path is already absolute is done.
 
+
 hg.util.checkFilePermission (absPath, [totalTest])
 --------------------------------------------------
 - absPath : string - absolute path to file
@@ -454,6 +505,7 @@ Return: boolean
 
 Check if wile is writtable.
 
+
 hg.util.cleanPath (path)
 ------------------------
 - path : string - absolute or relative path
@@ -461,6 +513,7 @@ hg.util.cleanPath (path)
 Return: string
 
 Return cleaned path. Example: /one/two/../two2 -> /one/two2
+
 
 hg.util.extend (default, over)
 ------------------------------
@@ -473,6 +526,7 @@ This utility behaves a lot like $.extend but if it detects that both
 default[key] and over[key] are objects, it will recursively call itself
 upon them.
 
+
 hg.util.fileExists (loc)
 ------------------------
 - loc : string - location of file (filepath)
@@ -480,6 +534,7 @@ hg.util.fileExists (loc)
 Return: boolean
 
 Check if file exists. Note: directory is also a file!
+
 
 hg.util.fileType (file, [longName])
 -----------------------------------
@@ -493,6 +548,7 @@ Types:
 - b: binary ( can also be special! )
 - d: directory
 - t: text
+
 
 hg.util.getFile (pathToFile)
 ----------------------------
@@ -508,6 +564,7 @@ Gets the specified file in a informative way. The output array is:
 - fileType: file type of file
 If file doesn't exits or path is incorrect, null is returned.
 
+
 hg.util.getFilenameFilepath (pathToFile)
 ----------------------------------------
 - pathToFile : string - path to some file
@@ -518,6 +575,7 @@ Function cleans the path and returns the path to file and filename in array.
 Example 1: /home/user/file -> ['/home/user/', 'file']
 Example 2: / -> ['/', '']
 
+
 hg.util.getSpecialFile (path)
 -----------------------------
 - path : string - ABSOLUTE path to special file
@@ -527,6 +585,7 @@ Return: function
 Get special file. If no special file exists, a function that when called
 returns null is generated.
 
+
 hg.util.isDir (dir)
 -------------------
 - dir : string - directory filepath
@@ -534,6 +593,7 @@ hg.util.isDir (dir)
 Return: boolean
 
 Check if file is directory. If file doesn't exists, false is returned
+
 
 hg.util.parseInput (input)
 --------------------------
@@ -547,6 +607,7 @@ Parse user input and return: [command, argsStr, args, rawArgsString]
 - args : array - parsed argumetns as array
 - rawArgsString : string - same as argsString but unprocessed
 
+
 hg.util.path = function ([rawPathString])
 -----------------------------------------
 - rawPathString : string - raw path (relative, absolute ... )
@@ -556,6 +617,7 @@ Return: array - path array
 Return path array. If rawPathString isn't specified, PWD will be used.
 Absolute path is prepended automatically.
 Example: /one/two -> ['one', 'two']
+
 
 hg.util.pathIterator (dir, fn)
 ------------------------------
@@ -567,12 +629,14 @@ Return: boolean
 Iterate trough path and call the callback function on the last
 directory that was iterated. Return true if everything OK, else false.
 
+
 hg.util.randIP ()
 -----------------
 
 Return: string
 
 Generate random IP address.
+
 
 hg.util.randResponseTime (from, to)
 -----------------------------------
@@ -583,6 +647,7 @@ Return: function
 
 Return generator for random response time.
 
+
 hg.util.setFile (pathToFile, content)
 -------------------------------------
 - pathToFile : string - pat to file to set (can be a new file)
@@ -592,6 +657,7 @@ Return: boolean
 
 Sets new file content if path to file exists and return true. If not, false is returned.
 
+
 core: baseInit ([settings])
 ---------------------------
 - settings : object - settings objects to overwrite config
@@ -600,11 +666,13 @@ This is the base initialization. It initializes the terminal
 and assignments. It has to be called right after the page loads and
 before any server scripts or similar are loaded.
 
+
 core: contentInit
 -----------------
 
 Content initialization (translations evaluated and loading image removed).
 Note: has to be called after baseInit and after any server scripts are loaded.
+
 
 core: hashChange (evt)
 ----------------------
@@ -612,11 +680,13 @@ core: hashChange (evt)
 
 Event function which listens to hash changes.
 
+
 core: initAssignment ()
 -----------------------
 
 Initialize loaded assignment.
 Switch to Game page.
+
 
 core: initDynamicFields ([selector])
 ------------------------------------
@@ -624,10 +694,12 @@ core: initDynamicFields ([selector])
 
 Go trough selector or body and replace dynamic fields with associated values.
 
+
 core: startAssignment()
 -----------------------
 
 Start assignment (time couting, command line evalvation ...).
+
 
 dump = hg.dump.computer ()
 --------------------------
@@ -644,21 +716,25 @@ Computer object has next keys:
 
 If callback is called, the computer.hasChanges is reset to True
 
+
 jQuery: .hackerGame([settings])
 -------------------------------
 - settings : object - object to overwrite configuration
 
 Make DOM object into the game terminal
 
+
 jQuery: .hackerGameEditor([settings])
 -------------------------------------
 
 Make DOM object into game Editor. Settings are currently not used.
 
+
 jQuery: .hackerGameTimer()
 --------------------------
 
 Initialize hackergame timer.
+
 
 jQuery: .hgBlink ([numOfBlinks, [time]])
 ----------------------------------------
@@ -668,21 +744,25 @@ jQuery: .hgBlink ([numOfBlinks, [time]])
 jQuery plugin for DOM element blinking.
 
 
+
 state: closeTask
 ----------------
 
 Close current task.
+
 
 state: evalAssignmentQueue ()
 -----------------------------
 
 Evaluate assignment queue. Calculate bonuses etc.
 
+
 state: initTaskHTML ($task)
 ---------------------------
 - $task : jQuery object - task HTML
 
 Initialize task HTML. Convert hits and help to buttons etc.
+
 
 state: loadAssignment (assId, [callback])
 -----------------------------------------
@@ -693,10 +773,12 @@ Load assignment HTML and JavaScript. First HTML is loaded into #stash div elemen
 Then the JS is loaded and evaluated (it can use its HTML elements
 directly from #stash. Callback is called if script is successfully loaded.
 
+
 state: timeToScore ()
 ---------------------
 
 Return: integer
 
 Convert remaining time to score.
+
 

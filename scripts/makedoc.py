@@ -23,7 +23,7 @@ Bla bla ...
 
 Translating
 -----------
-
+Bla bla ... 
 
 HacerGame object reference
 ==========================
@@ -54,6 +54,7 @@ def compile_file(lines, out):
 			continue
 		if ENDER in line and parsing:
 			parsing = False
+			out_group.append("")
 			out_group.append("")
 			out_group.append("")
 			out[first] = out_group

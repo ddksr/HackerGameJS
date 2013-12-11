@@ -568,9 +568,10 @@ HackerGame
 	 * hg.action
 	 *
 	 * Special module with functions that get triggered by location hashes.
-	 * #/actionMethod/actionArgument -> hg.action.actionMethod (actionArgument)
+	 * Spec: #/actionMethod/actionArgument -> hg.action.actionMethod (actionArgument)
 	 * Example: #/page/help -> hg.action.page (help)
 	 */
+
 	/**
 	 * hg.action.page (pageId)
 	 * - pageId : string - page id to switch to
