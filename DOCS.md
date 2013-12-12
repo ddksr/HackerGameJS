@@ -3,14 +3,69 @@ Developers guide
 
 Adding assignments
 ------------------
-Bla bla ...
+There are three things you have to do to add an assignment:
+
+1. Create a new HTML file ASSIGNMENT_ID.HTML in the assignments directory
+2. Create a new JS file ASSIGNMENT_ID.JS in the assignments directory
+3. Parse new assignment list trough terminal initialisation
+
+How to introduce the new assignment to HG: 	
+
+	.hackerGame({ assignments: [ ... new element ... ] });
+	
+If you want the assignment to be one of the defaults, skip the third step
+and change the configuration file (place the assignment somewhere in the context)
+
 
 Translating
 -----------
-Bla bla ... 
 
-HacerGame object reference
-==========================
+There are two types of translations used in HackerGameJS (yes, sorry about that). The majority
+are in form:
+
+	englishSentence => newTranslationSetence
+
+and a fiew are:
+
+	someKey => translation
+
+
+In the begining of the development there were only sentence translations. When the pages nedeed translations, 
+it would be to brutal to maintain the page sentance by setnance.
+
+### How does this look in html ?
+
+Example:
+
+	<p class='i18n' data-lang='English setence'></p>
+
+or
+
+	<p class='i18n text' data-lang'pageKey'>
+		This paragraph has a lot of words and it wouldnt be optimal to 
+		maintain it sentence by sentence.
+	</p>
+
+HTML elements with class *i18n* will get translated.
+
+### And how in JavaScript?
+
+Example:
+
+	string = hg.t('English sentence')
+
+### And the translation file
+
+Example:
+
+	hg.load.language("myLanguage", {
+		'English sentence': 'Sentence in new translation',
+		'pageKey': 'This is the translation for the paragraph that has too many words.'
+	});
+
+
+HackerGame object reference
+===========================
 
 hg.action
 ---------
