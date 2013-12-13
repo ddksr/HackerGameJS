@@ -338,13 +338,14 @@ HackerGame = {};
 		 * THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS
 		 */
 		assignment: function (tasks, other) {
-			var title, body, $instructions, $tasksHtml, $learnMore, $tryItOut;
+			var msgBody, title, $heading, $instructions, $tasksHtml, $learnMore, $tryItOut;
 			console.log("load.assignment", [tasks, other]);
 
 			initDynamicFields();
 
 			title = $("#stash").find("#ass-title").text();
-			body = $("#stash").find("#ass-greeting").html();
+			$heading = $(document.createElement("h2")).append(hg.t(title));
+			msgBody = $("#stash").find("#ass-greeting").html();
 			$instructions = $("#stash").find("#ass-instructions").clone();
 			$tasksHtml = $("#stash").find("#ass-tasks").clone();
 			$learnMore = $("#stash").find("#ass-learn-more").clone();
@@ -375,7 +376,7 @@ HackerGame = {};
 			hg.assignment.initCallback = other.initCallback || function () {};
 
 			// Parse HTML
-			$("#tab-assignment .instructions").html($instructions);
+			$("#tab-assignment .instructions").html($instructions).prepend($heading);
 			$("#tab-task").html($(document.createElement("ol")).addClass("tasks-list"));
 			$("#tab-learn-more").html($learnMore);
 			$("#tab-try-it-out").html($tryItOut);
@@ -385,7 +386,7 @@ HackerGame = {};
 				hg.mail.recieve({
 					subject: title,
 					isSensei: true,
-					body: body,
+					body: msgBody,
 					button: {
 						name: "Start",
 						action: function () { 
