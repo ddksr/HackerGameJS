@@ -215,6 +215,8 @@ asyncTest("gameflow", function () {
 
 	c(function () {
 		equal($("#stats-completed-assignments").text(), "1/" + hg.ind.NUM_OF_ASSIGNMENTS, "Completed assignments in DOM.");
+
+		$("#alert").modal("hide");
 	});
 
 
@@ -340,6 +342,8 @@ asyncTest("gameflow", function () {
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
 		equal($("#stats-completed-assignments").text(), "1/" + hg.ind.NUM_OF_ASSIGNMENTS, "Completed assignments in DOM.");
 		
+		$("#alert").modal("hide");
+
 		// HINT PENALTY and TIME BONUS
 		equal(hg.stats.currentScore, maxTaskPoints - penalties + bonus(), "Score corectly calculated.");
 	});

@@ -461,7 +461,8 @@ HackerGame
 	hg.cons.Assignment.prototype.complete = function () {
 		var $tr = $(".assignment-list .ass-"+hg.assignment.id),
 			bestScore = $tr.find(".ass-best-score").text(),
-			trials = $tr.find(".ass-trials").text();
+			trials = $tr.find(".ass-trials").text(),
+			msg = "";
 		console.log("Assignment.complete", []);
 		hg.timer.stop();
 
@@ -494,6 +495,14 @@ HackerGame
 			"key": this.id,
 			"value": hg.stats.currentScore
 		});
+
+		msg = hg.t("You have successfully completed the assignment.") + ".<br />"
+			+ hg.t("Your current score is") + ": " + hg.stats.currentScore + ".<br />"
+			+ hg.t("Your best score is") + ": " + bestScore + ".<br />";
+		
+		hg.msg.alert(msg, "Assignment completed!");
+
+
 
 		hg.assignment.successCallback();
 		hg.action.page("assignments");

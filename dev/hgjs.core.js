@@ -304,7 +304,7 @@ HackerGame = {};
 	hg.msg.alert = function (message, title) {
 		if (! title) { title = "Alert"; }
 		$("#alertMessageTitle").text(hg.t(title));
-		$("#alert .modal-body").text(hg.t(message));
+		$("#alert .modal-body").html(hg.t(message));
 		$("#alert").modal("show");
 	};
 
@@ -347,6 +347,7 @@ HackerGame = {};
 			// So to enable solving more than one assignment per session
 			// we have to show the button again
 			$("#button-start-game").show();
+			
 
 			title = $("#stash").find("#ass-title").text();
 			$heading = $(document.createElement("h2")).append(hg.t(title));

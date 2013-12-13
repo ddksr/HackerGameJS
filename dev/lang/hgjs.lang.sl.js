@@ -20,10 +20,18 @@ HackerGame.load.language('sl', {
 	'Learn more': 'Spoznaj več',
 	
 	'Current score': 'Trenutne točke',
+	'Overall score': 'Skupne točke',
 	'Best score': 'Najboljše točke',
 	'Trials': 'Število poskusov',
 	'Save': 'Shrani',
 	'Close': 'Zapri',
+
+	// Messages
+	// --------
+	'Assignment completed!': 'Misija uspešno zaključena!',
+	'You have successfully completed the assignment.': 'Uspešno si opravil misijo',
+	'Your current score is': 'Dosežene točke',
+	'Your best score is': 'Najboljši rezultat',
 	
 	// Terminal echos
 	// --------------
