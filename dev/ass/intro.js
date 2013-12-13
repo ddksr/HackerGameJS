@@ -18,7 +18,17 @@ task for getting to know the terminal and the game.
 			id: "try",
 			evaluate: function () { return true; },
 			set: function () {
-				setTimeout(function () { $("#input-terminal").hgBlink(3); }, 1000);
+				setTimeout(function () { 
+
+					$("#tab-task").hgBlink(3); 
+					
+					setTimeout(function () { 
+
+						$("#input-terminal").hgBlink(3); 
+						
+					}, 2500);
+					
+				}, 1500);
 			},
 			points: 10
 		},

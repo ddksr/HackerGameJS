@@ -273,6 +273,7 @@ asyncTest("gameflow", function () {
 	}, 1000);
 
 	c(function () {
+		notEqual($("#button-start-game").css("display"), "none", "Display button shown");
 		$("#button-start-game").click();
 	}, 500);
 

@@ -342,6 +342,11 @@ HackerGame = {};
 			console.log("load.assignment", [tasks, other]);
 
 			initDynamicFields();
+			
+			// Button is hidden after assignment is started
+			// So to enable solving more than one assignment per session
+			// we have to show the button again
+			$("#button-start-game").show();
 
 			title = $("#stash").find("#ass-title").text();
 			$heading = $(document.createElement("h2")).append(hg.t(title));
