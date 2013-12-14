@@ -384,27 +384,14 @@ HackerGame
 			"rm": {
 				exec: function (path) {
 					var fullPath = null, 
-						last=null, 
-						term=this, 
-						place=hg.state.computer.fs;
+						file = hg.util.getFile(path),
+						term=this;
 					console.log("command.rm", [path]);
-					path = hg.util.path(path);
-					if (! path) {
-						hg.tError("File or directory doesn't exist!");
-					}
-					else if (path.length == 0) {
-						hg.tError("Cannot remove root directory.");
+					if (hg.util.checkFilePermission(path, true)) {
+						hg.state.removeFile(path);
 					}
 					else {
-						fullPath = hg.util.cleanPath("/" + path.join("/"));
-						if (!hg.util.checkFilePermission(fullPath)) {
-							hg.tError("You do not have permissions!");
-						}
-						else {
-							if (! hg.state.removeFile(fullPath)) {
-								hg.tError("File or directory doesn't exist!");
-							}
-						}
+						hg.tError("Cannot remove root!");
 					}
 				},
 				help: ["rm - remove file or directory",
@@ -557,7 +544,7 @@ HackerGame
 			argsString = segments[1],
 			args = segments[2],
 			argsStringRaw = segments[3],
-			result,
+			result, evalObj,
 			noError = true,
 			callbackResult;
 		console.log("exec", [input, term]);
@@ -587,16 +574,25 @@ HackerGame
 			hg.tError("Command is not defined!");
 		}
 		if (input != '' && hg.assignment && hg.assignment.currentTask >= 0 && hg.assignment.evaluate) {
-			// Callback is the main task checker.
-			// If the input passes the callback
-			// You can move to the next task
-			callbackResult = hg.assignment.evaluate.call(term, {
+			evalObj = {
 				input: input,
 				command: fn,
 				argsString: argsString,
 				args: args,
 				noError: noError
-			});
+			};
+			
+			// Callback is the main task checker.
+			// If the input passes the callback
+			// You can move to the next task
+			callbackResult = hg.assignment.evaluate.call(term, evalObj);
+
+			if ($.isFunction(hg.assignment.bonus)) {
+				if(hg.assignment.bonus.call(term, evalObj)) {
+					hg.assignment.queue.push("bonus");
+				}
+			}
+
 			if (callbackResult) {
 				hg.assignment.nextTask();
 			}

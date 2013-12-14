@@ -30,16 +30,12 @@
 				name: "Introduction to the terminal"
 			},
 			{
-				id: "move",
-				name: "How to move around"
-			},
-			{
-				id: "copy",
-				name: "Moving and copying files"
+				id: "fs",
+				name: "Tidying up"
 			},
 			{
 				id: "password1",
-				name: "How to crack passwords"
+				name: "Let's crack some passwords"
 			},
 			"Level 1",
 			{

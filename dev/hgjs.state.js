@@ -27,6 +27,9 @@ HackerGame
 				actions = {
 				hint: function () {
 					hg.stats.increment("currentScore", - parseInt(0.75 * task.points, 10));
+				},
+				bonus: function () {
+					hg.stats.increment("currentScore", parseInt(0.25 * task.points, 10));
 				}
 			};
 			if (hg.assignment.queue.length > 0) {
@@ -181,6 +184,7 @@ HackerGame
 			if (path.charAt(0) != "/") { path = hg.util.absPath(path); }
 
 			path = hg.util.cleanPath(path);
+
 			path = path.split("/").slice(1);
 			$.each(path, function (i, elt) {
 				if (i >= path.length - 1) {
@@ -286,6 +290,7 @@ HackerGame
 	 * - set : function - callback when task is initialized
 	 * - unset : function - callback when task is destroyed
 	 * - points : number - points user can achieve with this task
+	 * - bonus : function - add a callback to check if bonus should be added
 	 *
 	 * Constructor for Task object.
 	 *
@@ -473,6 +478,7 @@ HackerGame
 		hg.action.page("assignments");
 		hg.assignment = null;
 	};
+
 	hg.stats = {
 		/**
 		 * hg.stats.refresh ([exlude])

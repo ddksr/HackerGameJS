@@ -1,5 +1,7 @@
 (function ($, hg) {
 	var pwd = "/",
+		fs = hg.state.computer.fs,
+		mailBody = $("#mail1").html(),
 		stash = {},
 		names = {
 			"/":  ["/", "C:", "C:"],
@@ -218,84 +220,99 @@
 			
 		};
 
+	fs.etc.hostname = hg.t("HACKED");
+	fs.bin.linux = null;
+	fs.tmp.hg = null;
+
 	hg.load.assignment([
 		{
 			id: "pwd",
-			evaluate: function (c) { return c.input === "pwd"; },
+			evaluate: function (c) {
+				return c.input == "pwd";
+			},
 			points: 10
 		},
 		{
 			id: "ls",
-			evaluate: function (c) { 
-				return c.command === "ls" && c.argsString.match(/\/?bin/) !== null; 
+			evaluate: function (c) {
+				return c.input == "ls";
 			},
-			points: 20
+			points: 10
 		},
 		{
 			id: "cd",
 			evaluate: function (c) {
-				return hg.state.computer.pwd === "/bin";
-			},
-			points: 20
-		},
-		{
-			id: "cd-back",
-			evaluate: function (c) {
-				return hg.state.computer.pwd === "/" && c.input == "cd /";
-			},
-			points: 20
-		},
-		{
-			id: "cd-bin-back",
-			evaluate: function (c) {
-				var s = stash;
-				if (! s["cd-bin-back"]) { s["cd-bin-back"] = {}; }
-				s = s["cd-bin-back"];
-				s.bin = s.bin || hg.state.computer.pwd === "/bin";
-				s.back = s.back || (hg.state.computer.pwd === "/" && c.input.match(/cd \.\./) !== null);
-				return s.bin && s.back;
+				return hg.state.computer.pwd == "/bin";
 			},
 			points: 30
 		},
 		{
-			id: "cd-tmp",
+			id: "remove",
 			evaluate: function (c) {
-				return hg.state.computer.pwd === "/tmp";
+				return hg.state.computer.fs.bin.linux === undefined;
 			},
-			points: 5
+			points: 30
 		},
 		{
-			id: "mkdir",
+			id: "abs",
 			evaluate: function (c) {
-				var s = stash.mkdir,
-					tmp = hg.state.computer.pwd === "/tmp/assignment",
-					mkdir = c.input.match(/mkdir assignment/) !== null,
-					created = typeof(hg.state.computer.fs.tmp.assignment) === "object";
-				if (!s) {
-					stash.mkdir = {};
-					s = stash.mkdir;
-				}
-				s.mkdir = s.mkdir || mkdir;
-				s.tmp = s.tmp || tmp;
-				s.created = s.created || created;
-				return s.tmp && s.mkdir && s.created;
+				var pwd = hg.state.computer.pwd,
+					fs = hg.state.computer.fs;
+				return pwd == "/home/me" && c.command == "cd" 
+					&& c.argsString && c.argsString.charAt(0) == "/";
 			},
 			points: 20
 		},
 		{
-			id: "mkdir-rel",
+			id: "back",
 			evaluate: function (c) {
-				var pwd = hg.state.computer.pwd === "/tmp/assignment",
-					mkdir = c.input.match(/mkdir ..\/\w+/) !== null;
-				return pwd && mkdir;
+				var pwd = hg.state.computer.pwd;
+				return c.command == "cd" && c.argsString == ".." && pwd == "/home";
 			},
 			points: 30
+		},
+		{
+			id: "tree",
+			evaluate: function (c) {
+				return c.command == "tree";
+			},
+			bonus: function () { return c.command == "ls"; },
+			points: 10
+		},
+		{
+			id: "mail",
+			set: function () {
+				hg.mail.recieve({
+					isSensei: true,
+					body: mailBody
+				}, true); 
+				$("#mail").popover("show");
+			},	
+			evaluate: function (c) {
+				return hg.state.computer.pwd == "/tmp";
+			},
+			points: 20
+		},
+		{
+			id: "move",
+			evaluate: function (c) {
+				var fs = hg.state.computer.fs;
+				return fs.bin.hg === null && fs.tmp.hg === undefined;
+			},
+			points: 30
+		},
+		{
+			id: "edit",
+			evaluate: function (c) {
+				var check = hg.util.getFile(c.argsString),
+					fs = hg.state.computer.fs;
+				return fs.etc.hostname !== hg.t("HACKED")
+					&& c.command == "cat" && check;
+			},
+			points: 40
 		}
 	], {
-		startTime: 0,
+		startTime: 900,
 		initCallback: draw
 	});
-
-	
-
 })(jQuery, HackerGame);

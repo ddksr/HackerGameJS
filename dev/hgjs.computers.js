@@ -10,14 +10,18 @@ HackerGame
 		dnsTable = {  // this is the hostname table
 			localhost: "127.0.0.1" 
 		}, 
+		defaultHome = {
+			"download": {},
+			"documents": {}
+		},
 		defaultFs = { // this is the default filesystem passed to every computer
-			"bin": {},
+			"bin": { hg: null },
 			"home": {},
 			"dev": {},
 			"tmp": {},
 			"etc": {
 				"brute": {},
-				"dict": { "passwords": "password\npassword1234\n123456789"}
+				"dict": { "passwords": "password\npassword1234\n123456789" }
 			}
 		},
 		defaultDynFs = { // this is the default DFS passed to every computer
@@ -58,7 +62,7 @@ HackerGame
 		computers[name].fs = hg.util.extend($.extend(true, {}, defaultFs), 
 											computers[name].fs);
 		if (!computers[name].fs.home[props.user]) { 
-			computers[name].fs.home[props.user] = {};
+			computers[name].fs.home[props.user] = $.extend(true, {}, defaultHome);
 		}
 
 		$.each(defaultDynFs, function (path, fn) { computers[name].dfs[path] = fn; });

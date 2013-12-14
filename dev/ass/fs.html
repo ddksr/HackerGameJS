@@ -1,0 +1,127 @@
+<html>
+<head>
+</head>
+<body>
+<div id="ass-title">Tidying up</div>
+<div id="ass-instructions">
+	<p>
+		Your computer was hacked! 
+		Nothing serious happened but you will have to tidy up your system. There are some malicious files but are not activated yet. Some of your files were moved and changed. Make haste!
+	</p>
+	<p>
+		To better understand your computer, read the <a href="#/tab/learn-more">Learn more</a> page.
+	</p>
+</div>
+<div id="ass-tasks">
+	<div class="pwd">Check where you are. The directory you are currently using is called the working directory. You can see your working directory with <code>pwd</code> command.
+	</div>
+	<div class="ls">
+		Check the contents of your working directory. Type <code>ls</code>.
+	</div>
+	<div class="cd">
+		Go to <em>/bin</em> directory. Use the <code>cd</code> command. 
+	</div>
+	<div class="remove">
+		Type <code>ls</code> again to list the files in the directory. 
+		There is a file called <em>linux</em> which could be a virus. 
+		Remove the suspicious file. Use <code>rm</code>.
+	</div>
+	<div class="abs">
+		Now you have to go to your home directory. The home directory is your personal space where you have all your documents, files, downloads etc. You can jump to it using absolute paths. The absolute path to your home directory is <code>/home/me</code>.
+		<span class="help">You have to change your working directory. You have to use the absolute path.</span>
+		<span class="hint">You must use the <code>cd</code> command.</span>
+	</div>
+	<div class="back">
+		You have to find a folder called <code>system</code>. There should never be any system files in your personal space. Type <code>ls</code>. 
+		You will see that it is not very helpful.
+		Go back one directory.
+		<span class="help">The learn more page shows how to easily go back one step.</span>
+		<span class="hint">Dots</span>
+	</div>
+	<div class="tree">
+		The <code>tree</code> command can be of more help. Delete the directory when you find it.
+	</div>
+	<div class="mail">
+		Check your mail and follow the instructions.
+	</div>
+	<div class="move">
+		Move the file to <em>/bin</em>.
+		<span class="help">The help command can show you an example. You don't have to be in the same directory to move a file.</span>
+	</div>
+	<div class="edit">
+		You are almost finished. You just need to edit a file. Use the <code>edit</code> command to edit <em>/etc/hostname</em>. The file contains your computer's name. Change it.
+		Check if you changed the file correctly. Use <code>cat</code> command to display the file contents.
+	</div>
+</div>
+<div id="ass-learn-more">
+	<h3>What is a directory?</h3>
+	<p>
+		Directory is a file that can contain other files and directories. They are called <strong>folders</strong> in Microsoft Windows operating systems. 
+	</p>
+	<h3>What is a working directory?</h3>
+	<p>
+		A working directory is the directory you are currently in. To see your working directory, type <code>pwd</code> in the terminal.
+	</p>
+	<h3>Why are working directories important?</h3>
+	<p>
+		They are not really important. They are just here to help. Every file in a file system has an absolute path to it. If you are using Windows, the absolute path to Program Files folder is <code>C:\Program Files</code>. 
+		Windows systems separate files with '\' character and Unix-based systems with '/'. A web page URL is also an example of a absolute path. Example: <code>http://www.google.si/maps</code>.
+	</p>
+	<p>
+		If we know the absolute path, we know how to access it. We access it with <code>C:\Program Files</code>. Simple. But what about if the absolute path is very long? And we need to type it more than one time? Would you type <code>C:\Folder 1\Folder 2\Folder 3\My Favorite File</code> every time you need your favorite file? I hope not!
+	</p>
+	<p>
+		Some smart (read <em>lazy</em>) people found a solution how not to type everything every time. If you change your working directory to <code>C:\Folder 1\Folder 2\Folder 3</code>, you can just access the file by typing <code>My Favorite File</code>.
+	</p>
+	<p>
+		OK. Let's stop with the Windows path schema and use Unix path. Why? It is not only supported on Unix-based operating systems but also on the world wide web (URLs). Why on the web? The wast majority of web servers (computers that serve the web page) use Linux!
+	</p>
+	<p>
+		Let's examine Charlie's computer. Who is Charlie? Well, nobody really. Just our imagination. 
+		His current working directory is <code>/home/charlie</code> (the absolute path to the directory). Now he would like to switch the working directory 
+		to <code>/home/charlie/download</code>. 
+		The command to do that (same on every operating system) is <code>cd</code> (<strong>c</strong>hange <strong>d</strong>irectory). 
+		He has two options:
+		<ul>
+			<li>Use absolute path: <code>cd /home/charlie/download</code></li>
+			<li>Use relative path: <code>cd download</code></li>
+		</ul>
+		Simple! And now he would like to go back. Again, he has two options:
+		<ul>
+			<li>Use absolute path: <code>cd /home/charlie</code></li>
+			<li>Use relative path: <code>cd ..</code> (two dots mean bask, one dot means 'stay here')</li>
+		</ul>
+		And now he wishes to display file contents of file <code>my_math_homework</code> in directory <code>/home/charlie/documents</code>. 
+		<ul>
+			<li>Use absolute path: <code>cat /home/charlie/documents/my_math_homework</code></li>
+			<li>Use relative path: <code>cat documents/my_math_homework</code></li>
+		</ul>
+	</p>
+	<p>
+		That's almost it. There are also many other possibilities. Imagine his working directory is <code>/home</code> and he would like to go to <code>/bin</code>. You already know how to do that with the absolute path. But how about with relative path? Simple:
+		<code> cd ../bin</code> which means 'Go back one directory and then go into <code>/bin</code>'
+	</p>
+	<h3>Simulation</h3>
+	<p>
+		You can learn this in more detail by using this simulation. Try to imagine your file system as a diagram. The first node of the diagram is the root directory. Nothing is behind the current directory. The red node is the working directory. You change the working directory by clicking a different node. Hovering over a circle (with you mouse, of course) will display the relative and the absolute path to the directory.
+	</p>
+	<div id="controls">
+		Change directory names and paths: <br /> 
+		<input type="radio" name="ass-learn-more-dir-type" value="1" checked="checked" /> Windows style
+		<input type="radio" name="ass-learn-more-dir-type" value="0" /> Linux Style
+	</div>
+	<div id="canvas"></div>
+	<h3>Copying and moving files</h3>
+	<p>
+		The copy command (<code>cp</code>) is simple. You just use specified the source (file or directory you wish to copy) as the first argument and the destination (the location and new or old name of the file or directory) as the second argument. This is the same for moving.
+	</p>
+</div>
+<div id="ass-try-it-out">
+	You can try this in every Terminal. If you use Windows, be careful to use <code>dir</code> instead of <code>ls</code>.
+</div>
+<div id="mail1">
+	I have sent you a file that is missing on your computer. You can find it in the <em>/tmp</em> directory. It is called <em>hg</em>.
+</div>
+</body>
+</html>
+
