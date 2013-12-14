@@ -159,42 +159,24 @@ asyncTest("gameflow", function () {
 		t("sensei " + (hg.stats.currentScore));
 	});
 	
-	// TODO: test help
 	
 	c(function () {
 		equal(completedTasks(),  6, "6. task NOT OK.");
-		t("pwd");
+		t("help");
 	});
 	
 	c(function () {
 		equal(completedTasks(),  7, "6. task OK.");
 		equal($("#stats-completed-tasks").text(), "6/8", "Completed tasks in DOM.");
-		t("help");
+		t("ls bin");
 	});
 
 	
 	c(function () {
 		equal(completedTasks(),  7, "7. task NOT OK.");
-		t("tree");
+		t("ls");
 	});
 
-	c(function () {
-		equal(completedTasks(),  7, "7. task NOT OK.");
-		t("help tree");
-	});
-	
-	// TODO: test hint
-	
-	c(function () {
-		equal(completedTasks(),  7, "7. task NOT OK.");
-		t("tree home");
-	});
-
-	c(function () {
-		equal(completedTasks(),  7, "7. task NOT OK.");
-		t("tree /home");
-	});
-	
 	c(function () {
 		equal(completedTasks(),  8, "7. task OK.");
 		equal($("#stats-completed-tasks").text(), "7/8", "Completed tasks in DOM.");
@@ -311,15 +293,6 @@ asyncTest("gameflow", function () {
 	c(function () {
 		t("sensei " + Math.floor(hg.timer.counter/60));
 	});
-	c(function () {
-		t("sensei " + (hg.stats.currentScore));
-	});
-	c(function () {
-		t("pwd");
-	});
-	c(function () {
-		t("tree");
-	});
 
 	// Check HINT again
 	c(function () {
@@ -330,8 +303,15 @@ asyncTest("gameflow", function () {
 	});
 
 	c(function () {
-		t("tree /home");
+		t("sensei " + (hg.stats.currentScore));
 	});
+	c(function () {
+		t("help");
+	});
+	c(function () {
+		t("ls");
+	});
+
 	c(function () {
 		t("sensei help");
 	});
