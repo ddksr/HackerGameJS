@@ -69,6 +69,9 @@ nav .glyphicon {
 	font-style: italic;
 }
 
+.future-task, .past-task {
+	color: #404040;
+}
 
 .completed-task {
 	text-decoration: line-through;

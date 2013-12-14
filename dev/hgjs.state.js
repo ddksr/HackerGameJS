@@ -17,44 +17,6 @@ HackerGame
 		},
 	
 		/**
-		 * state: initTaskHTML ($task)
-		 * - $task : jQuery object - task HTML
-		 * 
-		 * Initialize task HTML. Convert hits and help to buttons etc.
-		 */		 
-		initTaskHTML = function ($task) {
-			var $help, $hint, 
-				$btn = $(document.createElement("button")).addClass("btn").addClass("btn-info").addClass("btn-sm");
-			console.log("state:initTaskHTML", [$task]);
-			$("#tab-task .tasks-list").append($task.append($(document.createElement("br"))));
-
-			$help = $task.find(".help").clone();
-			$hint = $task.find(".hint").clone();
-			
-			if ($help.length > 0) {
-				$task.find(".help").replaceWith($btn.clone().addClass("help").text("Help").popover({
-					content: $help.html(),
-					title: hg.t("Help"),
-					placement: "top",
-					html: true
-				}));
-			}
-			if ($hint.length > 0) {
-				$task.find(".hint").replaceWith($btn.clone().addClass("hint").text("Hint").popover({
-					content: $help.html(),
-					title: hg.t("Hint"),
-					placement: "bottom",
-					html: true
-				}).on('shown.bs.popover', function () {
-					hg.assignment.queue.push("hint");
-				}));
-			}
-			$task.hide().fadeIn("slow", function () {
-				$("#tab-task").scrollTop($("#tab-task").get(0).scrollHeight);
-			});
-		},
-	
-		/**
 		 * state: evalAssignmentQueue ()
 		 *
 		 * Evaluate assignment queue. Calculate bonuses etc.
@@ -337,8 +299,8 @@ HackerGame
 	 * Object methods:
 	 * - switchTask (previousTask) - switch between tasks
 	 */
-	hg.cons.Task = function Task(taskObj, taskHtml) {
-		console.log("new Task", [taskObj, taskHtml]);
+	hg.cons.Task = function Task(taskObj) {
+		console.log("new Task", [taskObj]);
 		this.id = taskObj.id || null;
 		this.evaluate = taskObj.evaluate || function () { return true; };
 		this.set = taskObj.set || function () {};
@@ -347,17 +309,20 @@ HackerGame
 
 		hg.assignment.maxTaskPoints += this.points;
 
-		this.html = taskHtml || "";
 	};
 	hg.cons.Task.prototype.switchTask = function (previousTask) {
-		var $li = $(document.createElement("li")).attr("id", "task-" + this.id);
+		var scrollPos = 0;
 		console.log("Task.switchTask", [previousTask]);
 		if (previousTask) { 
+			$("#task-" + previousTask.id).addClass("past-task");
 			previousTask.unset(); 
 		}
+		
 		this.set();
-		$li.html(this.html);
-		initTaskHTML($li);
+
+		$("#task-" + this.id).removeClass("future-task");
+
+
 		hg.assignment.evaluate = this.evaluate;
 	};
 

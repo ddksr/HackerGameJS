@@ -21,6 +21,7 @@ HackerGame = {};
 			$("#link-page-game").removeClass("disabled");
 			hg.action.page("game");
 			hg.action.tab("assignment");
+			$("#tab-tasks li").hide();
 		},
 		/**
 		 * core: startAssignment()
@@ -34,7 +35,13 @@ HackerGame = {};
 			hg.assignment.isRunning = true;
 			hg.assignment.nextTask();
 			hg.assignment.startTimer();
+
+			$("#tab-tasks li").show();
+
 			hg.action.tab("task");
+
+			$("#tab-task").scrollTop(0);
+
 		},
 		/**
 		 * core: initDynamicFields ([selector])
@@ -60,6 +67,44 @@ HackerGame = {};
 				}
 			});
 		},
+		/**
+		 * core: initTaskHTML ($task)
+		 * - $task : jQuery object - task HTML
+		 * 
+		 * Initialize task HTML. Convert hits and help to buttons etc.
+		 */		 
+		initTaskHTML = function ($task) {
+			var $help, $hint, 
+				$btn = $(document.createElement("button")).addClass("btn").addClass("btn-info").addClass("btn-sm");
+			console.log("core:initTaskHTML", [$task]);
+			$("#tab-task .tasks-list").append($task.append($(document.createElement("br"))));
+
+			$task.addClass("future-task");
+
+			$help = $task.find(".help").clone();
+			$hint = $task.find(".hint").clone();
+			
+			if ($help.length > 0) {
+				$task.find(".help").replaceWith($btn.clone().addClass("help").text("Help").popover({
+					content: $help.html(),
+					title: hg.t("Help"),
+					placement: "top",
+					html: true
+				}));
+			}
+			if ($hint.length > 0) {
+				$task.find(".hint").replaceWith($btn.clone().addClass("hint").text("Hint").popover({
+					content: $help.html(),
+					title: hg.t("Hint"),
+					placement: "bottom",
+					html: true
+				}).on('shown.bs.popover', function () {
+					hg.assignment.queue.push("hint");
+				}));
+			}
+		},
+	
+
 		/**
 		 * core: baseInit ([settings])
 		 * - settings : object - settings objects to overwrite config
@@ -371,15 +416,6 @@ HackerGame = {};
 			hg.stats.currentScore = 0;
 			hg.stats.refresh();
 
-			$.each(tasks, function (i, task) {
-				var html = $tasksHtml.find("." + task.id).html();
-				hg.assignment.tasks[i] = new hg.cons.Task(task, html);
-			});
-			
-			hg.assignment.successCallback = other.successCallback || function () {};
-			hg.assignment.failCallback = other.failCallback || function () {};
-			hg.assignment.startCallback = other.startCallback || function () {};
-			hg.assignment.initCallback = other.initCallback || function () {};
 
 			// Parse HTML
 			$("#tab-assignment .instructions").html($instructions).prepend($heading);
@@ -387,7 +423,23 @@ HackerGame = {};
 			$("#tab-learn-more").html($learnMore);
 			$("#tab-try-it-out").html($tryItOut);
 
+			$.each(tasks, function (i, task) {
+				var html = $tasksHtml.find("." + task.id).html(),
+					$li = $(document.createElement("li")).attr("id", "task-" + task.id);
+				
+				hg.assignment.tasks[i] = new hg.cons.Task(task);
+
+				$li.html(html);
+				initTaskHTML($li);
+			});
 			$("#stash").empty();
+
+			hg.assignment.successCallback = other.successCallback || function () {};
+			hg.assignment.failCallback = other.failCallback || function () {};
+			hg.assignment.startCallback = other.startCallback || function () {};
+			hg.assignment.initCallback = other.initCallback || function () {};
+
+			
 			if (other.startMail) {
 				hg.mail.recieve({
 					subject: title,

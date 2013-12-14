@@ -20,7 +20,7 @@ task for getting to know the terminal and the game.
 			set: function () {
 				setTimeout(function () { 
 
-					$("#tab-task").hgBlink(3); 
+					$("#tab-task li:first").hgBlink(3); 
 					
 					setTimeout(function () { 
 
