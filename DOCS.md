@@ -122,7 +122,6 @@ hg.action.assignment (assId)
 
 Select assignment.
 
-
 hg.action.input (inputId)
 -------------------------
 - inputId : string - input tab to change to

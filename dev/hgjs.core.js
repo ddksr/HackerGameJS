@@ -27,7 +27,7 @@ HackerGame = {};
 		/**
 		 * core: startAssignment ()
 		 * 
-		 * Start assignment (time couting, command line evaluation ...).
+		 * Start assignment (time courting, command line evaluation ...).
 		 **/
 		startAssignment = function () { // Start workign on assignment
 			console.log("core:startAssignment", []);
@@ -302,8 +302,6 @@ HackerGame = {};
 		return (i18n && i18n[string]) || string;
 	};
 
-init
-
 	/**
 	 * hg.refreshTranslations ([selector])
 	 * - selector : string - jQuery selector string
@@ -497,6 +495,7 @@ init
 			if (typeof(langId) == "object") { langObj = landId; }
 			else if (langObj) { hg.lang = langId; }
 			i18n = $.extend(i18n, langObj);
+
 		},
 		/**
 		 * hg.load.specialFile (path, content)
@@ -659,7 +658,7 @@ init
 		}
 		return $termObj;
 	};
-	
+
 	/**
 	 * jQuery: .hackerGameEditor([settings])
 	 *
