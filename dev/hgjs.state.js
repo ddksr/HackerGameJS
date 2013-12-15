@@ -75,7 +75,7 @@ HackerGame
 				dataType: 'html',
 				success: loadJS,
 				error: function() {
-					// If no language markup file exists, load the default (english) file
+					// If no language markup file exists, load the default (English) file
 					$.ajax({
 						url: htmlUrl,
 						method: 'get',
@@ -87,7 +87,7 @@ HackerGame
 		};
 	/**
 	 * hg.cons.State (computer, [config, [innerState]])
-	 * - comptuer : object - computer object
+	 * - computer : object - computer object
 	 * - config : object - configuration for the state
 	 * - innerState : object - NOT USED YET
 	 * 
@@ -669,7 +669,7 @@ HackerGame
 	 * Object stateJson can be null if no state changes exist.
 	 * Callback resets the changes back to previous state. Everything
 	 * That has happend between one dump and one callback call is also
-	 * appended to the state.
+	 * appended to the state. 
 	 */
 	hg.dump.state = function () {
 		var tmpCache = stateCache;

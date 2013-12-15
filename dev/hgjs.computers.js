@@ -201,5 +201,3 @@ HackerGame
 	};
 
 })(jQuery, HackerGame); 
-
-

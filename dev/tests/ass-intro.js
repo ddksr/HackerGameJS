@@ -7,7 +7,7 @@ var nextTest = function () {
 
 asyncTest("gameflow", function () {
 	var a = HackerGame.action,
-	c = hgTest.addCallback, 
+		c = hgTest.addCallback, 
 		hg = HackerGame,
 		maxTaskPoints = 0,
 		completedTasks = function () {
