@@ -44,16 +44,17 @@ The HTML file can also contain:
 - ass-misc: other stuff
 
 Example:
-	<div id="ass-title">Assignment title</div>
-	<dic id="ass-instructions">...</div>
-	<dic id="ass-greeting">...</div>
-	<dic id="ass-tasks">
-		<div class="task1"></div>
-		<div class="task2"></div>
-    </div>
-	<dic id="ass-learn-more"></div>
-	<dic id="ass-try-it-out"></div>
-
+~~~~~~
+<div id="ass-title">Assignment title</div>
+<div id="ass-instructions">...</div>
+<div id="ass-greeting">...</div>
+<div id="ass-tasks">
+	<div class="task1"></div>
+	<div class="task2"></div>
+</div>
+<div id="ass-learn-more"></div>
+<div id="ass-try-it-out"></div>
+~~~~~~
 
 Translating
 -----------
@@ -74,15 +75,16 @@ it would be to brutal to maintain the page sentance by sentence.
 ### How does this look in html ?
 
 Example:
-
-	<p class='i18n' data-lang='English setence'></p>
-
+~~~~~~
+<p class='i18n' data-lang='English setence'></p>
+~~~~~~
 or
-
-	<p class='i18n text' data-lang'pageKey'>
-		This paragraph has a lot of words and it wouldnt be optimal to 
-		maintain it sentence by sentence.
-	</p>
+~~~~~~
+<p class='i18n text' data-lang'pageKey'>
+	This paragraph has a lot of words and it wouldnt be optimal to 
+	maintain it sentence by sentence.
+</p>
+~~~~~~
 
 HTML elements with class *i18n* will get translated.
 
