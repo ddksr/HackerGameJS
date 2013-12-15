@@ -27,7 +27,7 @@ There are three things you have to do to add an assignment:
 
 How to introduce the new assignment to HG: 	
 
-	.hackerGame({ assignments: [ ... new element ... ] });
+	$(terminalSelector).hackerGame({ assignments: [ ... new element ... ] });
 	
 If you want the assignment to be one of the defaults, skip the third step
 and change the configuration file (place the assignment somewhere in the context)
