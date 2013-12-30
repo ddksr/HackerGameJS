@@ -10,9 +10,6 @@ asyncTest("gameflow", function () {
 		c = hgTest.addCallback, 
 		hg = HackerGame,
 		maxTaskPoints = 0,
-		completedTasks = function () {
-			return $("#tab-task li").length;
-		},
 		bonus = function () { return parseInt(hg.timer.lastCounter / 20, 10); },
 		t = function (text) { 
 			hg.term.enable();
@@ -87,14 +84,11 @@ asyncTest("gameflow", function () {
 		
 		equal($("#stats-completed-tasks").text(), "0/8", "Completed tasks in DOM.");
 
-		equal(completedTasks(), 1, "Task prepared.");
-
 		HackerGame.term.focus(true);
 		t("echo bla");
 	}, 3000);
 
 	c(function () {
-		equal(completedTasks(), 2, "1. task OK.");
 		
 		equal($("#stats-completed-tasks").text(), "1/8", "Completed tasks in DOM.");
 
@@ -102,29 +96,27 @@ asyncTest("gameflow", function () {
 	}, 500);
 
 	c(function () {
-		equal(completedTasks(),  2, "2. task NOT OK.");
+		equal($("#stats-completed-tasks").text(), "1/8", "Completed tasks in DOM.");
 		t("echo hello world!!!");
 	});
 
 	c(function () {
-		equal(completedTasks(),  3, "2. task OK.");
 		equal($("#stats-completed-tasks").text(), "2/8", "Completed tasks in DOM.");
 		
 		t("help");
 	});
 
 	c(function () {
-		equal(completedTasks(),  3, "3. task NOT OK.");
+		equal($("#stats-completed-tasks").text(), "2/8", "Completed tasks in DOM.");
 		t("help sensei");
 	});
 
 	c(function () {
-		equal(completedTasks(),  3, "3. task NOT FULLY OK.");
+		equal($("#stats-completed-tasks").text(), "2/8", "Completed tasks in DOM.");
 		t("sensei bu");
 	});
 
 	c(function () {
-		equal(completedTasks(),  4, "3. task OK.");
 
 		equal($("#stats-completed-tasks").text(), "3/8", "Completed tasks in DOM.");
 
@@ -132,12 +124,11 @@ asyncTest("gameflow", function () {
 	});
 
 	c(function () {
-		equal(completedTasks(),  4, "4. task NOT OK.");
+		equal($("#stats-completed-tasks").text(), "3/8", "Completed tasks in DOM.");
 		t("sensei " + Math.floor(hg.timer.counter/60));
 	});
 
 	c(function () {
-		equal(completedTasks(),  5, "4. task OK.");
 
 		equal($("#stats-completed-tasks").text(), "4/8", "Completed tasks in DOM.");
 
@@ -146,13 +137,11 @@ asyncTest("gameflow", function () {
 	  
 	
 	c(function () {
-		equal(completedTasks(),  5, "5. task NOT OK.");
 
 		t("sensei " + (hg.stats.currentScore));
 	});
 
 	c(function () {
-		equal(completedTasks(),  6, "5. task OK.");
 
 		equal($("#stats-completed-tasks").text(), "5/8", "Completed tasks in DOM.");
 
@@ -161,35 +150,32 @@ asyncTest("gameflow", function () {
 	
 	
 	c(function () {
-		equal(completedTasks(),  6, "6. task NOT OK.");
+		equal($("#stats-completed-tasks").text(), "5/8", "Completed tasks in DOM.");
 		t("help");
 	});
 	
 	c(function () {
-		equal(completedTasks(),  7, "6. task OK.");
 		equal($("#stats-completed-tasks").text(), "6/8", "Completed tasks in DOM.");
 		t("ls bin");
 	});
 
 	
 	c(function () {
-		equal(completedTasks(),  7, "7. task NOT OK.");
+		equal($("#stats-completed-tasks").text(), "6/8", "Completed tasks in DOM.");
 		t("ls");
 	});
 
 	c(function () {
-		equal(completedTasks(),  8, "7. task OK.");
 		equal($("#stats-completed-tasks").text(), "7/8", "Completed tasks in DOM.");
 		t("help");
 	});
 
 	c(function () {
-		equal(completedTasks(),  8, "8. task NOT OK.");
+		equal($("#stats-completed-tasks").text(), "7/8", "Completed tasks in DOM.");
 		t("sensei help");
 	});
 
 	c(function () {
-		equal(completedTasks(),  8, "8. task OK.");
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
 		equal(hg.stats.currentScore, maxTaskPoints + bonus());
 		
@@ -267,18 +253,18 @@ asyncTest("gameflow", function () {
 
 	// CHECK HELP
 	c(function () {
-		$("#tab-task li:last").find(".help").click();
+		$("#tab-task #task-echo").find(".help").click();
 	});
 	c(function () {
-		$("#tab-task li:last").find(".help").click();
+		$("#tab-task #task-echo").find(".help").click();
 	});
 	
 	// Check HINT
 	c(function () {
-		$("#tab-task li:last").find(".hint").click();
+		$("#tab-task #task-echo").find(".hint").click();
 	});
 	c(function () {
-		$("#tab-task li:last").find(".hint").click();
+		$("#tab-task #task-echo").find(".hint").click();
 	});
 
 	c(function () {
@@ -290,17 +276,20 @@ asyncTest("gameflow", function () {
 	c(function () {
 		t("sensei bu");
 	});
+
+	// Check HINT again
+	c(function () {
+		$("#tab-task #task-report-time").find(".hint").click();
+	});
+	c(function () {
+		$("#tab-task #task-report-time").find(".hint").click();
+	});
+
 	c(function () {
 		t("sensei " + Math.floor(hg.timer.counter/60));
 	});
 
-	// Check HINT again
-	c(function () {
-		$("#tab-task li:last").find(".hint").click();
-	});
-	c(function () {
-		$("#tab-task li:last").find(".hint").click();
-	});
+	
 
 	c(function () {
 		t("sensei " + (hg.stats.currentScore));
@@ -317,8 +306,7 @@ asyncTest("gameflow", function () {
 	});
 
 	c(function () {
-		var penalties =  parseInt(0.75 * 10, 10) + parseInt(0.75 * 25, 10);
-		equal(completedTasks(),  8, "8. task OK.");
+		var penalties =  parseInt(0.75 * 10, 10) + parseInt(0.75 * 10, 10);
 		equal($("#stats-completed-tasks").text(), "8/8", "Completed tasks in DOM.");
 		equal($("#stats-completed-assignments").text(), "1/" + hg.ind.NUM_OF_ASSIGNMENTS, "Completed assignments in DOM.");
 		

@@ -22,7 +22,40 @@ HackerGame
 			"d": "directory",
 			"t": "text"
 		};
+	/**
+	 * hg.util.randomChoice (array)
+	 * - array : array
+	 * 
+	 * Return a random value in array.
+	 **/
+	hg.util.randomChoice = function(array) {
+		var rand = randIntGenerator(0, array.length-1)();
+		return array[rand];
+	};
 
+
+	/**
+	 * hg.util.randomString (length, [lower])
+	 * - length : int - length of random string
+	 * - lower : boolean - if true, only lower letters
+	 *
+	 * Generate a random string.
+	 **/
+	hg.util.randomString = function(length, lower) {
+		var genInt = randIntGenerator(0, 25), 
+			genBool = randIntGenerator(0, 1),
+			string = "", chr = "";
+
+		while(length-- > 0) {
+			chr = String.fromCharCode(97 + genInt());
+			if (!lower && genBool() > 0) {
+				chr = chr.toUpperCase();
+			}
+			string += chr;
+		}
+		return string;
+	};
+	
 	/**
 	 * hg.util.extend (default, over)
 	 * - default : object - default object that gets overwritten
