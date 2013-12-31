@@ -24,7 +24,7 @@ HackerGame
 		};
 	/**
 	 * hg.util.randomChoice (array)
-	 * - array : array
+	 * - **array** *array*
 	 * 
 	 * Return a random value in array.
 	 **/
@@ -36,8 +36,8 @@ HackerGame
 
 	/**
 	 * hg.util.randomString (length, [lower])
-	 * - length : int - length of random string
-	 * - lower : boolean - if true, only lower letters
+	 * - **length** *int* - length of random string
+	 * - **lower** *boolean* - if true, only lower letters
 	 *
 	 * Generate a random string.
 	 **/
@@ -58,8 +58,8 @@ HackerGame
 	
 	/**
 	 * hg.util.extend (default, over)
-	 * - default : object - default object that gets overwritten
-	 * - over : object - overwritting object
+	 * - **default** *object* - default object that gets overwritten
+	 * - **over** *object* - overwritting object
 	 *
 	 * Return: object
 	 *
@@ -68,7 +68,6 @@ HackerGame
 	 * upon them. 
 	 */
 	hg.util.extend = function (objDef, objOver) { 
-		// TODO: check if you can replace with native jQuery's
 		var obj = {};
 		console.log("util.extend", [objDef, objOver]);
 		$.each(objDef, function (key, _) {
@@ -87,15 +86,15 @@ HackerGame
 
 	/**
 	 * hg.util.parseInput (input)
-	 * - input : string - user input from command line
+	 * - **input** *string* - user input from command line
 	 * 
 	 * Return: array
 	 *
 	 * Parse user input and return: [command, argsStr, args, rawArgsString]
-	 * - command : string - user command
-	 * - argsStr : string - parsed arguments as a string (removing ' and " )
-	 * - args : array - parsed argumetns as array
-	 * - rawArgsString : string - same as argsString but unprocessed
+	 * - **command** *string* - user command
+	 * - **argsStr** *string* - parsed arguments as a string (removing ' and " )
+	 * - **args** *array* - parsed argumetns as array
+	 * - **rawArgsString** *string* - same as argsString but unprocessed
 	 */
 	hg.util.parseInput = function (input) {
 		var segments = input.match(/(\w+) *(.*)/),
@@ -184,8 +183,8 @@ HackerGame
 
 	/**
 	 * hg.util.randResponseTime (from, to)
-	 * - from : integer
-	 * - to : integer
+	 * - **from** *integer*
+	 * - **to** *integer*
 	 * 
 	 * Return: function
 	 *
@@ -198,8 +197,8 @@ HackerGame
 
 	/**
 	 * hg.util.fileType (file, [longName])
-	 * - file: mixed - file content
-	 * - longName : boolean - if true, long filetype name will be returned
+	 * - **file**m*ixed* - file content
+	 * - **longName** *boolean* - if true, long filetype name will be returned
 	 *
 	 * Return: string
 	 *
@@ -217,7 +216,7 @@ HackerGame
 
 	/**
 	 * hg.util.path = function ([rawPathString])
-	 * - rawPathString : string - raw path (relative, absolute ... )
+	 * - **rawPathString** *string* - raw path (relative, absolute ... )
 	 *
 	 * Return: array - path array
 	 * 
@@ -258,8 +257,8 @@ HackerGame
 
 	/**
 	 * hg.util.checkFilePermission (absPath, [totalTest])
-	 * - absPath : string - absolute path to file
-	 * - totalTest : boolean - if true, path will be cleand and if relative, changed to absolute
+	 * - **absPath** *string* - absolute path to file
+	 * - **totalTest** *boolean* - if true, path will be cleand and if relative, changed to absolute
 	 * Return: boolean
 	 *
 	 * Check if wile is writtable.
@@ -286,7 +285,7 @@ HackerGame
 
 	/**
 	 * hg.util.fileExists (loc)
-	 * - loc : string - location of file (filepath)
+	 * - **loc** *string* - location of file (filepath)
 	 *
 	 * Return: boolean
 	 *
@@ -303,7 +302,7 @@ HackerGame
 
 	/**
 	 * hg.util.isDir (dir)
-	 * - dir : string - directory filepath
+	 * - **dir** *string* - directory filepath
 	 * 
 	 * Return: boolean
 	 * 
@@ -320,7 +319,7 @@ HackerGame
 
 	/**
 	 * hg.util.absPath (path)
-	 * - path : string - relative path to file
+	 * - **path** *string* - relative path to file
 	 * 
 	 * Return: string
 	 * 
@@ -334,7 +333,7 @@ HackerGame
 
 	/**
 	 * hg.util.cleanPath (path)
-	 * - path : string - absolute or relative path
+	 * - **path** *string* - absolute or relative path
 	 *
 	 * Return: string
 	 *
@@ -362,8 +361,8 @@ HackerGame
 
 	/**
 	 * hg.util.pathIterator (dir, fn)
-	 * - dir : string : directory to iterate to
-	 * - fn : function - callback
+	 * - **dir** *string* : directory to iterate to
+	 * - **fn** *function* - callback
 	 *
 	 * Return: boolean
 	 *
@@ -407,7 +406,7 @@ HackerGame
 
 	/**
 	 * hg.util.getSpecialFile (path)
-	 * - path : string - ABSOLUTE path to special file
+	 * - **path** *string* - ABSOLUTE path to special file
 	 *
 	 * Return: function
 	 *
@@ -421,7 +420,7 @@ HackerGame
 
 	/**
 	 * hg.util.getFilenameFilepath (pathToFile)
-	 * - pathToFile : string - path to some file
+	 * - **pathToFile** *string* - path to some file
 	 * 
 	 * Return: array
 	 *
@@ -451,7 +450,7 @@ HackerGame
 
 	/**
 	 * hg.util.getFile (pathToFile)
-	 * - pathToFile : string - path to file
+	 * - **pathToFile** *string* - path to file
 	 *
 	 * Return: array|null
 	 *
@@ -499,8 +498,8 @@ HackerGame
 
 	/**
 	 * hg.util.setFile (pathToFile, content)
-	 * - pathToFile : string - pat to file to set (can be a new file)
-	 * - content : mixed - content of the new file
+	 * - **pathToFile** *string* - pat to file to set (can be a new file)
+	 * - **content** *mixed* - content of the new file
 	 * 
 	 * Return: boolean
 	 * 
@@ -545,8 +544,8 @@ HackerGame
 	// ===================
 	/**
 	 * jQuery: .hgBlink ([numOfBlinks, [time]])
-	 * - numOfBlinks : integer - number of blinks
-	 * - time : integer - time between blinks
+	 * - **numOfBlinks** *integer* - number of blinks
+	 * - **time** *integer* - time between blinks
 	 * 
 	 * jQuery plugin for DOM element blinking.
 	 *

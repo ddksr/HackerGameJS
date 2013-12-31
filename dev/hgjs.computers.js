@@ -71,26 +71,26 @@ HackerGame
 
 	/**
 	 * hg.cons.Computer (name, isDefault)
-	 * - name : string - computer name
-	 * - isDefault : boolean - is default computer?
+	 * - **name** *string* - computer name
+	 * - **isDefault** *boolean* - is default computer?
 	 * 
 	 * Constructor for Computer object.
 	 * Fields:
-	 * - name : string - computer name
-	 * - isDefault : boolean - is default computer
-	 * - location : string - local ip address
-	 * - pwd : string - current working directory
-	 * - hasChanged : boolean - has filesystem changed (important for dumping)
-	 * - fs : object - computer file system
-	 * - dfs : object - computer dynamic file system
-	 * - properties : object - all computer properties in a object
-	 *   - hostname : string - computer hostname
-	 *   - localIP : string - computer local IP adress 192.168.1.2
-	 *   - user: : string - default computer user
-	 *   - externalIP (NOT USED)
-	 *   - visibleFrom (NOT USED)
-	 *   - domain (NOT USED)
-	 *   - commandBlackList : object - blacklisted commands
+	 * - **name** *string* - computer name
+	 * - **isDefault** *boolean* - is default computer
+	 * - **location** *string* - local ip address
+	 * - **pwd** *string* - current working directory
+	 * - **hasChanged** *boolean* - has filesystem changed (important for dumping)
+	 * - **fs** *object* - computer file system
+	 * - **dfs** *object* - computer dynamic file system
+	 * - **properties** *object* - all computer properties in a object
+	 *   - **hostname** *string* - computer hostname
+	 *   - **localIP** *string* - computer local IP adress 192.168.1.2
+	 *   - **user**:* string* - default computer user
+	 *   - **externalIP** (NOT USED)
+	 *   - **visibleFrom** (NOT USED)
+	 *   - **domain** (NOT USED)
+	 *   - **commandBlackList** *object* - blacklisted commands
 	 */
 	hg.cons.Computer = function Computer (name, isDefault) {
 		var props = {};
@@ -117,7 +117,7 @@ HackerGame
 
 	/**
 	 * hg.network.ping (location)
-	 * - location : string - location to ping
+	 * - **location** *string* - location to ping
 	 *
 	 * Pings 'location' and returns TRUE on success.
 	 */
@@ -131,16 +131,16 @@ HackerGame
 	
 	/**
 	 * hg.load.state (obj)
-	 * - obj : object - state object
+	 * - **obj** *object* - state object
 	 *
 	 * Load saved state.
 	 *
 	 * State object can contain two objects:
-	 * - state : object - same format as in config
-	 * - computer : object
-	 *   - user : string
-	 *   - hostname : string
-	 *   - fs : object - file system (DFS cannot be loaded)
+	 * - **state** *object* - same format as in config
+	 * - **computer** *object*
+	 *   - **user** *string*
+	 *   - **hostname** *string*
+	 *   - **fs** *object* - file system (DFS cannot be loaded)
 	 */
 	hg.load.state = function (obj) {
 		console.log("load.state", [obj]);
@@ -177,9 +177,9 @@ HackerGame
 	 * Else:
 	 *   - dump = [ null, callback ]
 	 * Computer object has next keys:
-	 *   - user : string
-	 *   - hostname : string
-	 *   - fs : object - file system (DFS cannot be loaded)
+	 *   - **user** *string*
+	 *   - **hostname** *string*
+	 *   - **fs** *object* - file system (DFS cannot be loaded)
 	 *
 	 * If callback is called, the computer.hasChanges is reset to True
 	 */

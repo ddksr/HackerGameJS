@@ -360,7 +360,7 @@ HackerGame = {};
 		 * hg.load.assignment (tasks, other)
 		 * - **tasks** *array* - contains tasks objects
 		 * - **other** *object* - other important information
-		 
+		 * 
 		 * Object in 'tasks' array should contain:
 		 * - **evaluate** *function* - evaluation function
 		 * - **id** *string* - task id
@@ -668,8 +668,7 @@ HackerGame = {};
 		var $edtObj = this, 
 			filePath = null, 
 			filename=null,
-			editable = false,
-			special = false;
+			editable = false;
 		console.log("$.fn.hackerGameEditor", [settings]);
 
 		/**
@@ -740,7 +739,7 @@ HackerGame = {};
 		 * Watch text or special file in editor. If not special, the file
 		 * get editable.
 		 **/
-		hg.editor.watch = function (path, specialInput) { // TODO: rewrite, now you can!
+		hg.editor.watch = function (path, specialInput) {
 			var fileData,
 				specialMeta = null;
 			editable = true;
@@ -807,10 +806,11 @@ HackerGame = {};
 		 *
 		 * Save contents to watch file (this overwrites special fies !!!)
 		 **/
-		hg.editor.save = function () { // FIXME: don't overwrite special files
+		hg.editor.save = function () { 
 			var message = hg.t("File") + " " + filePath + filename + " " + hg.t("saved") + ".";
 			console.log("Saving file ... ");
 			if (! editable) {
+				// This goes for special files
 				console.log("Not editable");
 				return;
 			}

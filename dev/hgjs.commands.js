@@ -489,9 +489,9 @@ HackerGame
 		};
 	/**
 	 * hg.commandCompletion (term, string, fn)
-	 * - term : object - terminal object
-	 * - string : string - current input string
-	 * - fn : function - terminal callback
+	 * - **term** *object* - terminal object
+	 * - **string** *string* - current input string
+	 * - **fn** *function* - terminal callback
 	 *
 	 * Searches trough available commands and returns the candidates for command
 	 * completion.
@@ -518,6 +518,7 @@ HackerGame
 
 	/**
 	 * hg.initComputerCommands (computer)
+	 * 
 	 * Initializes basic computer comands when the computer is initialized.
 	 */
 	hg.initComputerCommands = function (computer) {
@@ -529,8 +530,8 @@ HackerGame
 	
 	/**
 	 * hg.exec (input, term)
-	 * - input : string - user input
-	 * - term : object - terminal object
+	 * - **input** *string* - user input
+	 * - **term** *object* - terminal object
 	 * 
 	 * Evaluates user input. This is the most important function called from the terminal.
 	 * It serches for available commands or parses the input to javascript or displays

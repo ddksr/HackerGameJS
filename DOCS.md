@@ -118,13 +118,14 @@ Example: #/page/help -> hg.action.page (help)
 
 hg.action.assignment (assId)
 ----------------------------
-- assId : string - selected assignment
+- **assId** *string* - selected assignment
 
 Select assignment.
 
+
 hg.action.input (inputId)
 -------------------------
-- inputId : string - input tab to change to
+- **inputId** *string* - input tab to change to
 
 Change input tab.
 
@@ -137,23 +138,23 @@ Open email.
 
 hg.action.page (pageId)
 -----------------------
-- pageId : string - page id to switch to
+- **pageId** *string* - page id to switch to
 
 Switch page
 
 
 hg.action.tab (tabId)
 ---------------------
-- tabId : string - info tab to change to
+- **tabId** *string* - info tab to change to
 
 Change info tab.
 
 
 hg.commandCompletion (term, string, fn)
 ---------------------------------------
-- term : object - terminal object
-- string : string - current input string
-- fn : function - terminal callback
+- **term** *object* - terminal object
+- **string** *string* - current input string
+- **fn** *function* - terminal callback
 
 Searches trough available commands and returns the candidates for command
 completion.
@@ -161,23 +162,23 @@ completion.
 
 hg.cons.Assignment (assId, loadCallback)
 ----------------------------------------
-- assId : assignment id
+- **assId** *assignment* - id
 
 Constructor for Assignment object.
 Note: this gets called before assignment is initialized.
 Constructor also calls loadAssignment ()
 
 Object fields:
-- id : string - assignment id
-- currentTask : integer - pointer to current task
-- numOfTasks : integer - number of tasks
-- tasks : array - container for Task objects
-- isRunning : boolean - true when assignment is initialized and started (running)
-- startTime : integer - starting counter for timer
-- evaluate : function - evaluate function for every assignment
-- queue : array - assignment actions queue
-- maxTaskPoints : integer - maximum number of points tasks can bring
-- bestScore : integer - best assignment score
+- **id** *string* - assignment id
+- **currentTask** *integer* - pointer to current task
+- **numOfTasks** *integer* - number of tasks
+- **tasks** *array* - container for Task objects
+- **isRunning** *boolean* - true when assignment is initialized and started (running)
+- **startTime** *integer* - starting counter for timer
+- **evaluate** *function* - evaluate function for every assignment
+- **queue** *array* - assignment actions queue
+- **maxTaskPoints** *integer* - maximum number of points tasks can bring
+- **bestScore** *integer* - best assignment score
 
 Object methods:
 - startTimer () - start hg.timer
@@ -188,39 +189,39 @@ Object methods:
 
 hg.cons.Computer (name, isDefault)
 ----------------------------------
-- name : string - computer name
-- isDefault : boolean - is default computer?
+- **name** *string* - computer name
+- **isDefault** *boolean* - is default computer?
 
 Constructor for Computer object.
 Fields:
-- name : string - computer name
-- isDefault : boolean - is default computer
-- location : string - local ip address
-- pwd : string - current working directory
-- hasChanged : boolean - has filesystem changed (important for dumping)
-- fs : object - computer file system
-- dfs : object - computer dynamic file system
-- properties : object - all computer properties in a object
-  - hostname : string - computer hostname
-  - localIP : string - computer local IP adress 192.168.1.2
-  - user: : string - default computer user
-  - externalIP (NOT USED)
-  - visibleFrom (NOT USED)
-  - domain (NOT USED)
-  - commandBlackList : object - blacklisted commands
+- **name** *string* - computer name
+- **isDefault** *boolean* - is default computer
+- **location** *string* - local ip address
+- **pwd** *string* - current working directory
+- **hasChanged** *boolean* - has filesystem changed (important for dumping)
+- **fs** *object* - computer file system
+- **dfs** *object* - computer dynamic file system
+- **properties** *object* - all computer properties in a object
+  - **hostname** *string* - computer hostname
+  - **localIP** *string* - computer local IP adress 192.168.1.2
+  - **user**:* string* - default computer user
+  - **externalIP** (NOT USED)
+  - **visibleFrom** (NOT USED)
+  - **domain** (NOT USED)
+  - **commandBlackList** *object* - blacklisted commands
 
 
 hg.cons.State (computer, [config, [innerState]])
 ------------------------------------------------
-- computer : object - computer object
-- config : object - configuration for the state
-- innerState : object - NOT USED YET
+- **computer** *object* - computer object
+- **config** *object* - configuration for the state
+- **innerState** *object* - NOT USED YET
 
 Constructor for State object.
 
 Object fields:
-- computer : object - computer object
-- place : object - directory object for current working directory
+- **computer** *object* - computer object
+- **place** *object* - directory object for current working directory
 
 Object methods:
 - hasCompletedAssignments ()
@@ -237,24 +238,24 @@ Object methods:
 
 hg.cons.Task (taskObj, taskHtml)
 --------------------------------
-- taskObj : object - task configurations
-- taskHtml : string - task html from #stash
+- **taskObj** *object* - task configurations
+- **taskHtml** *string* - task html from #stash
 
 Object taskObj:
-- evaluate : function - callback when user uses a command
-- set : function - callback when task is initialized
-- unset : function - callback when task is destroyed
-- points : number - points user can achieve with this task
-- bonus : function - add a callback to check if bonus should be added
+- **evaluate** *function* - callback when user uses a command
+- **set** *function* - callback when task is initialized
+- **unset** *function* - callback when task is destroyed
+- **points** *number* - points user can achieve with this task
+- **bonus** *function* - add a callback to check if bonus should be added
 
 Constructor for Task object.
 
 Object fields:
-- id : string
-- evaluate : function
-- set : function
-- unset : function
-- pointes : function
+- **id** *string*
+- **evaluate** *function*
+- **set** *function*
+- **unset** *function*
+- **pointes** *function*
 
 Object methods:
 - switchTask (previousTask) - switch between tasks
@@ -269,9 +270,9 @@ If chanes in filesystem (computer.hasChanges):
 Else:
   - dump = [ null, callback ]
 Computer object has next keys:
-  - user : string
-  - hostname : string
-  - fs : object - file system (DFS cannot be loaded)
+  - **user** *string*
+  - **hostname** *string*
+  - **fs** *object* - file system (DFS cannot be loaded)
 
 If callback is called, the computer.hasChanges is reset to True
 
@@ -327,7 +328,7 @@ Save contents to watch file (this overwrites special fies !!!)
 
 hg.editor.setContent ()
 -----------------------
-- content : string - content to be set
+- **content** *string* - content to be set
 
 Set editor content.
 
@@ -340,8 +341,8 @@ Unwatch current file.
 
 hg.editor.watch (path, specialInput)
 ------------------------------------
-- path : string - path to file to watch
-- specialInput : string - optional special input for special files
+- **path** *string* - path to file to watch
+- **specialInput** *string* - optional special input for special files
 
 Watch text or special file in editor. If not special, the file
 get editable.
@@ -349,8 +350,8 @@ get editable.
 
 hg.exec (input, term)
 ---------------------
-- input : string - user input
-- term : object - terminal object
+- **input** *string* - user input
+- **term** *object* - terminal object
 
 Evaluates user input. This is the most important function called from the terminal.
 It serches for available commands or parses the input to javascript or displays
@@ -363,63 +364,64 @@ hg.ind
 ------
 
 Indicator object. Cosits of global states and constants.
-- modal : boolean - is there a modal dialog displayed
-- NUM_OF_ASSIGNMENTS - number of assignments
+- **modal** *boolean* - is there a modal dialog displayed
+- **NUM_OF_ASSIGNMENTS** *int* - number of assignments
 
 
 hg.initComputerCommands (computer)
 ----------------------------------
+
 Initializes basic computer comands when the computer is initialized.
 
 
 hg.load.assignment (tasks, other)
 ---------------------------------
-- tasks : array - contains tasks objects
-- other : object - other important information
+- **tasks** *array* - contains tasks objects
+- **other** *object* - other important information
 
 Object in 'tasks' array should contain:
-- evaluate : function - evaluation function
-- id : string - task id
-- set : function - callback before task is initialized
-- unset : function - callback after the task is completed
-- points : number - number of points this task can bring
+- **evaluate** *function* - evaluation function
+- **id** *string* - task id
+- **set** *function* - callback before task is initialized
+- **unset** *function* - callback after the task is completed
+- **points** *number* - number of points this task can bring
 
 Object 'other' must contain:
-- startTime : number - number of seconds available for assignment, if 0 then unlimited
+- **startTime** *number* - number of seconds available for assignment, if 0 then unlimited
 
 Object 'other' can contain:
-- startMail : boolean - show email before assignment starts
-- successCallback : function - callback if assignment successfully completed
-- failCallback : function - callback if assignment fails
-- startCallback : function - callback after assignment is started (Start button)
-- initCallback : function - callback after assignment is initialized
+- **startMail** *boolean* - show email before assignment starts
+- **successCallback** *function* - callback if assignment successfully completed
+- **failCallback** *function* - callback if assignment fails
+- **startCallback** *function* - callback after assignment is started (Start button)
+- **initCallback** *function* - callback after assignment is initialized
 
 Method loads the assignment into the game, prepares the tasks
 Resets the stats, etc.
 
-THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS
+THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS!
 
 
 hg.load.externalFile (internalFilePath, externalFilePath)
 ---------------------------------------------------------
-- internalFilePath : string - internal file path to new file
-- externalFilePath : string - external file path to file that will be loaded
+- **internalFilePath** *string* - internal file path to new file
+- **externalFilePath** *string* - external file path to file that will be loaded
 
 Load external file as text with AJAX into the filesystem as a text file.
 
 
 hg.load.language (languageId, languageObject)
 ---------------------------------------------
-- languageId : string - language id
-- languageObject : object - contains translations in form english: translated
+- **languageId** *string* - language id
+- **languageObject** *object* - contains translations in form english: translated
 
 Load language object to the game. Doesn't run hg.refreshTranslations()
 
 
 hg.load.specialFile (path, content)
 -----------------------------------
-- path : string - internal path to file
-- content : function (input) - function which takes one argument
+- **path** *string* - internal path to file
+- **content** *function* (input) - function which takes one argument
 
 Method for loading special files. Special file is represented in
 filesystem as a binary object, but its logic ('conent') gets
@@ -427,22 +429,22 @@ loaded into the dynamic fielsystem (DFS).
 
 The content function must return an array in the form:
 [status, string]
-- status : boolean - if the input was correct
-- string : string - the return string
+- **status** *boolean* - if the input was correct
+- **string** *string* - the return string
 
 
 hg.load.state (obj)
 -------------------
-- obj : object - state object
+- **obj** *object* - state object
 
 Load saved state.
 
 State object can contain two objects:
-- state : object - same format as in config
-- computer : object
-  - user : string
-  - hostname : string
-  - fs : object - file system (DFS cannot be loaded)
+- **state** *object* - same format as in config
+- **computer** *object*
+  - **user** *string*
+  - **hostname** *string*
+  - **fs** *object* - file system (DFS cannot be loaded)
 
 
 hg.mail.close()
@@ -459,19 +461,19 @@ Message dialog box initialization after mail icon is clicked.
 
 hg.mail.recieve (message, clickOpen)
 ------------------------------------
-- message : object
-- clickOpen : function - callback when mail is opened
+- **message** *object*
+- **clickOpen** *function* - callback when mail is opened
 
 Object 'message' must contain:
-- body : string - message body
+- **body** *string* - message body
 Object 'message' can contain:
-- sender : string - sender name
-- isSensei : boolean - if true, message will be treated more importantly
-- button : object - object for mail button
+- **sender** *string* - sender name
+- **isSensei** *boolean* - if true, message will be treated more importantly
+- **button** *object* - object for mail button
 
 Object 'button' must contain:
-- name : string - button title
-- action : function - callback when button is clicked
+- **name** *string* - button title
+- **action** *function* - callback when button is clicked
 
 
 hg.mail.setEmpty ()
@@ -497,51 +499,50 @@ as dialog title. If no title is specified, 'Alert' will be used
 
 hg.network.ping (location)
 --------------------------
-- location : string - location to ping
+- **location** *string* - location to ping
 
 Pings 'location' and returns TRUE on success.
 
 
 hg.refreshTranslations ([selector])
 -----------------------------------
-- selector : string - jQuery selector string
+- **selector** *string* - jQuery selector string
 
 Refresh body or selector translations.
 
 
 hg.stats.aggregate ([hold])
 ---------------------------
-- hold : boolean - if true, don't automatically refresh stats
+- **hold** *boolean* - if true, don't automatically refresh stats
 
 Aggregates overall score.
 
 
 hg.stats.increment (stat, val, [hold])
 --------------------------------------
-- stat : string - stat to be incremented
-- val : integer - increment stat by value
-- hold : boolean - if true, don't refresh stats after changes
+- **stat** *string* - stat to be incremented
+- **val** *integer* - increment stat by value
+- **hold** *boolean* - if true, don't refresh stats after changes
 
 Increment stats.
 
 
-hg.stats.refresh ([exlude])
----------------------------
-- exclude : array - stats to exclude from refreshing (NOT YET USED)
+hg.stats.refresh ()
+-------------------
 
 Function refreshes the stats values in DOM.
 
 
 hg.t (string)
 -------------
-- string : string - translation key
+- **string** *string* - translation key
 
 The 'string' gets translated if possible.
 
 
 hg.tEcho (string)
 -----------------
-- text : string
+- **text** *string*
 
 Echo the text in the terminal.
 It also translates the text if possible.
@@ -549,7 +550,7 @@ It also translates the text if possible.
 
 hg.tError (text)
 ----------------
-- text : string
+- **text** *string*
 
 Echo the text in the terminal as an error.
 It also translates the text if possible.
@@ -558,7 +559,7 @@ It also translates the text if possible.
 hg.term
 -------
 
-Terminal object
+Terminal object (contains all $.terminal api methods).
 
 
 hg.timer.counter
@@ -575,8 +576,8 @@ Stores the last counter value if timer was stopped before counter was zero.
 
 hg.timer.set (setCounter, ztCallback)
 -------------------------------------
-- setCounter : integer - counter value
-- ztCakkbacj ; function - callback called when counter gets to 0
+- **setCounter** *integer* - counter value
+- **ztCakkbacj** *function* - callback called when counter gets to 0
 
 Initialize and set the timer.
 
@@ -601,7 +602,7 @@ Stop counting. Stop callback doesn't get called.
 
 hg.util.absPath (path)
 ----------------------
-- path : string - relative path to file
+- **path** *string* - relative path to file
 
 Return: string
 
@@ -611,8 +612,8 @@ prepends PWD. Note: no checking if path is already absolute is done.
 
 hg.util.checkFilePermission (absPath, [totalTest])
 --------------------------------------------------
-- absPath : string - absolute path to file
-- totalTest : boolean - if true, path will be cleand and if relative, changed to absolute
+- **absPath** *string* - absolute path to file
+- **totalTest** *boolean* - if true, path will be cleand and if relative, changed to absolute
 Return: boolean
 
 Check if wile is writtable.
@@ -620,7 +621,7 @@ Check if wile is writtable.
 
 hg.util.cleanPath (path)
 ------------------------
-- path : string - absolute or relative path
+- **path** *string* - absolute or relative path
 
 Return: string
 
@@ -629,8 +630,8 @@ Return cleaned path. Example: /one/two/../two2 -> /one/two2
 
 hg.util.extend (default, over)
 ------------------------------
-- default : object - default object that gets overwritten
-- over : object - overwritting object
+- **default** *object* - default object that gets overwritten
+- **over** *object* - overwritting object
 
 Return: object
 
@@ -641,7 +642,7 @@ upon them.
 
 hg.util.fileExists (loc)
 ------------------------
-- loc : string - location of file (filepath)
+- **loc** *string* - location of file (filepath)
 
 Return: boolean
 
@@ -650,8 +651,8 @@ Check if file exists. Note: directory is also a file!
 
 hg.util.fileType (file, [longName])
 -----------------------------------
-- file: mixed - file content
-- longName : boolean - if true, long filetype name will be returned
+- **file**m*ixed* - file content
+- **longName** *boolean* - if true, long filetype name will be returned
 
 Return: string
 
@@ -664,7 +665,7 @@ Types:
 
 hg.util.getFile (pathToFile)
 ----------------------------
-- pathToFile : string - path to file
+- **pathToFile** *string* - path to file
 
 Return: array|null
 
@@ -679,7 +680,7 @@ If file doesn't exits or path is incorrect, null is returned.
 
 hg.util.getFilenameFilepath (pathToFile)
 ----------------------------------------
-- pathToFile : string - path to some file
+- **pathToFile** *string* - path to some file
 
 Return: array
 
@@ -690,7 +691,7 @@ Example 2: / -> ['/', '']
 
 hg.util.getSpecialFile (path)
 -----------------------------
-- path : string - ABSOLUTE path to special file
+- **path** *string* - ABSOLUTE path to special file
 
 Return: function
 
@@ -700,7 +701,7 @@ returns null is generated.
 
 hg.util.isDir (dir)
 -------------------
-- dir : string - directory filepath
+- **dir** *string* - directory filepath
 
 Return: boolean
 
@@ -709,20 +710,20 @@ Check if file is directory. If file doesn't exists, false is returned
 
 hg.util.parseInput (input)
 --------------------------
-- input : string - user input from command line
+- **input** *string* - user input from command line
 
 Return: array
 
 Parse user input and return: [command, argsStr, args, rawArgsString]
-- command : string - user command
-- argsStr : string - parsed arguments as a string (removing ' and " )
-- args : array - parsed argumetns as array
-- rawArgsString : string - same as argsString but unprocessed
+- **command** *string* - user command
+- **argsStr** *string* - parsed arguments as a string (removing ' and " )
+- **args** *array* - parsed argumetns as array
+- **rawArgsString** *string* - same as argsString but unprocessed
 
 
 hg.util.path = function ([rawPathString])
 -----------------------------------------
-- rawPathString : string - raw path (relative, absolute ... )
+- **rawPathString** *string* - raw path (relative, absolute ... )
 
 Return: array - path array
 
@@ -733,8 +734,8 @@ Example: /one/two -> ['one', 'two']
 
 hg.util.pathIterator (dir, fn)
 ------------------------------
-- dir : string : directory to iterate to
-- fn : function - callback
+- **dir** *string* : directory to iterate to
+- **fn** *function* - callback
 
 Return: boolean
 
@@ -752,18 +753,33 @@ Generate random IP address.
 
 hg.util.randResponseTime (from, to)
 -----------------------------------
-- from : integer
-- to : integer
+- **from** *integer*
+- **to** *integer*
 
 Return: function
 
 Return generator for random response time.
 
 
+hg.util.randomChoice (array)
+----------------------------
+- **array** *array*
+
+Return a random value in array.
+
+
+hg.util.randomString (length, [lower])
+--------------------------------------
+- **length** *int* - length of random string
+- **lower** *boolean* - if true, only lower letters
+
+Generate a random string.
+
+
 hg.util.setFile (pathToFile, content)
 -------------------------------------
-- pathToFile : string - pat to file to set (can be a new file)
-- content : mixed - content of the new file
+- **pathToFile** *string* - pat to file to set (can be a new file)
+- **content** *mixed* - content of the new file
 
 Return: boolean
 
@@ -772,15 +788,15 @@ Sets new file content if path to file exists and return true. If not, false is r
 
 core: baseInit ([settings])
 ---------------------------
-- settings : object - settings objects to overwrite config
+- **settings** *object* - settings objects to overwrite config
 
 This is the base initialization. It initializes the terminal
 and assignments. It has to be called right after the page loads and
 before any server scripts or similar are loaded.
 
 
-core: contentInit
------------------
+core: contentInit ()
+--------------------
 
 Content initialization (translations evaluated and loading image removed).
 Note: has to be called after baseInit and after any server scripts are loaded.
@@ -788,7 +804,7 @@ Note: has to be called after baseInit and after any server scripts are loaded.
 
 core: hashChange (evt)
 ----------------------
-- evt : object - event object
+- **evt** *object* - event object
 
 Event function which listens to hash changes.
 
@@ -802,14 +818,14 @@ Switch to Game page.
 
 core: initDynamicFields ([selector])
 ------------------------------------
-- selector : string - jQuery selector string
+- **selector** *string* - jQuery selector string
 
-Go trough selector or body and replace dynamic fields with associated values.
+Go trough selector or just body and replace dynamic fields with associated values.
 
 
 core: initTaskHTML ($task)
 --------------------------
-- $task : jQuery object - task HTML
+- **$task** *jQuery object* - task HTML
 
 Initialize task HTML. Convert hits and help to buttons etc.
 
@@ -817,12 +833,12 @@ Initialize task HTML. Convert hits and help to buttons etc.
 core: startAssignment ()
 ------------------------
 
-Start assignment (time couting, command line evaluation ...).
+Start assignment (time courting, command line evaluation ...).
 
 
 jQuery: .hackerGame([settings])
 -------------------------------
-- settings : object - object to overwrite configuration
+- **settings** *object* - object to overwrite configuration
 
 Make DOM object into the game terminal
 
@@ -841,15 +857,15 @@ Initialize hackergame timer.
 
 jQuery: .hgBlink ([numOfBlinks, [time]])
 ----------------------------------------
-- numOfBlinks : integer - number of blinks
-- time : integer - time between blinks
+- **numOfBlinks** *integer* - number of blinks
+- **time** *integer* - time between blinks
 
 jQuery plugin for DOM element blinking.
 
 
 
-state: closeTask
-----------------
+state: closeTask ()
+-------------------
 
 Close current task.
 
@@ -862,8 +878,8 @@ Evaluate assignment queue. Calculate bonuses etc.
 
 state: loadAssignment (assId, [callback])
 -----------------------------------------
-- assId : string - assignment id
-- callback : function - callback called when script file is loaded
+- **assId** *string* - assignment id
+- **callback** *function* - callback called when script file is loaded
 
 Load assignment HTML and JavaScript. First HTML is loaded into #stash div element.
 Then the JS is loaded and evaluated (it can use its HTML elements

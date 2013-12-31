@@ -41,7 +41,7 @@ HackerGame
 		},
 	
 		/**
-		 * state: closeTask
+		 * state: closeTask ()
 		 *
 		 * Close current task.
 		 */
@@ -53,8 +53,8 @@ HackerGame
 
 		/**
 		 * state: loadAssignment (assId, [callback])
-		 * - assId : string - assignment id
-		 * - callback : function - callback called when script file is loaded
+		 * - **assId** *string* - assignment id
+		 * - **callback** *function* - callback called when script file is loaded
 		 *
 		 * Load assignment HTML and JavaScript. First HTML is loaded into #stash div element.
 		 * Then the JS is loaded and evaluated (it can use its HTML elements 
@@ -87,15 +87,15 @@ HackerGame
 		};
 	/**
 	 * hg.cons.State (computer, [config, [innerState]])
-	 * - computer : object - computer object
-	 * - config : object - configuration for the state
-	 * - innerState : object - NOT USED YET
+	 * - **computer** *object* - computer object
+	 * - **config** *object* - configuration for the state
+	 * - **innerState** *object* - NOT USED YET
 	 * 
 	 * Constructor for State object.
 	 * 
 	 * Object fields:
-	 * - computer : object - computer object
-	 * - place : object - directory object for current working directory
+	 * - **computer** *object* - computer object
+	 * - **place** *object* - directory object for current working directory
 	 * 
 	 * Object methods:
 	 * - hasCompletedAssignments ()
@@ -114,7 +114,7 @@ HackerGame
 		this.computer = computer || new hg.cons.Computer(hg.config.defaultComputer, true);
 		
 		this.innerState = innerState;
-		if (config && typeof config === "object") { //TODO: use extend
+		if (_.isObject(config)) {
 			$.each(config, function (property, value) {
 				this[property] = value;
 			});
@@ -194,7 +194,6 @@ HackerGame
 						if (! hg.util.fileExists(hg.state.computer.pwd)) {
 							hg.state.changeDir("/");
 						}
-						// TODO: check if PWD exists!!!
 					}
 					else {
 						er = "Directory already exists!";
@@ -282,24 +281,24 @@ HackerGame
 
 	/**
 	 * hg.cons.Task (taskObj, taskHtml)
-	 * - taskObj : object - task configurations
-	 * - taskHtml : string - task html from #stash
+	 * - **taskObj** *object* - task configurations
+	 * - **taskHtml** *string* - task html from #stash
 	 *
 	 * Object taskObj:
-	 * - evaluate : function - callback when user uses a command
-	 * - set : function - callback when task is initialized
-	 * - unset : function - callback when task is destroyed
-	 * - points : number - points user can achieve with this task
-	 * - bonus : function - add a callback to check if bonus should be added
+	 * - **evaluate** *function* - callback when user uses a command
+	 * - **set** *function* - callback when task is initialized
+	 * - **unset** *function* - callback when task is destroyed
+	 * - **points** *number* - points user can achieve with this task
+	 * - **bonus** *function* - add a callback to check if bonus should be added
 	 *
 	 * Constructor for Task object.
 	 *
 	 * Object fields:
-	 * - id : string
-	 * - evaluate : function
-	 * - set : function
-	 * - unset : function
-	 * - pointes : function
+	 * - **id** *string*
+	 * - **evaluate** *function*
+	 * - **set** *function*
+	 * - **unset** *function*
+	 * - **pointes** *function*
 	 * 
 	 * Object methods:
 	 * - switchTask (previousTask) - switch between tasks
@@ -333,23 +332,23 @@ HackerGame
 
 	/**
 	 * hg.cons.Assignment (assId, loadCallback)
-	 * - assId : assignment id
+	 * - **assId** *assignment* - id
 	 *
 	 * Constructor for Assignment object.
 	 * Note: this gets called before assignment is initialized.
 	 * Constructor also calls loadAssignment ()
 	 *
 	 * Object fields:
-	 * - id : string - assignment id
-	 * - currentTask : integer - pointer to current task
-	 * - numOfTasks : integer - number of tasks
-	 * - tasks : array - container for Task objects
-	 * - isRunning : boolean - true when assignment is initialized and started (running)
-	 * - startTime : integer - starting counter for timer
-	 * - evaluate : function - evaluate function for every assignment
-	 * - queue : array - assignment actions queue
-	 * - maxTaskPoints : integer - maximum number of points tasks can bring
-	 * - bestScore : integer - best assignment score
+	 * - **id** *string* - assignment id
+	 * - **currentTask** *integer* - pointer to current task
+	 * - **numOfTasks** *integer* - number of tasks
+	 * - **tasks** *array* - container for Task objects
+	 * - **isRunning** *boolean* - true when assignment is initialized and started (running)
+	 * - **startTime** *integer* - starting counter for timer
+	 * - **evaluate** *function* - evaluate function for every assignment
+	 * - **queue** *array* - assignment actions queue
+	 * - **maxTaskPoints** *integer* - maximum number of points tasks can bring
+	 * - **bestScore** *integer* - best assignment score
 	 *
 	 * Object methods:
 	 * - startTimer () - start hg.timer
@@ -481,8 +480,7 @@ HackerGame
 
 	hg.stats = {
 		/**
-		 * hg.stats.refresh ([exlude])
-		 * - exclude : array - stats to exclude from refreshing (NOT YET USED)
+		 * hg.stats.refresh ()
 		 * 
 		 * Function refreshes the stats values in DOM.
 		 */
@@ -490,8 +488,7 @@ HackerGame
 			var overallAssignments = hg.ind.NUM_OF_ASSIGNMENTS,
 				tasksInAssignment = hg.assignment ? hg.assignment.tasks.length : 0;
 			console.log("stats.refresh", [exclude]);
-			if (!exclude) { exclude = []; }
-			// TODO: can we do something with exclude or is it just in the way?
+
 			$("#stats-completed-tasks").text(hg.stats.completedTasks + "/" + tasksInAssignment);
 			$("#stats-completed-assignments").text(hg.stats.completedAssignments + "/" + overallAssignments);
 			$("#stats-current-score").text(hg.stats.currentScore);
@@ -500,7 +497,7 @@ HackerGame
 		},
 		/**
 		 * hg.stats.aggregate ([hold])
-		 * - hold : boolean - if true, don't automatically refresh stats
+		 * - **hold** *boolean* - if true, don't automatically refresh stats
 		 *
 		 * Aggregates overall score.
 		 */
@@ -516,9 +513,9 @@ HackerGame
 		
 		/**
 		 * hg.stats.increment (stat, val, [hold])
-		 * - stat : string - stat to be incremented
-		 * - val : integer - increment stat by value
-		 * - hold : boolean - if true, don't refresh stats after changes
+		 * - **stat** *string* - stat to be incremented
+		 * - **val** *integer* - increment stat by value
+		 * - **hold** *boolean* - if true, don't refresh stats after changes
 		 *
 		 * Increment stats.
 		 */
@@ -554,7 +551,7 @@ HackerGame
 
 	/**
 	 * hg.action.page (pageId)
-	 * - pageId : string - page id to switch to
+	 * - **pageId** *string* - page id to switch to
 	 * 
 	 * Switch page
 	 */
@@ -580,7 +577,7 @@ HackerGame
 
 	/**
 	 * hg.action.input (inputId)
-	 * - inputId : string - input tab to change to
+	 * - **inputId** *string* - input tab to change to
 	 *
 	 * Change input tab.
 	 */
@@ -602,7 +599,7 @@ HackerGame
 
 	/**
 	 * hg.action.tab (tabId)
-	 * - tabId : string - info tab to change to
+	 * - **tabId** *string* - info tab to change to
 	 * 
 	 * Change info tab.
 	 */
@@ -624,7 +621,7 @@ HackerGame
 
 	/**
 	 * hg.action.assignment (assId)
-	 * - assId : string - selected assignment
+	 * - **assId** *string* - selected assignment
 	 * 
 	 * Select assignment.
 	 */
@@ -634,11 +631,7 @@ HackerGame
 
 		if (hg.assignment) { return; }
 
-		// TODO: this can be done better now
-		$.each(hg.config.assignments, function (i, obj) {
-			if (obj.id == assId) { status = true; }
-		});
-
+		status = _.contains(_.pluck(hg.config.assignments, 'id'), assId);
 		if (! status) { return; }
 
 		hg.assignment = new hg.cons.Assignment(assId, function () {
