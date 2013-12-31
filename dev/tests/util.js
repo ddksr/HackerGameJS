@@ -398,5 +398,17 @@ test("setFile", function () {
 	hg.state.changeDir(pwd);
 });
 
+test("randomChoice", function () {
+	var list = [1,2,3,4,5,6,7,8,9],
+		contains = function(array, elt, message) {
+			ok(_.contains(array, elt), message);
+		};
+
+	for (var i = 0; i < 100; i++) {
+		contains(list, hg.util.randomChoice(list), "List contains random element");
+	}
+	
+});
+
 
 hgTest.next();
