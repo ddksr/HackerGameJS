@@ -46,9 +46,9 @@ HackerGame = {};
 		},
 		/**
 		 * core: initDynamicFields ([selector])
-		 * - selector : string - jQuery selector string
+		 * - **selector** *string* - jQuery selector string
 		 * 
-		 * Go trough selector or body and replace dynamic fields with associated values.
+		 * Go trough selector or just body and replace dynamic fields with associated values.
 		 **/
 		initDynamicFields = function (selector) {
 			console.log("core:initDynamicFields", [selector]);
@@ -70,7 +70,7 @@ HackerGame = {};
 		},
 		/**
 		 * core: initTaskHTML ($task)
-		 * - $task : jQuery object - task HTML
+		 * - **$task** *jQuery object* - task HTML
 		 * 
 		 * Initialize task HTML. Convert hits and help to buttons etc.
 		 **/		 
@@ -108,7 +108,7 @@ HackerGame = {};
 
 		/**
 		 * core: baseInit ([settings])
-		 * - settings : object - settings objects to overwrite config
+		 * - **settings** *object* - settings objects to overwrite config
 		 *
 		 * This is the base initialization. It initializes the terminal
 		 * and assignments. It has to be called right after the page loads and
@@ -204,7 +204,7 @@ HackerGame = {};
 			return $obj;
 		},
 		/**
-		 * core: contentInit
+		 * core: contentInit ()
 		 * 
 		 * Content initialization (translations evaluated and loading image removed).
 		 * Note: has to be called after baseInit and after any server scripts are loaded.
@@ -219,7 +219,7 @@ HackerGame = {};
 		},
 		/**
 		 * core: hashChange (evt)
-		 * - evt : object - event object
+		 * - **evt** *object* - event object
 		 * 
 		 * Event function which listens to hash changes.
 		 **/
@@ -268,13 +268,13 @@ HackerGame = {};
 	/**
 	 * hg.term
 	 *
-	 * Terminal object
+	 * Terminal object (contains all $.terminal api methods).
 	 **/
 	hg.term = null;
 
 	/**
 	 * hg.tEcho (string)
-	 * - text : string
+	 * - **text** *string*
 	 * 
 	 * Echo the text in the terminal.
 	 * It also translates the text if possible.
@@ -283,7 +283,7 @@ HackerGame = {};
 
 	/**
 	 * hg.tError (text)
-	 * - text : string
+	 * - **text** *string*
 	 * 
 	 * Echo the text in the terminal as an error.
 	 * It also translates the text if possible.
@@ -293,7 +293,7 @@ HackerGame = {};
 
 	/**
 	 * hg.t (string)
-	 * - string : string - translation key
+	 * - **string** *string* - translation key
 	 *
 	 * The 'string' gets translated if possible.
 	 **/
@@ -304,7 +304,7 @@ HackerGame = {};
 
 	/**
 	 * hg.refreshTranslations ([selector])
-	 * - selector : string - jQuery selector string
+	 * - **selector** *string* - jQuery selector string
 	 * 
 	 * Refresh body or selector translations.
 	 **/
@@ -358,30 +358,30 @@ HackerGame = {};
 	hg.load = {
 		/**
 		 * hg.load.assignment (tasks, other)
-		 * - tasks : array - contains tasks objects
-		 * - other : object - other important information
+		 * - **tasks** *array* - contains tasks objects
+		 * - **other** *object* - other important information
 		 
 		 * Object in 'tasks' array should contain:
-		 * - evaluate : function - evaluation function
-		 * - id : string - task id
-		 * - set : function - callback before task is initialized
-		 * - unset : function - callback after the task is completed
-		 * - points : number - number of points this task can bring
+		 * - **evaluate** *function* - evaluation function
+		 * - **id** *string* - task id
+		 * - **set** *function* - callback before task is initialized
+		 * - **unset** *function* - callback after the task is completed
+		 * - **points** *number* - number of points this task can bring
 		 *
 		 * Object 'other' must contain:
-		 * - startTime : number - number of seconds available for assignment, if 0 then unlimited
+		 * - **startTime** *number* - number of seconds available for assignment, if 0 then unlimited
 		 *
 		 * Object 'other' can contain:
-		 * - startMail : boolean - show email before assignment starts
-		 * - successCallback : function - callback if assignment successfully completed
-		 * - failCallback : function - callback if assignment fails
-		 * - startCallback : function - callback after assignment is started (Start button)
-		 * - initCallback : function - callback after assignment is initialized
+		 * - **startMail** *boolean* - show email before assignment starts
+		 * - **successCallback** *function* - callback if assignment successfully completed
+		 * - **failCallback** *function* - callback if assignment fails
+		 * - **startCallback** *function* - callback after assignment is started (Start button)
+		 * - **initCallback** *function* - callback after assignment is initialized
 		 * 
 		 * Method loads the assignment into the game, prepares the tasks
 		 * Resets the stats, etc.
 		 *
-		 * THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS
+		 * THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS!
 		 **/
 		assignment: function (tasks, other) {
 			var msgBody, title, $heading, $instructions, $tasksHtml, $learnMore, $tryItOut;
@@ -464,8 +464,8 @@ HackerGame = {};
 		},
 		/**
 		 * hg.load.externalFile (internalFilePath, externalFilePath)
-		 * - internalFilePath : string - internal file path to new file
-		 * - externalFilePath : string - external file path to file that will be loaded
+		 * - **internalFilePath** *string* - internal file path to new file
+		 * - **externalFilePath** *string* - external file path to file that will be loaded
 		 *
 		 * Load external file as text with AJAX into the filesystem as a text file.
 		 **/
@@ -485,8 +485,8 @@ HackerGame = {};
 		},
 		/**
 		 * hg.load.language (languageId, languageObject)
-		 * - languageId : string - language id
-		 * - languageObject : object - contains translations in form english: translated
+		 * - **languageId** *string* - language id
+		 * - **languageObject** *object* - contains translations in form english: translated
 		 *
 		 * Load language object to the game. Doesn't run hg.refreshTranslations()
 		 **/
@@ -499,8 +499,8 @@ HackerGame = {};
 		},
 		/**
 		 * hg.load.specialFile (path, content)
-		 * - path : string - internal path to file
-		 * - content : function (input) - function which takes one argument
+		 * - **path** *string* - internal path to file
+		 * - **content** *function* (input) - function which takes one argument
 		 *
 		 * Method for loading special files. Special file is represented in
 		 * filesystem as a binary object, but its logic ('conent') gets
@@ -508,8 +508,8 @@ HackerGame = {};
 		 * 
 		 * The content function must return an array in the form:
 		 * [status, string]
-		 * - status : boolean - if the input was correct
-		 * - string : string - the return string
+		 * - **status** *boolean* - if the input was correct
+		 * - **string** *string* - the return string
 		 **/
 		specialFile: function (path, content) {
 			console.log("load.specialFile", [path, content]);
@@ -524,8 +524,8 @@ HackerGame = {};
 	 * hg.ind
 	 *
 	 * Indicator object. Cosits of global states and constants.
-	 * - modal : boolean - is there a modal dialog displayed
-	 * - NUM_OF_ASSIGNMENTS - number of assignments
+	 * - **modal** *boolean* - is there a modal dialog displayed
+	 * - **NUM_OF_ASSIGNMENTS** *int* - number of assignments
 	 **/
 	hg.ind = {
 		modal: false,
@@ -558,19 +558,19 @@ HackerGame = {};
 		},
 		/**
 		 * hg.mail.recieve (message, clickOpen)
-		 * - message : object
-		 * - clickOpen : function - callback when mail is opened
+		 * - **message** *object*
+		 * - **clickOpen** *function* - callback when mail is opened
 		 * 
 		 * Object 'message' must contain:
-		 * - body : string - message body
+		 * - **body** *string* - message body
 		 * Object 'message' can contain:
-		 * - sender : string - sender name
-		 * - isSensei : boolean - if true, message will be treated more importantly
-		 * - button : object - object for mail button
+		 * - **sender** *string* - sender name
+		 * - **isSensei** *boolean* - if true, message will be treated more importantly
+		 * - **button** *object* - object for mail button
 		 *
 		 * Object 'button' must contain:
-		 * - name : string - button title
-		 * - action : function - callback when button is clicked
+		 * - **name** *string* - button title
+		 * - **action** *function* - callback when button is clicked
 		 **/
 		recieve: function (message, clickOpen) {
 			console.log("mail.recieve", [message, clickOpen]);
@@ -633,7 +633,7 @@ HackerGame = {};
 
 	/**
 	 * jQuery: .hackerGame([settings])
-	 * - settings : object - object to overwrite configuration
+	 * - **settings** *object* - object to overwrite configuration
 	 * 
 	 * Make DOM object into the game terminal
 	 **/
@@ -706,7 +706,7 @@ HackerGame = {};
 
 		/**
 		 * hg.editor.setContent ()
-		 * - content : string - content to be set
+		 * - **content** *string* - content to be set
 		 * 
 		 * Set editor content.
 		 **/
@@ -734,8 +734,8 @@ HackerGame = {};
 
 		/**
 		 * hg.editor.watch (path, specialInput)
-		 * - path : string - path to file to watch
-		 * - specialInput : string - optional special input for special files
+		 * - **path** *string* - path to file to watch
+		 * - **specialInput** *string* - optional special input for special files
 		 * 
 		 * Watch text or special file in editor. If not special, the file
 		 * get editable.
@@ -903,8 +903,8 @@ HackerGame = {};
 			
 			/**
 			 * hg.timer.set (setCounter, ztCallback)
-			 * - setCounter : integer - counter value
-			 * - ztCakkbacj ; function - callback called when counter gets to 0
+			 * - **setCounter** *integer* - counter value
+			 * - **ztCakkbacj** *function* - callback called when counter gets to 0
 			 * 
 			 * Initialize and set the timer.
 			 **/ 
