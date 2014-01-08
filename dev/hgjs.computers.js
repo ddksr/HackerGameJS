@@ -159,10 +159,10 @@ HackerGame
 			
 			$('#stats-overall-score').text(obj.state.overallScore || "0");
 		}
-		if (obj.computer) {
+		if (obj.computer && obj.computer.user) {
 			var cmp = hg.state.getDefaultComputer();
 			cmp.properties.user = obj.computer.user;
-			cmp.fs = obj.computer.fs;
+			if (obj.computer.fs) { cmp.fs = obj.computer.fs; }
 			cmp.hostname = obj.computer.hostname;
 			hg.state.changeDir("/"); 
 		}
