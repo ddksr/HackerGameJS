@@ -163,11 +163,11 @@ HackerGame.load.language('sl', {
 	'text_gettingStarted1': 'Pozdravljen! Izberi poglavje, ki te najbolje opisuje in sledi navodilom',
 	'text_gettingStarted2-1': 'Ni problema. Namen igre je, da te popelje v svet ničel in enk. Računalništvo ni samo poznavanje delovanja računalnikov. Je mnogo več. Inženirji računalništva počnejo veliko zanimivih in različnih stvari, npr. pišejo računalniške programe, vzdržujejo računalniška omrežja, strežnike in druge sisteme, analizirajo podatke in iščejo vzorce v njih, odkrivajo gene v genomih itd.',
 	'text_gettingStarted2-2': 'V večini primerov hacker ni nekdo, ki krši zakone. Lahko je strokovnjak za računalniško varnost, ki pomaga podjetjem zavarovati svoj produkt in infrastrukturo. Lahko sodeluje s policijo kot digitalni forenzik, lahko sodeluje z obveščevalno agencijo ali pa celo v vojski.',
-	'text_gettingStarted2-3': 'Ampak hekanje ni vedno povezano z računalniško varnostjo. Heker je tudi nekdo, ki si prilagaja in spreminja elektroniko in drugo računalniško opremo. Večina hekerjev je programerjev, ki obožujejo raziskovanje programske kode, si jo prilagajajo in svoje prilagoditve delujo z drugimi. Tako je nastal tudi operacijski sistem GNU/Linux, ki sestoji samo iz svobodne in brezplačne programske kode. ',
+	'text_gettingStarted2-3': 'Ampak hekanje ni vedno povezano z računalniško varnostjo. Heker je tudi nekdo, ki si prilagaja in spreminja elektroniko in drugo računalniško opremo. Večina hekerjev je programerjev, ki obožujejo raziskovanje programske kode, si jo prilagajajo in svoje prilagoditve delijo z drugimi. Tako je nastal tudi operacijski sistem GNU/Linux, ki sestoji samo iz svobodne in brezplačne programske kode.',
 	'text_gettingStarted2-4': 'Najbolje je, da najprej preletiš <a href="#/page/help">Pomoč</a>. Ta je zelo kratka, ker te igra ves čas vodi in usmerja.',
-	'text_gettingStarted3': 'Odlično! Potem boš zelo hitro končal misije za trening. Začni igrati na <a href="#/page/assignments">strani z misijami</a>',
-	'text_gettingStarted4': 'To je res odlično! Najverjetneje ni potrebe, da bi šel skozi trening. Mogoče pa le. V vsakem primeru boš hitro zaključil z njim. Izberi misijo na <a href="#/page/assignments">strani z misijami</a>',
-	'text_gettingStarted5': 'Verjetno bo zate igra dolgočasna. Ali celo neumna. Če ti bo zanimiva, preberi naslednje poglavje',
+	'text_gettingStarted3': 'Odlično! Potem boš zelo hitro končal misije za trening. Začni igrati na <a href="#/page/assignments">strani z misijami</a>.',
+	'text_gettingStarted4': 'To je res odlično! Najverjetneje ni potrebe, da bi šel skozi trening. Mogoče pa le. V vsakem primeru boš hitro zaključil z njim. Izberi misijo na <a href="#/page/assignments">strani z misijami</a>.',
+	'text_gettingStarted5': 'Verjetno bo zate igra dolgočasna. Ali celo neumna. Če ti bo zanimiva, preberi naslednje poglavje.',
 	'text_gettingStarted6': 'Zakon! S tvojo pomočjo lahko igra postane res dober uvod v računalništvo. Igro lahko podpiraš na veliko načinov. Lahko pripravljaš misije, izboljšaš igralno jedro ali uporabniško izkušnjo, oblikuješ vmesnik, prevajaš tekst v druge jezike ali pa igro testiraš. Za več informacij obišči <a href="https://github.com/ddksr/HackerGameJS">Github</a> stran. Hvala!',
 	'text_gettingStarted7': 'Dobrodošel nazaj! <a href="#/page/assignments">Poglej</a>, če je na voljo kakšna nova misija.',
 
@@ -179,16 +179,15 @@ HackerGame.load.language('sl', {
 	'text_help2-2': 'Igra je preprosta. Na levi je terminal in urejevalnik besedil, na desni pa navodila ter dodatne informacije. V zavihku Naloge med igro prejemaš naloge, ki jih moraš opraviti. Če si uspešen ali pa ne, na koncu si preusmerjen nazaj na stran z misijami, kjer si lahko ogledaš dosežene točke.',
 	'text_help2-3': 'Terminal je enostavno uporabljati. V terminal zapišeš ukaz v obliki <code>UKAZ [AGUMENTI]</code> in pritisneš ENTER na tipkovnici.',
 	'text_help3-1': 'Vsak ukaz ima svojo pomoč. Do nje lahko dostopaš z ukazom <code>help UKAZ</code> (primer: <code>help pwd</code>. Pomoč sestavljajo opis delovanja ukaza, opis uporabe ukaza in referenco na podoben ukaz na operacijskem sistemu GNU/Linux.',
-	'text_help3-2': 'code>UKAZ</code>: Ukaz nima argumentov. Ukaz samo vtipkaš v terminal. Primer: <code>pwd</code>',
+	'text_help3-2': '<code>UKAZ</code>: Ukaz nima argumentov. Ukaz samo vtipkaš v terminal. Primer: <code>pwd</code>',
 	'text_help3-3': '<code>UKAZ ARGUMENT</code>: Ukaz potrebuje argument za svoje delovanje. Primer: <code>mkdir nov_imenik</code>',
 	'text_help3-4': '<code>UKAZ ARGUMENT1 ARGUMENT2</code>: Ukaz potrebuje dva argumenta za svoje delovanje. Primer: <code>mv datotaka nova_lokacija_datoteke</code>',
 	'text_help3-5': '<code>UKAZ [ARGUMENT]</code>: Ukaz lahko prejme opcijski argument, vendar ga ne potrebuje za delovanje. Primer: <code>ls</code> ali <code>ls /home</code>',
-	'text_help3-6': '<code>UKAZ ARGUMENT1 [ARGUMENT2]</code>: Ukaz potrebuje en argument za delovanje, drug argument pa je opcijski. Vrstni red je pomemben. Primer: <code>edit datoteka</code> or <code>edit zascitena_datoteka geslo</code>.',
+	'text_help3-6': '<code>UKAZ ARGUMENT1 [ARGUMENT2]</code>: Ukaz potrebuje en argument za delovanje, drug argument pa je opcijski. Vrstni red je pomemben. Primer: <code>edit datoteka</code> ali <code>edit zascitena_datoteka geslo</code>.',
 	'text_help3-7': '<code>UKAZ [ARGUMENT1 [ARGUMENT2]]</code>: Ukaz ne potrebuje nobenih argumentov, lahko pa prejme enega ali dva. Če želimo podati drugi argument, moramo nujno podati tudi prvega.',
 
-
 	'text_disclaimer1': 'Ta igra želi doseči veliko ciljev, vendar v nobenem primeru ne želi promovirati neupoštevanje zakonodaje. Glavni cilj igre je učenje uporabnika različne računalniške koncepte. Želimo predstaviti računalniško varnost in nevarnost, operacijske sisteme, programiranje in hekanje na igriv in izobraževalen način.',
-	'text_disclaimer2': 'Logika igre je v veliki načini spisana v programskem jeziku JavaScript. Kodo lahko vedno analiziraš na <a href="https://github.com/ddksr/HackerGameJS">GitHub</a> računu (kjer si tudi dobrodošel kaj spreminjat). Celotno okolje je virtualno, zato ni mogoče ustvariti škodo. Veliko konceptov je tudi poenostavljenih, tako da lahko otroci in mladostniki lažje razumejo snov. ',
+	'text_disclaimer2': 'Logika igre je v veliki večini spisana v programskem jeziku JavaScript. Kodo lahko vedno analiziraš na <a href="https://github.com/ddksr/HackerGameJS">GitHub</a>u (kjer si tudi dobrodošel kaj spreminjati). Celotno okolje je virtualno, zato ni mogoče ustvariti škode. Veliko konceptov je tudi poenostavljenih, tako da lahko otroci in mladostniki lažje razumejo snov.',
 	'text_disclaimer3': 'Avtorji igre ne prevzemajo nobene odgovornosti, če informacije niso najnovejše. Prepričani smo tudi, da je veliko stvari mogoče narediti drugače. Ni namen te igre izobraziti ekperte na področju računalniške varnosti ali računalništva na splošno, ampak samo predstaviti koncepte na igriv in privlačen način.',
 
 	// Headings
