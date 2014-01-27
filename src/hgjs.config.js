@@ -19,7 +19,7 @@
 		// Base path for AJAX loads
 		basePath: "", // TODO: use this!!!
 		// Assignments path
-		assignmentsPath: "ass/", // TODO: use this!!
+		assignmentsPath: "assignments/", // TODO: use this!!
 		// Path to images
 		imagesPath: "img/", // TODO: use this!!!
 		// Assignments array of objects in form { id: ID, name: NAME } or seperator strings

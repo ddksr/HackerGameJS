@@ -48,7 +48,7 @@ fi
 # pathsand includes
 files_path="../src/"
 js_files="core util computers commands state config"
-include_files="hgjs.css jquery.terminal.css ass/ lang/ img/"
+include_files="hgjs.css jquery.terminal.css assignments/ lang/ img/"
 include_other_files="lib/"
 
 # prepare
