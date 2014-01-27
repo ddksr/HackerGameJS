@@ -61,9 +61,10 @@ HackerGame
 		 * directly from #stash. Callback is called if script is successfully loaded.
 		 */
 		loadAssignment = function (assId, callback) {
-			var htmlUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".html",
-				htmlLangUrl = hg.config.basePath + hg.config.assignmentsPath + assId + "-" + hg.lang + ".html",
-				jsUrl = hg.config.basePath + hg.config.assignmentsPath + assId + ".js",
+			var path = hg.config.basePath + hg.config.assignmentsPath + assId + "/",
+				htmlUrl = path + assId + ".html",
+				htmlLangUrl = path + assId + "-" + hg.lang + ".html",
+				jsUrl = path + assId + ".js",
 				loadJS = function (html) {
 					$("#stash").html(html);
 					$.getScript(jsUrl, callback);
