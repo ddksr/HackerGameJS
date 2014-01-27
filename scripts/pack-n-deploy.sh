@@ -46,10 +46,10 @@ if [[ $do_exit = "exit" ]]; then
 fi
 
 # pathsand includes
-files_path="../dev/"
+files_path="../src/"
 js_files="core util computers commands state config"
 include_files="hgjs.css jquery.terminal.css ass/ lang/ img/"
-include_other_files="ext/"
+include_other_files="lib/"
 
 # prepare
 mkdir $folder_name
@@ -91,6 +91,9 @@ do
 		cp $file_cp $file
 	fi
 done
+
+# Remove development libs
+rm -r "lib/qunit"
 
 cd ..
 
