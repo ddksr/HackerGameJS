@@ -562,14 +562,14 @@ HackerGame
 			pageDisabled = $("#link-page-" + pageId+".disabled").length > 0,
 			showPage = function () {
 				$("#link-page-" + pageId).addClass("active"); 
-				$("#page-" + pageId).show("slow");
+				$("#page-" + pageId).fadeIn("slow");
 			};
 		
 		console.log("action.page", [pageId]);
 		if (pageDisabled) { return; }
 		if (prevPageId) { 
 			$("#link-page-" + prevPageId).removeClass("active"); 
-			$("#page-" + prevPageId).hide("slow", showPage);
+			$("#page-" + prevPageId).fadeOut('fast', showPage);
 		}
 		else {
 			showPage();
