@@ -160,3 +160,6 @@ svg .link {
     stroke: #ccc;
 }
 
+.lang-fallback {
+	display: none;
+}

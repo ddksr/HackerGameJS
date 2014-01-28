@@ -63,8 +63,9 @@
 			</div>
 		</nav>
 		<div id="container">
-			<div id="page-getting-started" class="page">
-				<h2 class="i18n" data-lang="Getting started"></h2>
+			<div id="page-getting-started" class="page i18n">
+				<h2 class="i18n static" data-lang="Getting started"></h2>
+				
 				<p class="i18n text" data-lang="text_gettingStarted1">
 					Hello, welcome to HackerGame! Please choose the title that best describes and folow the guide.
 				</p>
@@ -104,8 +105,9 @@
 					So you are back! You can check if there are any new <a href="#/page/assignments">assignments</a>.
 				</p>
 			</div>
-			<div id="page-help" class="page">
-				<h2 class="i18n" data-lang="Help"></h2>
+			<div id="page-help" class="page i18n">
+				<h2 class="i18n static" data-lang="Help"></h2>
+				
 				<h3 class="i18n" data-lang="Introduction"></h3>
 				
 				<p class="i18n text" data-lang="text_help1-1">Terminals were really important before graphical user interfaces existed. They were the only way to comunicate with you computer. Everyone who wanted to use computers had to know how to use the command line. But things change.</p>
@@ -127,7 +129,7 @@
 					The game interface is simple. On the left you have the terminal and the editor (switch by clicking the tabs) and on the right you have instructions and additional information. On the Taks tab you recieve your taks and you must complete each one of them. If you are successful or not, you get redirected to the assignments page where you can observe your score.
 				</p>
 				<p class="i18n text" data-lang="text_help2-3">
-					The terminal is simple to use. The correct syntax is always <code>COMMAND [ARGUMENTS]</code>. You type the command and press RETURN on your keyboard.
+0					The terminal is simple to use. The correct syntax is always <code>COMMAND [ARGUMENTS]</code>. You type the command and press RETURN on your keyboard.
 				</p>
 				<h3 class="i18n" data-lang="How to use the help command"></h3>
 				<p class="i18n text" data-lang="text_help3-1">
@@ -156,7 +158,7 @@
 					</li>
 				</ul>
 			</div>
-			<div id="page-disclaimer" class="page">
+			<div id="page-disclaimer" class="page i18n">
 				<p class="i18n text" data-lang="text_disclaimer1">This game has many purpuses but promoting illigal actions is absolutely not one of them. The main puspuse of this game is to teach the user as many different computer science concepts as possible. We wish to present computer security and insecurity, operating systems, programming and hacking in a playful and educational way.</p>
 				<p class="i18n text" data-lang="text_disclaimer2">Game logic is written mainly in Javascript. You can always analyze the code yourself on <a href="https://github.com/ddksr/HackerGameJS">GitHub</a> (you are welcome to fork the code anytime!). The whole environment is virtual so no damage can be done. Many concepts are also simplified so that children can easily understand them.</p>
 				<p class="i18n text" data-lang="text_disclaimer3">The authors of this game also take now responsibility if the concepts aren't up-to-date. We are sure that many things can be done different. It is not the purpuse of this game to train security experts or computer engineers but to present computer science in a more playful and attractive way.</p>
@@ -279,7 +281,6 @@
 		<script src="../lib/jquery.terminal-0.7.7.min.js"></script>
 		<script src="../lib/d3.v3.min.js"></script>
 		<script src="../lib/underscore-min.js"></script>
-		<script src="http://localhost:8080/skewer"></script> <!-- SKEWER SUPPOT -->
 		<script src="../lib/qunit/qunit-1.12.0.js"></script>
 		<!-- HGJS-SCRIPT:end remove  -->
 
@@ -306,7 +307,7 @@
 		<script src="hgjs.min.js"></script>
 		--><!-- HGJS-SCRIPT:remove_line -->
 				
-		<script src="lang/hgjs.lang.sl.js"></script>
+		<script src="lang/hgjs.sl.interface.js"></script>
 		<!-- HGJS-SCRIPT:block after_script_load -->
 
 		<script type="text/javascript">

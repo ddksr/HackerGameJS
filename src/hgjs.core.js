@@ -335,8 +335,10 @@ HackerGame = {};
 					$(this).html(data);
 				}
 			}
+			else if ($(this).is('.page')) { return; }
 			else { $(this).html(text); }
 		});
+
 	};
 
 	/**
@@ -492,10 +494,28 @@ HackerGame = {};
 		 **/
 		language: function (langId, langObj) {
 			console.log("load.language", [langId, langObj]);
+			var url = hg.config.basePath + "lang/hgjs." + langId + ".pages.html";
+
 			if (typeof(langId) == "object") { langObj = landId; }
 			else if (langObj) { hg.lang = langId; }
 			i18n = $.extend(i18n, langObj);
 
+			$.get(url, function (html) {
+				var $stash = $(html);
+				$(".page.i18n").each(function() {
+					var $elt = $(this),
+						id = $elt.attr("id").substr(5);
+					if (! $elt.find('.lang-fallback').length) {
+						$elt.children(':not(.static)').wrap($(document.createElement('div')).attr({
+							class: "lang-fallback static"
+						}));
+					}
+					$elt.children(':not(.static)').remove();
+
+					$elt.append($stash.find(".lang-" + id).html());
+				});
+				
+			});
 		},
 		/**
 		 * hg.load.specialFile (path, content)

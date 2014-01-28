@@ -59,34 +59,51 @@ Example:
 Translating
 -----------
 
-There are two types of translations used in HackerGameJS (yes, sorry about that). The majority
-are in form:
+There are two types of translations used in HackerGameJS (yes, sorry about that). The interface translations are in form:
 
-	englishSentence => newTranslationSetence
+	englishSentence => translatedSetence
 
-and a fiew are:
+and the pages:
 
-	someKey => translation
+	pageId => translation
 
+Because pages have a lot of text that can include many html tags, the translation process differ. The core visites every page that has *i18n* class and replaces it with the coresponding content in file *lang/hgjs.LANG.pages.html*. The coresponding content has to be wrapped into a html container with a class attribute *lang-PAGEID*.
 
-In the begining of the development there were only sentence translations. When the pages nedeed translations, 
-it would be to brutal to maintain the page sentance by sentence.
+### Which files do we need to create to translate the interface and the pages?
+Only one for the interface: *src/lang/hgjs.LANG.iterface.js* and
+one for the pages: *src/lang/hgjs.LANG.pages.html*.
 
-### How does this look in html ?
+### What about translating the assignments?
+This is similar to translating pages. You will have to translate the file *assignments/ASSIGNMENT/ASSIGNMENT.html*.
+You have to create a file named *assignments/ASSIGNMENT/ASSIGNMENT-LANGID.html*. The language
+ID has to be the same as in *src/lang/hgjs.LANGID.interface.js*. You have all the freedom you need to to translate the assignments because your translated file will be used instead of
+the main HTML file.
+**Note:**
+Translate the assignment title in *src/lang/hgjs.LANGID.interface.js*.
+
+### How do the translations look like in HTML?
 
 Example:
 ~~~~~~
-<p class='i18n' data-lang='English setence'></p>
+<p class="i18n" data-lang="English setence"></p>
 ~~~~~~
 or
 ~~~~~~
-<p class='i18n text' data-lang'pageKey'>
-	This paragraph has a lot of words and it wouldnt be optimal to 
-	maintain it sentence by sentence.
-</p>
+<div class="page i18n" id="page-PAGEID">
+... english content ...
+</div>
+~~~~~~
+and the corresponding content in the language file
+~~~~~~
+<div class="lang-PAGEID">
+... translated content ...
+</div>
 ~~~~~~
 
-HTML elements with class *i18n* will get translated.
+**Important NOTE:**
+If the page html with an *i18n* class attrubte contains any static fields,
+they have to have class *static* assigned to them. Any content without the class attribute
+will be removed.
 
 ### And how in JavaScript?
 
