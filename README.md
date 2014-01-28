@@ -6,8 +6,9 @@ This is a hacker game for children which should help them learn computer science
 Download
 ========
 
-Download the latest relese: https://github.com/ddksr/HackerGameJS/raw/master/hgjs-latest.zip
+You can download the latest relese here: https://github.com/ddksr/HackerGameJS/releases
 
+You are also welcome to clone the repository and try out the current develoopment version. Your feedback will be appreciated!
 
 Documentation
 =============
