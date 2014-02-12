@@ -469,7 +469,7 @@ HackerGame
 							if ($.inArray(cmnd, blackList) > -1) {
 								return;
 							}
-							hg.tEcho(props.help[0]);
+							hg.tEcho(_.isArray(props.help) ? props.help[0] : props.help);
 						});
 						hg.tEcho("\nFor more information type: help COMMAND");
 					}
@@ -527,6 +527,35 @@ HackerGame
 			computer.fs.bin[name] = null;
 		});
 	};
+
+	/**
+	 * hg.load.command (exec, help)
+	 * - **name** *string* - command name
+	 * - **exec** *function* - command logic
+	 * - **term** *string*|*array* - help string or array of strings
+	 *
+	 * Add a command to the system. The command logic should be
+	 * implemented in **exec** callback. The callback recievs
+	 * user command arguments as function arguments.
+	 * Help can be a string or an array of strings where the rows
+	 * correspond lines.
+	 *
+	 * Example:
+	 * ~~~~~~
+	 * hg.load.command("test", function (a, b, c) {
+	 * 	hg.term.echo("a + b + c: " + (a+b+c)); 
+	 * }, 'test - test command');
+	 * // $ test 1 2 3
+	 * ~~~~~~
+	 */
+	hg.load.command = function (name, exec, help) {
+		commands[name] = {
+			exec: exec,
+			help: help
+		};
+		hg.state.computer.fs.bin[name] = null;
+	};
+
 	
 	/**
 	 * hg.exec (input, term)
@@ -539,7 +568,7 @@ HackerGame
 	 *
 	 * THIS FUNCTION IS PASSED TO THE TERMINAL.
 	 */
-	hg.exec = function(input, term) {
+	hg.exec = function (input, term) {
 		var segments = hg.util.parseInput(input),
 			fn = segments[0],
 			argsString = segments[1],

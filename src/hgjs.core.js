@@ -386,7 +386,7 @@ HackerGame = {};
 		 * THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS!
 		 **/
 		assignment: function (tasks, other) {
-			var msgBody, title, $heading, $instructions, $tasksHtml, $learnMore, $tryItOut;
+			var msgBody, title, $langs, $heading, $instructions, $tasksHtml, $learnMore, $tryItOut;
 			console.log("load.assignment", [tasks, other]);
 
 			initDynamicFields();
@@ -404,6 +404,14 @@ HackerGame = {};
 			$tasksHtml = $("#stash").find("#ass-tasks").clone();
 			$learnMore = $("#stash").find("#ass-learn-more").clone();
 			$tryItOut = $("#stash").find("#ass-try-it-out").clone();
+			$langs = $("#stash").find("#ass-translations").children();
+
+			// Get translations
+			if ($langs.length && i18n) {
+				$langs.each(function (i, elt) {
+					i18n[$(elt).data('lang')] = $(elt).text();
+				});
+			}
 
 			// Init stats
 			hg.assignment.numOfTasks = tasks.length;

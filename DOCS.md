@@ -76,10 +76,21 @@ one for the pages: *src/lang/hgjs.LANG.pages.html*.
 ### What about translating the assignments?
 This is similar to translating pages. You will have to translate the file *assignments/ASSIGNMENT/ASSIGNMENT.html*.
 You have to create a file named *assignments/ASSIGNMENT/ASSIGNMENT-LANGID.html*. The language
-ID has to be the same as in *src/lang/hgjs.LANGID.interface.js*. You have all the freedom you need to to translate the assignments because your translated file will be used instead of
+ID has to be the same as in *src/lang/hgjs.LANGID.interface.js* filename. You have all the freedom you need to to translate the assignments because your translated file will be used instead of
 the main HTML file.
 **Note:**
 Translate the assignment title in *src/lang/hgjs.LANGID.interface.js*.
+
+#### Translating commands and JavaScript strings
+If your assignment contains any new commands or has other strings that need to be translated,
+you can simply translate them via ASSIGNMENT-LANGID.html.
+You add a element with id 'ass-translations' in body.
+
+Example:
+~~~~~~
+<div id="ass-translations">
+	<span data-lang="test - just a simple test command">test - enostavna testna komanda</span>
+~~~~~~
 
 ### How do the translations look like in HTML?
 
@@ -417,6 +428,27 @@ Method loads the assignment into the game, prepares the tasks
 Resets the stats, etc.
 
 THIS SHOULD BE CALLED FROM ASSIGNMENT SCRIPTS!
+
+
+hg.load.command (exec, help)
+----------------------------
+- **name** *string* - command name
+- **exec** *function* - command logic
+- **term** *string*|*array* - help string or array of strings
+
+Add a command to the system. The command logic should be
+implemented in **exec** callback. The callback recievs
+user command arguments as function arguments.
+Help can be a string or an array of strings where the rows
+correspond lines.
+
+Example:
+~~~~~~
+hg.load.command("test", function (a, b, c) {
+	hg.term.echo("a + b + c: " + (a+b+c));
+}, 'test - test command');
+// $ test 1 2 3
+~~~~~~
 
 
 hg.load.externalFile (internalFilePath, externalFilePath)

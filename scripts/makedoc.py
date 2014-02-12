@@ -92,10 +92,21 @@ one for the pages: *src/lang/hgjs.LANG.pages.html*.
 ### What about translating the assignments?
 This is similar to translating pages. You will have to translate the file *assignments/ASSIGNMENT/ASSIGNMENT.html*.
 You have to create a file named *assignments/ASSIGNMENT/ASSIGNMENT-LANGID.html*. The language
-ID has to be the same as in *src/lang/hgjs.LANGID.interface.js*. You have all the freedom you need to to translate the assignments because your translated file will be used instead of
+ID has to be the same as in *src/lang/hgjs.LANGID.interface.js* filename. You have all the freedom you need to to translate the assignments because your translated file will be used instead of
 the main HTML file.
 **Note:**
 Translate the assignment title in *src/lang/hgjs.LANGID.interface.js*.
+
+#### Translating commands and JavaScript strings
+If your assignment contains any new commands or has other strings that need to be translated,
+you can simply translate them via ASSIGNMENT-LANGID.html.
+You add a element with id 'ass-translations' in body.
+
+Example:
+~~~~~~
+<div id="ass-translations">
+	<span data-lang="test - just a simple test command">test - enostavna testna komanda</span>
+~~~~~~
 
 ### How do the translations look like in HTML?
 
